@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.6
   flutter_svg: ^2.0.10+1
   flutter_constraintlayout: ^1.7.0-stable
+  device_preview: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -77,11 +78,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+     - family: Urbanist
+       fonts:
+         - asset: fonts/urbanist-regular.ttf
+         - asset: fonts/urbanist-thin.ttf
+         - asset: fonts/urbanist_bold.ttf
+           weight: 700
+         - asset: fonts/urbanist_extrabold.ttf
+         - asset: fonts/urbanist_light.ttf
+         - asset: fonts/urbanist_medium.ttf
+         - asset: fonts/urbanist_semibold.ttf
+  #      - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
