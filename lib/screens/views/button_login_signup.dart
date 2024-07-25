@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/signup/signupController.dart';
 
 import '../signup/sign_up_screen.dart';
 
@@ -14,7 +16,7 @@ class BottomLoginSignup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ElevatedButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
         },
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF12D18E),

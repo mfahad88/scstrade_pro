@@ -5,5 +5,5 @@ class Appconstants{
   static const String what_is_your="What is your name?";
   static const String full_name="Full Name";
   static const String continu="Continue";
-
+  static const String what_is_gender="What is your gender? ";
 }

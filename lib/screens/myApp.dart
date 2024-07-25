@@ -1,18 +1,18 @@
-import 'dart:ui';
 
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/onboard/onboard.dart';
-import 'package:scstrade_pro/screens/splash/splash.dart';
+import 'package:scstrade_pro/screens/signup/signupController.dart';
 
 void main() {
-  runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MyApp(),));
+  runApp(ChangeNotifierProvider(
+    create: (context) => Signupcontroller(),
+    child: DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(),),
+  ));
 }
 
 class MyApp extends StatelessWidget {

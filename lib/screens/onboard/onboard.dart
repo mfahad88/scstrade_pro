@@ -2,13 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:scstrade_pro/screens/AppConstants.dart';
 import 'package:scstrade_pro/screens/onboard/BottomButton.dart';
 import 'package:scstrade_pro/screens/signup/sign_up_screen.dart';
 
 class Onboard extends StatefulWidget {
-  const Onboard({super.key});
 
   @override
   State<Onboard> createState() => _OnboardState();
@@ -34,7 +32,7 @@ class _OnboardState extends State<Onboard> {
             Container(
               margin: const EdgeInsets.only(left: 20,right: 20),
               child: Text(Appconstants.Lorem_ipsum,
-              style: context.textTheme.bodyMedium),
+              style: Theme.of(context).textTheme.bodyMedium),
             ),
           const Spacer(flex: 8,),
             Container(

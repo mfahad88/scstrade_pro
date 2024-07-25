@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:scstrade_pro/screens/AppConstants.dart';
 
 import '../views/my_button.dart';
