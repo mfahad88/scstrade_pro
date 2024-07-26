@@ -6,4 +6,7 @@ class Appconstants{
   static const String full_name="Full Name";
   static const String continu="Continue";
   static const String what_is_gender="What is your gender? ";
+  static const String when_is_your_birthday="Cool! When is your birthday? 🎂";
+  static const String date_of_birth="Date of Birth";
+
 }

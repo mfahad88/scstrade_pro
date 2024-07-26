@@ -1,23 +1,24 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/AppConstants.dart';
+import 'package:scstrade_pro/screens/controller/signupController.dart';
 import 'package:scstrade_pro/screens/onboard/BottomButton.dart';
 import 'package:scstrade_pro/screens/signup/sign_up_screen.dart';
 
 class Onboard extends StatefulWidget {
+  const Onboard({super.key});
+
 
   @override
   State<Onboard> createState() => _OnboardState();
 }
 
 class _OnboardState extends State<Onboard> {
-  int counter=1;
 
   @override
   Widget build(BuildContext context) {
-
+   Signupcontroller controller = context.read<Signupcontroller>();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -37,33 +38,33 @@ class _OnboardState extends State<Onboard> {
           const Spacer(flex: 8,),
             Container(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  counter==1?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                  counter==2?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                  counter==3?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                  counter==4?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                  counter==5?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                ],
+              child:Consumer<Signupcontroller>(
+                builder: (context, value, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      value.counter==1?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                      value.counter==2?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                      value.counter==3?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                      value.counter==4?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                      value.counter==5?Padding( padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding: const EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                    ],
+                  );
+                },
               ),
             ),
         
             Bottombutton(onPressedNext: (){
-              setState(() {
-                if(counter<5) {
-                  counter++;
-                }
-                if(counter==5){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));
-                }
-              });
+              if(controller.counter<5) {
+                controller.addCounter();
+              }
+              if(controller.counter==5){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));
+              }
             },onPressedPrevious: (){
-              setState(() {
-                if(counter>1){
-                  counter--;
-                }
-              });
+              if(controller.counter>1){
+                controller.decCounter();
+              }
             })
           ],
         ),

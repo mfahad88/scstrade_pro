@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/signup/signupController.dart';
+import 'package:scstrade_pro/screens/controller/signupController.dart';
 
 import '../signup/sign_up_screen.dart';
 
