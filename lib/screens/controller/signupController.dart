@@ -5,11 +5,14 @@ class Signupcontroller extends ChangeNotifier{
   String _fullName="";
   String _gender="";
   String _dob="";
+  String _living="";
   TextEditingController textEditingControllerDob = TextEditingController(text: "");
+  TextEditingController textEditingControllerPob = TextEditingController(text: "");
   String _pob="";
   double _percent=0.0;
   GlobalKey<NavigatorState> mainNavigation = GlobalKey();
   String get fullName => _fullName;
+  String get living => _living;
   String get gender => _gender;
   String get dob => _dob;
   String get pob => _pob;
@@ -17,6 +20,10 @@ class Signupcontroller extends ChangeNotifier{
   int get counter => _counter;
   set counter(int counter){
     _counter=counter;
+    notifyListeners();
+  }
+  set living(String living){
+    _living=living;
     notifyListeners();
   }
   void addCounter(){
@@ -29,7 +36,7 @@ class Signupcontroller extends ChangeNotifier{
     notifyListeners();
   }
   void addPercent(){
-    _percent+=0.1;
+    _percent+=0.04;
     notifyListeners();
   }
   set fullName(String fullName){

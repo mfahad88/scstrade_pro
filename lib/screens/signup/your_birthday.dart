@@ -6,7 +6,6 @@ import 'package:scstrade_pro/screens/views/text_field.dart';
 
 import '../AppConstants.dart';
 import '../controller/signupController.dart';
-
 class YourBirthday extends StatelessWidget {
 
   DateTime? _selectedDate;
@@ -37,7 +36,7 @@ class YourBirthday extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const HeadingText(Appconstants.when_is_your_birthday),
@@ -45,9 +44,14 @@ class YourBirthday extends StatelessWidget {
               margin: const EdgeInsets.only(top: 20.0),
               child: const SubHeadingText(Appconstants.date_of_birth),
             ),
-            Textfield(
-              controller: controller.textEditingControllerDob,
-              onTap: () => _selectDate(context,controller),
+            Expanded(
+              child: Textfield(
+                context,
+                readOnly: true,
+                controller: controller.textEditingControllerDob,
+                onTap: () => _selectDate(context,controller),
+
+              ),
             )
 
           ],

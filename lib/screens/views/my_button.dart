@@ -29,7 +29,7 @@ class MyButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       ),
       onPressed: onPressed,
       child: this.rtl?Row(
@@ -40,7 +40,7 @@ class MyButton extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
               text,
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
           ),
 
@@ -52,7 +52,7 @@ class MyButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 40.0),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
             ),
             Icon(iconData,size: 24,)

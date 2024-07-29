@@ -8,5 +8,6 @@ class Appconstants{
   static const String what_is_gender="What is your gender? ";
   static const String when_is_your_birthday="Cool! When is your birthday? 🎂";
   static const String date_of_birth="Date of Birth";
-
+  static const String where_yor_born="Where were you born? 👶";
+  static const String place_of_birth="Place of Birth";
 }

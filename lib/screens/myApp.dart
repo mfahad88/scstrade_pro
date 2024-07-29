@@ -3,74 +3,41 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/controller/theme_controller.dart';
 import 'package:scstrade_pro/screens/onboard/onboard.dart';
 import 'package:scstrade_pro/screens/controller/signupController.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => Signupcontroller(),
-    child: DevicePreview(
+
+  runApp(MultiProvider(providers: [
+    ListenableProvider<Signupcontroller>(create: (context) => Signupcontroller()),
+    ListenableProvider<ThemeController>(create: (context) => ThemeController()),
+  ],
+    child: const MyApp()
+  )/* DevicePreview(
       enabled: !kReleaseMode,
-      builder: (context) => MyApp(),),
-  ));
+      builder: (context) => const MyApp()),
+  )*/
+  );
+
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      theme: ThemeData(
-        primaryColor:const Color(0xFF408829),
-        primaryColorDark: const Color(0xFF33FF00),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-          linearTrackColor: Color(0xFFAABBCC),
-          color: Color(0xFF408829)
-        ),
-        radioTheme: RadioThemeData(
-          fillColor: WidgetStateProperty.resolveWith((states) {
-              if(states.contains(WidgetState.selected)) {
-                return  const Color(0xFF33FF00);
-              }else{
-                return Colors.grey.shade500;
-              }
-          },)
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.resolveWith((states) => 
-              const Color(0xFF12D18E)),
-            foregroundColor: WidgetStateProperty.resolveWith((states) => const Color(0xFFFFFFFF))
-          )
-        ),
-        scaffoldBackgroundColor: const Color(0xFFF8F4EC),
-        textTheme: ThemeData.light().textTheme.copyWith(
-          headlineLarge: const TextStyle(
-              fontFamily: 'Urbanist',
-              fontSize: 32,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF212121)
-          ),
-           headlineMedium: const TextStyle(
-               fontFamily: 'Urbanist',
-               fontSize: 24,
-               color: Color(0xFF212121),
-                fontWeight: FontWeight.w600
-           ),
-           bodyMedium: const TextStyle(
-            fontFamily:'Urbanist',
-            fontSize: 18,
-            color: Color(0xFF212121)
-          )
-        ),
-      ),
-      home: Onboard(),
-      /*routes: {
-        '/OnboardOne': (context) => OnboardOne(),
-        '/SignUp':(context) => SignUpScreen()
-      },*/
+    return Consumer<ThemeController>(
+      builder: (BuildContext context, ThemeController value, Widget? child) {
+        return  MaterialApp(
+            // useInheritedMediaQuery: true,
+            // locale: DevicePreview.locale(context),
+            // builder: DevicePreview.appBuilder,
+            theme:value.themeData,
+            home: Onboard(),
+        );
+      },
+
     );
   }
 }

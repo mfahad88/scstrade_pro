@@ -7,9 +7,12 @@ import 'package:scstrade_pro/screens/views/radio_btn.dart';
 import '../AppConstants.dart';
 
 class WhatIsGender extends StatelessWidget {
+  const WhatIsGender({super.key});
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -23,7 +26,7 @@ class WhatIsGender extends StatelessWidget {
           Container(
             child: Consumer<Signupcontroller>(
               builder: (BuildContext context, Signupcontroller controller, Widget? child) {
-                return  Column(
+                return Column(
                   children: [
                     RadioBtn(title: "Male",groupValue: controller.gender, onChanged: (p0) => controller.gender=p0),
                     RadioBtn(title: "Female",groupValue: controller.gender, onChanged: (p0) => controller.gender=p0),

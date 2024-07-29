@@ -10,6 +10,8 @@ import 'package:scstrade_pro/screens/views/text_field.dart';
 import '../AppConstants.dart';
 
 class YourNameScreen extends StatelessWidget {
+  const YourNameScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Signupcontroller>(
@@ -27,11 +29,16 @@ class YourNameScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
               child: const SubHeadingText(Appconstants.full_name),
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Textfield(onChanged: (value) {
-                controller.fullName = value;
-              },),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Textfield(
+                  context,
+                readOnly: false,
+                  onChanged: (value) {
+                  controller.fullName = value;
+                },),
+              ),
             )
           ],
         );
