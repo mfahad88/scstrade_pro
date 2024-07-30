@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../AppConstants.dart';
-import '../controller/signupController.dart';
+import '../controller/signup_controller.dart';
 import '../views/heading_text.dart';
 import '../views/sub_heading_text.dart';
 import '../views/text_field.dart';
@@ -12,7 +12,7 @@ class WhereYouBorn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Signupcontroller controller=context.read<Signupcontroller>();
+    SignupController controller=context.read<SignupController>();
     return  Scaffold(
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20),

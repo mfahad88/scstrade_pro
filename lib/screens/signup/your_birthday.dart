@@ -5,13 +5,13 @@ import 'package:scstrade_pro/screens/views/sub_heading_text.dart';
 import 'package:scstrade_pro/screens/views/text_field.dart';
 
 import '../AppConstants.dart';
-import '../controller/signupController.dart';
+import '../controller/signup_controller.dart';
 class YourBirthday extends StatelessWidget {
 
   DateTime? _selectedDate;
   YourBirthday({super.key});
 
-  Future<void> _selectDate(BuildContext context,Signupcontroller controller) async {
+  Future<void> _selectDate(BuildContext context,SignupController controller) async {
     final DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -29,7 +29,7 @@ class YourBirthday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    Signupcontroller controller=context.read<Signupcontroller>();
+    SignupController controller=context.read<SignupController>();
 
     return Scaffold(
       body: Container(

@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/AppConstants.dart';
 import 'package:scstrade_pro/screens/controller/signup_controller.dart';
 import 'package:scstrade_pro/screens/views/heading_text.dart';
 import 'package:scstrade_pro/screens/views/radio_btn.dart';
 
-import '../AppConstants.dart';
-
-class WhatIsGender extends StatelessWidget {
-  const WhatIsGender({super.key});
-
+class AreYouSaving extends StatelessWidget {
+  const AreYouSaving({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: const HeadingText(Appconstants.what_is_gender),
+            child: const HeadingText(Appconstants.are_you_saving),
           ),
-          Container(
+          Expanded(
             child: Consumer<SignupController>(
               builder: (BuildContext context, SignupController controller, Widget? child) {
-                return Column(
-                  children: [
-                    RadioBtn(title: "Male",groupValue: controller.gender, onChanged: (p0) => controller.gender=p0),
-                    RadioBtn(title: "Female",groupValue: controller.gender, onChanged: (p0) => controller.gender=p0),
-                  ],
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+
+                    children: [
+                      RadioBtn(title: "Yes",groupValue: controller.saving, onChanged: (p0) => controller.saving=p0),
+                      RadioBtn(title: "No",groupValue: controller.saving, onChanged: (p0) => controller.saving=p0),
+                    ],
+                  ),
                 );
               },
 

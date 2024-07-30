@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../AppConstants.dart';
-import '../controller/signupController.dart';
+import '../controller/signup_controller.dart';
 import '../views/heading_text.dart';
 import '../views/radio_btn.dart';
 
@@ -20,8 +20,8 @@ class WhatYouDoInvestment extends StatelessWidget {
             child: const HeadingText(Appconstants.what_is_gender),
           ),
           Expanded(
-            child: Consumer<Signupcontroller>(
-              builder: (BuildContext context, Signupcontroller controller, Widget? child) {
+            child: Consumer<SignupController>(
+              builder: (BuildContext context, SignupController controller, Widget? child) {
                 return SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(

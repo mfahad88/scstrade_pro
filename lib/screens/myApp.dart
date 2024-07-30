@@ -1,19 +1,26 @@
 
+import 'package:camera/camera.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/controller/theme_controller.dart';
 import 'package:scstrade_pro/screens/onboard/onboard.dart';
-import 'package:scstrade_pro/screens/controller/signupController.dart';
 
-void main() {
+import 'controller/signup_controller.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
 
   runApp(MultiProvider(providers: [
-    ListenableProvider<Signupcontroller>(create: (context) => Signupcontroller()),
+    ListenableProvider<SignupController>(create: (context) => SignupController()),
     ListenableProvider<ThemeController>(create: (context) => ThemeController()),
   ],
-    child: const MyApp()
+    child: MyApp(cameras)
   )/* DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) => const MyApp()),
@@ -23,10 +30,17 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  List<CameraDescription> cameras;
+  MyApp(this.cameras, {super.key});
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    ThemeController controller =context.read();
+    controller.camera.addAll(cameras);
     return Consumer<ThemeController>(
       builder: (BuildContext context, ThemeController value, Widget? child) {
         return  MaterialApp(
@@ -34,7 +48,7 @@ class MyApp extends StatelessWidget {
             // locale: DevicePreview.locale(context),
             // builder: DevicePreview.appBuilder,
             theme:value.themeData,
-            home: Onboard(),
+            home: const Onboard(),
         );
       },
 

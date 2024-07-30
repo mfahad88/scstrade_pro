@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/controller/signupController.dart';
+import 'package:scstrade_pro/screens/controller/signup_controller.dart';
 import 'package:scstrade_pro/screens/views/heading_text.dart';
 import 'package:scstrade_pro/screens/views/sub_heading_text.dart';
 import 'package:scstrade_pro/screens/views/text_field.dart';
@@ -14,8 +12,8 @@ class YourNameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Signupcontroller>(
-      builder: (BuildContext context, Signupcontroller controller, Widget? child) {
+    return Consumer<SignupController>(
+      builder: (BuildContext context, SignupController controller, Widget? child) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,

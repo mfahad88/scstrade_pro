@@ -8,7 +8,8 @@ class HeadingText extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Text(title,
-        style: Theme.of(context).textTheme.headlineLarge
+        style: Theme.of(context).textTheme.headlineLarge,
+
     );
   }
 

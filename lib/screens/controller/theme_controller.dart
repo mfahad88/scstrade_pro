@@ -1,7 +1,10 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ThemeController extends ChangeNotifier{
+  List<CameraDescription> camera=List.empty(growable: true);
+
   ThemeData themeData =  ThemeData(
     primaryColor:const Color(0xFF408829),
     primaryColorDark: const Color(0xFF33FF00),
