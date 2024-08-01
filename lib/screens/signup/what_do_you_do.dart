@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/controller/theme_controller.dart';
+import 'package:scstrade_pro/provider/signup_controller.dart';
+import 'package:scstrade_pro/provider/theme_controller.dart';
+import 'package:scstrade_pro/helper/AppConstants.dart';
+import 'package:scstrade_pro/widgets/sub_heading_text.dart';
+import 'package:scstrade_pro/widgets/text_field.dart';
 
-import '../AppConstants.dart';
-import '../controller/signup_controller.dart';
-import '../views/heading_text.dart';
-import '../views/sub_heading_text.dart';
-import '../views/text_field.dart';
 
 class WhatDoYouDo extends StatelessWidget {
   const WhatDoYouDo({super.key});
@@ -43,9 +42,9 @@ class WhatDoYouDo extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 context,
                 readOnly: false,
-                controller: controller.textEditingControllerOccuption,
+                // controller: controller.textEditingControllerOccuption,
                 onChanged: (value) => {
-                  controller.occuption=controller.textEditingControllerOccuption.text
+                  controller.occuption=value
                 },
               ),
             )

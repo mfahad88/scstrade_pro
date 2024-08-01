@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/controller/signup_controller.dart';
-import 'package:scstrade_pro/screens/views/heading_text.dart';
-import 'package:scstrade_pro/screens/views/radio_btn.dart';
+import 'package:scstrade_pro/provider/signup_controller.dart';
+import 'package:scstrade_pro/widgets/heading_text.dart';
+import 'package:scstrade_pro/widgets/radio_btn.dart';
 
-import '../AppConstants.dart';
+import '../../helper/AppConstants.dart';
 
 class WhatIsGender extends StatelessWidget {
   const WhatIsGender({super.key});

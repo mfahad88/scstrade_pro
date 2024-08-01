@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/widgets/heading_text.dart';
+import 'package:scstrade_pro/widgets/sub_heading_text.dart';
+import 'package:scstrade_pro/widgets/text_field.dart';
 
-import '../AppConstants.dart';
-import '../controller/signup_controller.dart';
-import '../views/heading_text.dart';
-import '../views/sub_heading_text.dart';
-import '../views/text_field.dart';
+import '../../helper/AppConstants.dart';
+import '../../provider/signup_controller.dart';
+
 
 class WhereYouBorn extends StatelessWidget {
   const WhereYouBorn({super.key});
@@ -31,9 +32,9 @@ class WhereYouBorn extends StatelessWidget {
                 keyboardType: TextInputType.streetAddress,
                 context,
                 readOnly: false,
-                controller: controller.textEditingControllerPob,
+                // controller: controller.textEditingControllerPob,
                 onChanged: (value) => {
-                  controller.pob=controller.textEditingControllerPob.text
+                  controller.pob=value
                 },
               ),
             )

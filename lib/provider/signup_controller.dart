@@ -10,9 +10,9 @@ class SignupController extends ChangeNotifier{
   String _company="";
   String _occuption="";
   TextEditingController textEditingControllerDob = TextEditingController(text: "");
-  TextEditingController textEditingControllerPob = TextEditingController(text: "");
-  TextEditingController textEditingControllerCompany = TextEditingController(text: "");
-  TextEditingController textEditingControllerOccuption = TextEditingController(text: "");
+  // TextEditingController textEditingControllerPob = TextEditingController(text: "");
+  // TextEditingController textEditingControllerCompany = TextEditingController(text: "");
+  // TextEditingController textEditingControllerOccuption = TextEditingController(text: "");
 
   String _pob="";
   double _percent=0.0;

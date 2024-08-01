@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/AppConstants.dart';
-import 'package:scstrade_pro/screens/controller/signup_controller.dart';
-import 'package:scstrade_pro/screens/views/heading_text.dart';
-import 'package:scstrade_pro/screens/views/sub_heading_text.dart';
-import 'package:scstrade_pro/screens/views/text_field.dart';
+import 'package:scstrade_pro/helper/AppConstants.dart';
+import 'package:scstrade_pro/provider/signup_controller.dart';
+import 'package:scstrade_pro/widgets/heading_text.dart';
+import 'package:scstrade_pro/widgets/sub_heading_text.dart';
+import 'package:scstrade_pro/widgets/text_field.dart';
 
 class WhatCompanyName extends StatelessWidget {
   const WhatCompanyName({super.key});
@@ -34,9 +34,9 @@ class WhatCompanyName extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 context,
                 readOnly: false,
-                controller: controller.textEditingControllerCompany,
+                // controller: controller.textEditingControllerCompany,
                 onChanged: (value) => {
-                  controller.company=controller.textEditingControllerCompany.text
+                  controller.company=value
                 },
               ),
             )

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/controller/signup_controller.dart';
-
-import '../signup/sign_up_screen.dart';
+import '../screens/signup/sign_up_screen.dart';
 
 class BottomLoginSignup extends StatelessWidget {
   const BottomLoginSignup({

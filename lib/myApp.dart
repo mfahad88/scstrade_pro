@@ -1,13 +1,11 @@
 
 import 'package:camera/camera.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/controller/theme_controller.dart';
 import 'package:scstrade_pro/screens/onboard/onboard.dart';
 
-import 'controller/signup_controller.dart';
+import 'provider/signup_controller.dart';
+import 'provider/theme_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

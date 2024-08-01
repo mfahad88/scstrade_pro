@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-import 'package:camera_platform_interface/src/types/camera_description.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/AppConstants.dart';
-import 'package:scstrade_pro/screens/controller/signup_controller.dart';
-import 'package:scstrade_pro/screens/controller/theme_controller.dart';
+import 'package:scstrade_pro/provider/theme_controller.dart';
+import 'package:scstrade_pro/helper/AppConstants.dart';
+import 'package:scstrade_pro/provider/signup_controller.dart';
 import 'package:scstrade_pro/screens/signup/are_you_saving.dart';
 import 'package:scstrade_pro/screens/signup/take_picture_screen.dart';
 import 'package:scstrade_pro/screens/signup/upload_national_card.dart';

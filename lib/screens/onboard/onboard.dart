@@ -1,13 +1,13 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/AppConstants.dart';
-import 'package:scstrade_pro/screens/controller/theme_controller.dart';
+import 'package:scstrade_pro/helper/AppConstants.dart';
 import 'package:scstrade_pro/screens/onboard/BottomButton.dart';
 import 'package:scstrade_pro/screens/signup/sign_up_screen.dart';
+import 'package:scstrade_pro/widgets/paint/circle_paint.dart';
+import 'package:scstrade_pro/widgets/paint/oval_paint.dart';
 
-import '../controller/signup_controller.dart';
+import '../../provider/signup_controller.dart';
+import '../../provider/theme_controller.dart';
 
 
 class Onboard extends StatelessWidget {
@@ -23,10 +23,13 @@ class Onboard extends StatelessWidget {
           child: Column(
             children: [
               Center(
-                child: Image.asset("images/logo.gif",
-                width: MediaQuery.of(context).size.width/2,
-                height: MediaQuery.of(context).size.height/3,
-                fit: BoxFit.scaleDown),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 20.0),
+                  child: Image.asset("images/logo.gif",
+                  width: 250,
+                  height: 170,
+                  fit: BoxFit.contain),
+                ),
               ),
             const Spacer(flex: 1),
               Container(
@@ -42,11 +45,11 @@ class Onboard extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        value.counter==1?Padding( padding: EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                        value.counter==2?Padding( padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                        value.counter==3?Padding( padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                        value.counter==4?Padding( padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
-                        value.counter==5?Padding( padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/rectangle.svg")) : Padding(padding:  EdgeInsets.only(right: 8),child: SvgPicture.asset("images/circle.svg")),
+                        value.counter==1?Padding(padding: const EdgeInsets.only(left:0,right: 30.0,bottom: 10), child: CustomPaint(painter: OvalPaint())):Padding(padding: const EdgeInsets.only(left: 0.0), child: CustomPaint(painter: CirclePaint())),
+                        value.counter==2?Padding(padding: const EdgeInsets.only(left:10,right: 30.0,bottom: 10), child: CustomPaint(painter: OvalPaint())):Padding(padding: const EdgeInsets.only(left: 15.0), child: CustomPaint(painter: CirclePaint())),
+                        value.counter==3?Padding(padding: const EdgeInsets.only(left:10,right: 30.0,bottom: 10), child: CustomPaint(painter: OvalPaint())):Padding(padding: const EdgeInsets.only(left: 15.0), child: CustomPaint(painter: CirclePaint())),
+                        value.counter==4?Padding(padding: const EdgeInsets.only(left:10,right: 30.0,bottom: 10), child: CustomPaint(painter: OvalPaint())):Padding(padding: const EdgeInsets.only(left: 15.0), child: CustomPaint(painter: CirclePaint())),
+                        value.counter==5?Padding(padding: const EdgeInsets.only(left:10,right: 30.0,bottom: 10), child: CustomPaint(painter: OvalPaint())):Padding(padding: const EdgeInsets.only(left: 15.0), child: CustomPaint(painter: CirclePaint()))
                       ],
                     );
                   },

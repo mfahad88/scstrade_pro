@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/widgets/heading_text.dart';
+import 'package:scstrade_pro/widgets/radio_btn.dart';
 
-import '../AppConstants.dart';
-import '../controller/signup_controller.dart';
-import '../views/heading_text.dart';
-import '../views/radio_btn.dart';
+import '../../helper/AppConstants.dart';
+import '../../provider/signup_controller.dart';
+
 
 class WhatYouDoInvestment extends StatelessWidget {
   const WhatYouDoInvestment({super.key});
@@ -25,7 +26,7 @@ class WhatYouDoInvestment extends StatelessWidget {
                 return SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
-                  
+
                     children: [
                       RadioBtn(title: "I want to grow my capital",groupValue: controller.living, onChanged: (p0) => controller.living=p0),
                       RadioBtn(title: "I want to speculate",groupValue: controller.living, onChanged: (p0) => controller.living=p0),
