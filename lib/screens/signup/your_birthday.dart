@@ -12,13 +12,14 @@ import 'dart:async';
 class YourBirthday extends StatelessWidget {
   static const platform = MethodChannel('com.example.datepicker/date');
   // DateTime? _selectedDate;
-  YourBirthday({super.key});
+  const YourBirthday({super.key});
 
   Future<void> _showDatePicker(SignupController controller) async {
     try {
 
       final String result = await platform.invokeMethod('showDatePicker');
       controller.textEditingControllerDob.text = result;
+      controller.dob = result;
     } on PlatformException catch (e) {
       controller.textEditingControllerDob.text = "Failed to get date: '${e.message}'.";
     }

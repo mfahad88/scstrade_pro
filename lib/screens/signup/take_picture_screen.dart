@@ -44,8 +44,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
+        /*appBar: AppBar(
+          leading: IconButton(onPressed: (){
+            Navigator.pop(context);
+          }, icon: const Icon(Icons.arrow_back,color: Colors.black,)),
+        ),*/
         // appBar: AppBar(title: const Text('Take a picture')),
         // You must wait until the controller is initialized before displaying the
         // camera preview. Use a FutureBuilder to display a loading spinner until the
@@ -94,7 +98,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           },
           child: const Icon(Icons.camera_alt),
         ),
-      ),
     );
   }
 }

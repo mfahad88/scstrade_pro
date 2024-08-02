@@ -83,7 +83,9 @@ class UploadNationalCard extends StatelessWidget {
                   backgroundColor: const Color(0xFFE7FAF4),
                   borderRadius: 25,
                   rtl: true, onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TakePictureScreen(camera: context.read<ThemeController>().camera.first)));
+                    Navigator.push(context, MaterialPageRoute(
+                      fullscreenDialog: true,
+                        builder: (context) => TakePictureScreen(camera: context.read<ThemeController>().camera.first)));
                     // context.read<SignupController>().mainNavigation.currentState!.pushNamed("/takePicture");
               }, iconData: Icons.camera_alt),
             ),

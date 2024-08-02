@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/AppConstants.dart';
+import 'package:scstrade_pro/screens/loginsignup/login_signup.dart';
 import 'package:scstrade_pro/screens/onboard/BottomButton.dart';
 import 'package:scstrade_pro/screens/signup/sign_up_screen.dart';
 import 'package:scstrade_pro/widgets/paint/circle_paint.dart';
@@ -61,7 +62,7 @@ class Onboard extends StatelessWidget {
                   controller.addCounter();
                 }
                 if(controller.counter==5){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginSignup()));
                 }
               },onPressedPrevious: (){
                 if(controller.counter>1){

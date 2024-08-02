@@ -7,13 +7,14 @@ class Textfield extends StatelessWidget {
   TextEditingController? controller;
   BuildContext context;
   bool readOnly;
-  Textfield(this.context, {super.key,this.onChanged,this.keyboardType,this.onTap,this.controller, required bool this.readOnly});
+  bool? obscureText;
+  Textfield(this.context, {super.key,this.onChanged,this.keyboardType,this.onTap,this.controller,this.obscureText, required bool this.readOnly});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       readOnly: readOnly ,
-
+      obscureText: obscureText==null?false:obscureText!,
       controller: controller,
       cursorColor:Theme.of(context).primaryColor ,
       decoration: InputDecoration(

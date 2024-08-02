@@ -4,10 +4,10 @@ class Appconstants{
   static const String Lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis nulla id libero commodo facilisis sit amet et nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non gravida libero.";
   static const String previous = "Previous";
   static const String next = "Next";
-  static const String what_is_your="What is your name?";
+  static const String what_is_your="What is your name? 🧑 👩";
   static const String full_name="Full Name";
   static const String continu="Continue";
-  static const String what_is_gender="What is your gender? ";
+  static const String what_is_gender="What is your gender? 🚻";
   static const String when_is_your_birthday="Cool! When is your birthday? 🎂";
   static const String date_of_birth="Date of Birth";
   static const String where_yor_born="Where were you born? 👶";
@@ -23,4 +23,12 @@ class Appconstants{
   static const String your_national_id = "Upload a photo of your National ID Card 🪪";
 
   static const String regulation_nation_id= "Regulations require you to upload a national identity card. Don't worry, your data will stay safe and private.";
+  static const String continue_with_google= "Continue with Google";
+  static const String sign_up= "Sign up";
+  static const String sign_in= "Sign in";
+
+  static const String any_experience = "Do you have any experience investing? 🎓";
+
+  static const String contact_detail = "What are their contact details? 🤙 ";
+  static const String hello_there = "Hello there 👋";
 }
