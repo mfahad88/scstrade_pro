@@ -2,6 +2,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/provider/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/provider/signin_viewmodel.dart';
 import 'package:scstrade_pro/screens/onboard/onboard.dart';
 
@@ -19,6 +20,7 @@ Future<void> main() async {
     ListenableProvider<SigninViewmodel>(create: (context) => SigninViewmodel(),),
     ListenableProvider<SignupController>(create: (context) => SignupController()),
     ListenableProvider<ThemeController>(create: (context) => ThemeController()),
+    ListenableProvider<DashboardViewmodel>(create: (context) => DashboardViewmodel())
   ],
     child: MyApp(cameras)
   )/* DevicePreview(

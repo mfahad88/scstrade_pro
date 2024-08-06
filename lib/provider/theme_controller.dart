@@ -46,7 +46,14 @@ class ThemeController extends ChangeNotifier{
             fontFamily:'Urbanist',
             fontSize: 16,
             color: Color(0xFF212121)
-        )
+        ),
+
+        bodyLarge:  const TextStyle(
+        fontFamily:'Urbanist',
+        fontWeight: FontWeight.w800,
+        fontSize: 20,
+        color: Color(0xFF212121)
+    )
     ),
   );
 

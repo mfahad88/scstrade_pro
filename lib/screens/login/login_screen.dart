@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/AppConstants.dart';
 import 'package:scstrade_pro/provider/signin_viewmodel.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
+import 'package:scstrade_pro/screens/dashboard/dashboard_screen.dart';
 import 'package:scstrade_pro/widgets/heading_text.dart';
 import 'package:scstrade_pro/widgets/text_field.dart';
 
@@ -42,7 +43,7 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500
                       )),
                     ),
-                    Textfield(context, readOnly: false,keyboardType: TextInputType.emailAddress,obscureText: true,onChanged: (value) => viewmodel.email),
+                    Textfield(context, readOnly: false,keyboardType: TextInputType.text,obscureText: true,onChanged: (value) => viewmodel.password),
                   ],
                 ),
               ),
@@ -50,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: ElevatedButton(
                   onPressed: () {
-
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardScreen()));
 
                   },
 
