@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/models/MyStock.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
 import 'package:scstrade_pro/screens/dashboard/my_wishlist.dart';
+import 'package:scstrade_pro/screens/dashboard/my_wishlist_screen.dart';
 import 'package:scstrade_pro/widgets/heading_with_arrow.dart';
 import 'package:scstrade_pro/widgets/my_card.dart';
 import 'package:scstrade_pro/widgets/my_stock_grid.dart';
@@ -252,18 +253,24 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Container(
-                margin: const EdgeInsets.only(top: 10),
-                child: const HeadingWithArrow(title: "My wishlist")
+                margin: const EdgeInsets.only(top: 10,left: 20,right: 20),
+                child: HeadingWithArrow(title: "My wishlist", onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyWishlistScreen()));
+                },)
             ),
             Container(
-              margin: const EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10,),
               child: const MyWishlist(),
             ),
             Container(
-                margin: const EdgeInsets.only(top: 10),
-                child: const HeadingWithArrow(title: "My Stocks")
+                margin: const EdgeInsets.only(top: 10,left: 20,right: 20),
+                child: HeadingWithArrow(title: "My Stocks", onPressed: () {
+
+                },)
             ),
-            MyStockGrid(list: getStocks())
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: MyStockGrid(list: getStocks()))
           ],
         ),
       ),

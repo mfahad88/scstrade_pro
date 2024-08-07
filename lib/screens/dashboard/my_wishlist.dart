@@ -14,7 +14,7 @@ class MyWishlist extends StatelessWidget {
       height: 160,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(left: 20,right: 20),
+        padding: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
         children:  [
           MyCard(
             width: 150,
