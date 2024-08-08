@@ -10,17 +10,20 @@ class HeadingWithArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeController themeController=context.read();
-    return Row(
+    return SizedBox(
+      height: 40,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(title,style: themeController.themeData.textTheme.headlineMedium),
+          const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward, color: Color(0xFF12D18E)), onPressed: onPressed,
 
-      children: [
-        Text(title,style: themeController.themeData.textTheme.headlineMedium),
-        const Spacer(),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward, color: Color(0xFF12D18E)), onPressed: onPressed,
+          )
 
-        )
-
-      ],
+        ],
+      ),
     );
   }
 }

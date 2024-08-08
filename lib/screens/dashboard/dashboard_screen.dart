@@ -20,8 +20,10 @@ class DashboardScreen extends StatelessWidget {
         children: [
           Stack(
             children: [
-              const Image(
-                image:  AssetImage(
+              Image(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.25,
+                image:  const AssetImage(
                     'images/frame.png'),
                 fit: BoxFit.fill,
               ),

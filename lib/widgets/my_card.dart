@@ -17,6 +17,7 @@ class MyCard extends StatelessWidget {
         surfaceTintColor: surfaceTintColor,
         shadowColor: shadowColor,
         color: Colors.white,
+        margin: EdgeInsets.zero,
 
         elevation: 5.0,
         /*shape: RoundedRectangleBorder(

@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:scstrade_pro/models/daily_notification.dart';
 
 import '../models/MyStock.dart';
 
@@ -87,6 +88,26 @@ class DashboardViewmodel extends ChangeNotifier{
           const FlSpot(5, 5)
         ])
   ];
+  List<DailyNotification> _notfications=[
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: true),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: true),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: false),
+    DailyNotification(icon: 'images/security_updates.png', title: 'Security Updates!', date: 'Today | 09:24 AM', subTitle: 'Now Otrade has a Two-Factor Authentication. Try it now to make your account more secure.', isRead: true),
+  ];
+
+  List<DailyNotification> get notfications => _notfications;
+
+  set notfications(List<DailyNotification> value) {
+    _notfications = value;
+  }
 
   set selectedIndex(int selectedIndex){
     _selectedIndex = selectedIndex;
