@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
 
+import '../helper/Utils.dart';
 import '../models/MyStock.dart';
 import 'my_card.dart';
 
@@ -33,7 +34,8 @@ class HorizontalListCard extends StatelessWidget {
                         margin: const EdgeInsets.only(left: 10,top: 5),
                         child: Text(
                           list![index].shortName,style: themeController.themeData.textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w600
+                            fontWeight: FontWeight.w600,
+                            color: Utils.isDark(context)?Colors.white:const Color(0xFF1F222A)
                         ),
                         ),
                       )

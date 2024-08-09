@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../helper/Utils.dart';
+
 class MyCard extends StatelessWidget {
   Widget? child;
   double? width;
@@ -16,18 +18,11 @@ class MyCard extends StatelessWidget {
       child: Card.outlined(
         surfaceTintColor: surfaceTintColor,
         shadowColor: shadowColor,
-        color: Colors.white,
+        color: Utils.isDark(context)?const Color(0xFF1F222A):Colors.white,
         margin: EdgeInsets.zero,
 
         elevation: 5.0,
-        /*shape: RoundedRectangleBorder(
-            side: const BorderSide(
-                color: Color(0xFFF5F5F5),
-                width: 2,
-                style: BorderStyle.solid
-            ),
-            borderRadius: BorderRadius.circular(10)
-        ),*/
+
         child: child,
       ),
     );

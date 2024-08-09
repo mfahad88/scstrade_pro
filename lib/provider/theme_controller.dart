@@ -1,9 +1,7 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ThemeController extends ChangeNotifier{
-  List<CameraDescription> camera=List.empty(growable: true);
 
   ThemeData themeData =  ThemeData(
     primaryColor:const Color(0xFF408829),
@@ -14,13 +12,15 @@ class ThemeController extends ChangeNotifier{
     ),
     radioTheme: RadioThemeData(
         fillColor: WidgetStateProperty.resolveWith((states) {
-          if(states.contains(WidgetState.selected)) {
-            return  const Color(0xFF33FF00);
-          }else{
-            return Colors.grey.shade500;
+            if(states.contains(WidgetState.selected)) {
+              return  const Color(0xFF33FF00);
+            }else{
+              return Colors.grey.shade500;
+            }
           }
-        },)
+        )
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith((states) =>
@@ -49,11 +49,11 @@ class ThemeController extends ChangeNotifier{
         ),
 
         bodyLarge:  const TextStyle(
-        fontFamily:'Urbanist',
-        fontWeight: FontWeight.w800,
-        fontSize: 20,
-        color: Color(0xFF212121)
-    )
+            fontFamily:'Urbanist',
+            fontWeight: FontWeight.w800,
+            fontSize: 20,
+            color: Color(0xFF212121)
+        )
     ),
   );
 

@@ -4,6 +4,8 @@ import 'package:scstrade_pro/provider/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
 import 'package:scstrade_pro/widgets/notification_row.dart';
 
+import '../../helper/Utils.dart';
+
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
 
@@ -13,8 +15,11 @@ class NotificationScreen extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back,color: Color(0xFF212121),)),
-            title: const Text("Notification"),
+            leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back,color: Utils.isDark(context)?Colors.white:const Color(0xFF1F222A),)),
+            title: Text("Notification" , style: TextStyle(
+              color: Utils.isDark(context)?Colors.white:const Color(0xFF1F222A),
+            ),),
+            backgroundColor: Utils.isDark(context)?const Color(0xFF1F222A):Colors.white,
           ),
           body: Consumer<DashboardViewmodel>(
 
@@ -28,6 +33,7 @@ class NotificationScreen extends StatelessWidget {
                       Center(
                         child: Text("Empty",
                             style: themeController.themeData.textTheme.headlineLarge!.copyWith(
+                              color: Utils.isDark(context)?Colors.white:const Color(0xFF1F222A),
                                 fontSize: 24)
                         ),
                       ),
@@ -35,7 +41,8 @@ class NotificationScreen extends StatelessWidget {
                         margin: const EdgeInsets.only(top: 10),
                         child: Center(
                           child: Text("You don't have any notification at this time",style: themeController.themeData.textTheme.bodyMedium!.copyWith(
-                              fontSize: 18
+                              fontSize: 18,
+                            color: Utils.isDark(context)?Colors.white:const Color(0xFF1F222A)
                           ),),
                         ),
                       )

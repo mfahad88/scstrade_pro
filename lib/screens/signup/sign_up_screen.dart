@@ -10,8 +10,6 @@ import 'package:scstrade_pro/screens/loginsignup/login_signup.dart';
 import 'package:scstrade_pro/screens/signup/any_experience.dart';
 import 'package:scstrade_pro/screens/signup/are_you_saving.dart';
 import 'package:scstrade_pro/screens/signup/contact_detail.dart';
-import 'package:scstrade_pro/screens/signup/take_picture_screen.dart';
-import 'package:scstrade_pro/screens/signup/upload_national_card.dart';
 import 'package:scstrade_pro/screens/signup/what_company_name.dart';
 import 'package:scstrade_pro/screens/signup/what_do_you_do.dart';
 import 'package:scstrade_pro/screens/signup/what_is_gender.dart';
@@ -88,11 +86,6 @@ class SignUpScreen extends StatelessWidget {
                     return PageRouteBuilder( pageBuilder: (context, animation, secondaryAnimation) => const WhatCompanyName());
                   } else if (settings.name == "/WhatDoYouDo"){
                     return PageRouteBuilder( pageBuilder: (context, animation, secondaryAnimation) => const WhatDoYouDo());
-                  }else if(settings.name == "/UploadNationalCard"){
-                    return PageRouteBuilder( pageBuilder: (context, animation, secondaryAnimation) => const UploadNationalCard());
-                  }else if(settings.name == "/takePicture"){
-                    return MaterialPageRoute(builder: (context) => TakePictureScreen(camera: themeController.camera.first),);
-                    // return PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => TakePictureScreen(camera: themeController.camera.first));
                   }else {
                     // Navigator.pop(context);
                     return null;

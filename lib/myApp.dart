@@ -1,5 +1,4 @@
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/provider/dashboard_viewmodel.dart';
@@ -12,7 +11,6 @@ import 'provider/theme_controller.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
 
   // Get a specific camera from the list of available cameras.
 
@@ -22,7 +20,7 @@ Future<void> main() async {
     ListenableProvider<ThemeController>(create: (context) => ThemeController()),
     ListenableProvider<DashboardViewmodel>(create: (context) => DashboardViewmodel())
   ],
-    child: MyApp(cameras)
+    child: MyApp()
   )/* DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) => const MyApp()),
@@ -32,8 +30,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  List<CameraDescription> cameras;
-  MyApp(this.cameras, {super.key});
+  MyApp({super.key});
 
 
 
@@ -41,8 +38,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeController controller =context.read();
-    controller.camera.addAll(cameras);
     return Consumer<ThemeController>(
       builder: (BuildContext context, ThemeController value, Widget? child) {
         return  MaterialApp(

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 
 import '../models/MyStock.dart';
 
@@ -29,5 +30,9 @@ class Utils{
     }
 
     return generatedNumbers;
+  }
+
+  static bool isDark(BuildContext context){
+    return MediaQuery.of(context).platformBrightness == Brightness.dark;
   }
 }

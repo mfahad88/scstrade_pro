@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interactive_chart/interactive_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
@@ -7,21 +8,24 @@ import 'package:scstrade_pro/widgets/heading_with_arrow.dart';
 import 'package:scstrade_pro/widgets/horizontal_list_card.dart';
 import 'package:scstrade_pro/widgets/my_stock_grid.dart';
 
+import '../../models/mock_data.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     ThemeController themeController=context.read();
+    final List<CandleData> _data = MockDataTesla.candles;
     return Expanded(
       child: ShaderMask(
         shaderCallback: (Rect rect) {
-          return const LinearGradient(
+          return LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [ Colors.transparent, Colors.white],
+            colors: [ Colors.transparent, Utils.isDark(context)?const Color(0xFF1F222A):Colors.white],
             //set stops as par your requirement
-            stops: [0.95, 1.0], // 50% transparent, 50% white
+            stops: const [0.95, 1.0], // 50% transparent, 50% white
           ).createShader(rect);
         },
         blendMode: BlendMode.dstOut,
@@ -30,6 +34,24 @@ class HomeScreen extends StatelessWidget {
           physics: const ScrollPhysics(),
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),
+                child: Card(
+                  color: Utils.isDark(context)?const Color(0xFF1F222A):Colors.white,
+                  elevation: 5.0,
+                  clipBehavior: Clip.antiAlias,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10,right: 10,top: 20),
+                    child: SizedBox(
+                      height: 300,
+                      child: InteractiveChart(
+                        candles: _data,
+
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                   height: 140,
                   child: HorizontalListCard(width:120,height:140,list: Utils.getStocks(6))
