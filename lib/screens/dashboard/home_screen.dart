@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:interactive_chart/interactive_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
+import 'package:scstrade_pro/provider/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/provider/theme_controller.dart';
 import 'package:scstrade_pro/screens/dashboard/my_wishlist_screen.dart';
 import 'package:scstrade_pro/screens/myportfolio/company_portfolio_screen.dart';
+import 'package:scstrade_pro/widgets/custom_line_chart.dart';
 import 'package:scstrade_pro/widgets/heading_with_arrow.dart';
 import 'package:scstrade_pro/widgets/horizontal_list_card.dart';
 import 'package:scstrade_pro/widgets/my_stock_grid.dart';
@@ -18,7 +20,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeController themeController=context.read();
-    List<String> item=<String>["KSE100","KSE30","ALLSHR"];
+    // DashboardViewmodel viewmodel=context.read();
     final List<CandleData> _data = MockDataTesla.candles;
     return Expanded(
       child: ShaderMask(
@@ -36,6 +38,7 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 10),
           physics: const ScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Stack(
                 children: [
@@ -75,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                         ),),
                       )
                     ],
-                  )
+                  ),
                 ],
               ),
               Padding(
@@ -129,14 +132,88 @@ class HomeScreen extends StatelessWidget {
                         ),
                         SizedBox(
                           height: 300,
-                          child: InteractiveChart(
-                            candles: _data,
+                          child: Consumer<DashboardViewmodel>(
+                            builder: (context, value, child) {
+                              if(value.lineSelected){
+                                return const CustomLineChart();
+                              }else{
+                                return InteractiveChart(candles: _data);
 
+                              }
+                            },
                           ),
                         ),
+
                       ],
                     ),
                   ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+                child: Consumer<DashboardViewmodel>(
+
+                  builder: (BuildContext context, DashboardViewmodel viewmodel, Widget? child) {
+                    return ListView(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5.0),
+                          child: InkWell(
+                            child: Container(
+                              width: 50,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: viewmodel.lineSelected ? Colors.green.shade500:Colors.white,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: viewmodel.lineSelected ? Colors.transparent : Colors.black,
+                                  )
+                              ),
+                              child: Center(child: Text("Line",
+                              style: themeController.themeData.textTheme.headlineSmall!.copyWith(
+                                fontSize: 12,
+                                color: viewmodel.lineSelected ? Colors.white : Colors.black
+                              ),)),
+                            ),
+                            onTap: () {
+                              viewmodel.lineSelected = true;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5.0),
+                          child: InkWell(
+                            child: Container(
+                              width: 50,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: viewmodel.lineSelected ? Colors.white:Colors.green.shade500,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: viewmodel.lineSelected ?  Colors.black:Colors.transparent,
+                                  )
+                              ),
+                              child: Center(child: Text("Candle",
+                                style: themeController.themeData.textTheme.headlineSmall!.copyWith(
+                                  fontSize: 12,
+                                  color: viewmodel.lineSelected ?  Colors.black:Colors.white
+                                ),
+                              ),
+                              ),
+                            ),
+                            onTap: () {
+                              viewmodel.lineSelected = false;
+                            },
+
+                          ),
+                        )
+                      ],
+                    );
+                  },
+
                 ),
               ),
               SizedBox(

@@ -6,6 +6,15 @@ import '../models/MyStock.dart';
 
 class DashboardViewmodel extends ChangeNotifier{
   int _selectedIndex=0;
+  bool _lineSelected=false;
+
+  bool get lineSelected => _lineSelected;
+
+  set lineSelected(bool value) {
+    _lineSelected = value;
+    notifyListeners();
+  }
+
   int get selectedIndex => _selectedIndex;
   List<MyStock> get list => _list;
   List<MyStock> _list=[
