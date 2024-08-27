@@ -47,6 +47,7 @@ dependencies:
   fl_chart: ^0.68.0
   interactive_chart: ^0.3.5
   http: ^1.2.2
+  sticky_headers: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:
@@ -90,13 +91,19 @@ flutter:
      - family: Urbanist
        fonts:
          - asset: fonts/urbanist-regular.ttf
+           weight: 400
          - asset: fonts/urbanist-thin.ttf
+           weight: 100
          - asset: fonts/urbanist_bold.ttf
            weight: 700
          - asset: fonts/urbanist_extrabold.ttf
+           weight: 800
          - asset: fonts/urbanist_light.ttf
+           weight: 300
          - asset: fonts/urbanist_medium.ttf
+           weight: 500
          - asset: fonts/urbanist_semibold.ttf
+           weight: 600
   #      - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

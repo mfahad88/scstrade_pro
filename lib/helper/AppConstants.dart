@@ -1,4 +1,3 @@
-import 'package:scstrade_pro/provider/signup_controller.dart';
 
 class Appconstants{
   static const String Lorem_ipsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec iaculis nulla id libero commodo facilisis sit amet et nisl. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non gravida libero.";
