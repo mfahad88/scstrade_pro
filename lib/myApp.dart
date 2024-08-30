@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/provider/dashboard_provider.dart';
+import 'package:scstrade_pro/provider/home_provider.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
+import 'package:scstrade_pro/screens/home/home_screen.dart';
 import 'package:scstrade_pro/widgets/stock_list.dart';
 
 Future<void> main() async {
@@ -15,13 +18,15 @@ Future<void> main() async {
   )
   );*/
   runApp(
-    MultiProvider(
-        providers: [
-      ListenableProvider(create: (context) => StockProvider(),),
+      MultiProvider(
+          providers: [
+            ListenableProvider(create: (context) => StockProvider(),),
+            ListenableProvider(create: (context) => HomeProvider(),),
+            ListenableProvider(create: (context) => DashboardProvider(),),
 
-    ],
-    child: MyApp()
-    )
+          ],
+          child: MyApp()
+      )
   );
 }
 
@@ -35,14 +40,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  const MaterialApp(
+      debugShowCheckedModeBanner: false,
       // useInheritedMediaQuery: true,
       // locale: DevicePreview.locale(context),
       // builder: DevicePreview.appBuilder,
       home: Scaffold(
-        body: SafeArea(child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: StockList(),
-        )),
+        body: SafeArea(child: HomeScreen()),
       ),
     );
   }
