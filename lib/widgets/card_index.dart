@@ -10,7 +10,6 @@ class CardIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var change=(double.parse(kse_indices.netChange!)/kse_indices.preClose!.toDouble())*100;
     return  Card.outlined(
       clipBehavior: Clip.none,
       elevation: 2.0,

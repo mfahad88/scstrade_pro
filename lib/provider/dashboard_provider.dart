@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 
 class DashboardProvider extends ChangeNotifier{
   List<KseIndices>? _indices;
+  List<StockData> _stocks=[];
+
+  List<StockData> get stocks => _stocks;
   String? _selectedIndex;
   TextEditingController editingController = TextEditingController();
   String? get selectedIndex => _selectedIndex;
@@ -54,6 +58,20 @@ class DashboardProvider extends ChangeNotifier{
     }finally{
       _isLoading = false;
       _selectedIndex=_indices!.first.indexCode!;
+      notifyListeners();
+    }
+  }
+
+  fetchStocks() async {
+
+    try {
+      _isLoading = true;
+       _stocks= await ApiClient.fetchStocks();
+
+    }catch (error){
+      print('Error fetching indices: $error');
+    }finally{
+      _isLoading = false;
       notifyListeners();
     }
   }

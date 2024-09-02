@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/models/index_summary.dart';
@@ -15,6 +17,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<DashboardProvider>().fetchIndices();
+    // Timer.periodic(const Duration(seconds: 30), (timer) => context.read<DashboardProvider>().fetchIndices(),);
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
       // provider.selectedIndex = provider.indices!.first.indexCode!;
       return provider.isLoading ? const Center(child: CircularProgressIndicator(),):Padding(
@@ -76,15 +79,15 @@ class DashboardScreen extends StatelessWidget {
                         color: Colors.black45
                     ),
                   ),
-                  const Text('134.381m',
-                    style: TextStyle(
+                  Text(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.volumeTraded!,
+                    style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.black45
                     ),
                   ),
                   const Spacer(),
-                  Text('+374.13 (+0.47%)',
+                  Text('${Utils.roundTwoDecimal(double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.currentIndex!))}(${Utils.roundTwoDecimal((double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.netChange!)/provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!.toDouble())*100)}%)',
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -95,17 +98,17 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 4.0),
+              padding: EdgeInsets.only(left: 4.0),
               child: Row(
                 children: [
-                  const Text('L:78,017.35 24.57(0.03%)',
+                   Text('L: ${provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.lowIndex!}',
                     style: TextStyle(
                         fontSize: 9,
                         color: Colors.red
                     ),
                   ),
                   const Spacer(),
-                  Text('H:78,017.35 24.57(0.03%)',
+                  Text('H: ${provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.highIndex!}',
                     style: TextStyle(
                         fontSize: 9,
                         color: Colors.greenAccent.shade400
