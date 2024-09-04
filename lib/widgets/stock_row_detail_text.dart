@@ -10,8 +10,10 @@ class StockRowDetailText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text('$title',
       overflow: TextOverflow.ellipsis,
+      maxLines: 2,
+      softWrap: true,
       style: TextStyle(
-        color: color ?? Colors.grey.shade700,
+        color: color ?? Color(0xFF898989),
         fontSize: 10,
         fontWeight: FontWeight.w400
       ),

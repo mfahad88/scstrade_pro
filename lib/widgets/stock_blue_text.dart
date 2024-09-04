@@ -9,7 +9,7 @@ class StockBlueText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text('$title',
       style: TextStyle(
-          color: color ?? Colors.blue.shade900,
+          color: color ?? Color(0xFF455A87),
           fontSize: 14,
           fontWeight: FontWeight.w600
       ),

@@ -10,32 +10,22 @@ class DropIndex extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton(
         value: value,
+        enableFeedback: true,
+        padding: EdgeInsets.zero,
         items: items.map((e) {
           return DropdownMenuItem(
               value:e,
-              child: Text(e)
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: Text(e,
+                    style: const TextStyle(
+                        fontSize: 8
+                    ),
+                  )
+              )
           );
         }).toList(),
         onChanged: onChanged);
 
-
-    /*DropdownMenu(
-          width: 170,
-        textStyle: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w700
-        ),
-
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0)
-          )
-        ),
-        dropdownMenuEntries: items.map((e) {
-          return DropdownMenuEntry(value: e, label: e);
-        },).toList(),
-      onSelected: onSelected,
-
-    );*/
   }
 }

@@ -62,19 +62,7 @@ class DashboardProvider extends ChangeNotifier{
     }
   }
 
-  fetchStocks() async {
 
-    try {
-      _isLoading = true;
-       _stocks= await ApiClient.fetchStocks();
-
-    }catch (error){
-      print('Error fetching indices: $error');
-    }finally{
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
 
   bool get isLoading => _isLoading;
 }

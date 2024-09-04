@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scstrade_pro/models/index_summary.dart';
 
 import '../models/MyStock.dart';
@@ -55,5 +56,10 @@ class Utils{
 
   static String roundTwoDecimal(double value){
   return value.toStringAsFixed(2);
+  }
+
+  static String commaSeparated(double value){
+    final formatter = NumberFormat('#,###');
+    return formatter.format(value);
   }
 }
