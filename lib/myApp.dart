@@ -1,22 +1,17 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:schedulers/schedulers.dart';
 import 'package:scstrade_pro/provider/dashboard_provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/screens/home/home_screen.dart';
-import 'package:scstrade_pro/widgets/stock_list.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Obtain a list of the available cameras on the device.
 
-  // Get a specific camera from the list of available cameras.
 
-  /*runApp(MultiProvider(providers: [],
-      child: MyApp()
-  )
-  );*/
   runApp(
       MultiProvider(
           providers: [
@@ -25,18 +20,20 @@ Future<void> main() async {
             ListenableProvider(create: (context) => DashboardProvider(),),
 
           ],
-          child: MyApp()
+          child: const MyApp()
       )
   );
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-
-
-
+class _MyAppState extends State<MyApp> {
+  Timer? _timer;
   @override
   Widget build(BuildContext context) {
     return  const MaterialApp(
@@ -49,5 +46,25 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void initState() {
+    context.read<StockProvider>().fetchStocks();
+    _timer=Timer.periodic(const Duration(seconds: 5), (timer) {
+      context.read<StockProvider>().fetchStocks();
+    },);
+    super.initState();
+
+
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+
+
+  }
 }
+
 

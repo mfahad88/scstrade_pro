@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
+import 'package:scstrade_pro/database/scs_database.dart';
 import 'package:scstrade_pro/network/api_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StockProvider extends ChangeNotifier{
   Set<String> _sector={"All Sector"};
@@ -13,9 +17,70 @@ class StockProvider extends ChangeNotifier{
   String _selectedFilter="Symbol";
   String _selectedSector="All Sector";
   List<StockData> _stocks=[];
+  List<StockData> _previousStocks=[];
+  List<StockData> watchList=[];
   bool _isLoading=false;
+  List<double> _opacity=[];
+  final db=ScsDatabase.instance;
 
 
+  List<double> get opacity => _opacity;
+
+  set opacity(List<double> value) {
+    _opacity = value;
+    notifyListeners();
+  }
+
+  void addWatchList(String data){
+    db.create(data);
+  }
+
+  List<StockData> get fetchWatchList {
+
+    db.readAll().then((value) {
+      watchList.clear();
+      for(int i=0;i<_stocks.length;i++){
+        for(int j=0;j<value.length;j++){
+          if(stocks![i].sym==value[j]){
+            watchList.add(stocks![i]);
+          }
+        }
+      }
+    },);
+    return watchList;
+
+  }
+
+  List<StockData> get previousStocks{
+    if(_selectedSector==sector.first){
+      if(_selectedFilter==_filterMenu[0]){
+        _previousStocks.sort((a, b) => a.sym!.compareTo(b.sym!));
+      }else if(_selectedFilter==_filterMenu[1]){
+        _previousStocks.sort((a, b) => a.nm!.compareTo(b.nm!));
+      }else if(_selectedFilter==_filterMenu[2]){
+        _previousStocks.sort((a, b) => b.v!.compareTo(a.v!));
+      }else if(_selectedFilter==_filterMenu[3]){
+        _previousStocks.sort((a, b) => a.v!.compareTo(b.v!));
+      }
+      return _selectedIndex!=indices.first?_stocks.where((element) => element.ind!.contains('$_selectedIndex|'),).toList():_stocks;
+    }else{
+      if(_selectedFilter==_filterMenu[0]){
+        _previousStocks.sort((a, b) => a.sym!.compareTo(b.sym!));
+      }else if(_selectedFilter==_filterMenu[1]){
+        _previousStocks.sort((a, b) => a.nm!.compareTo(b.nm!));
+      }else if(_selectedFilter==_filterMenu[2]){
+        _previousStocks.sort((a, b) => b.v!.compareTo(a.v!));
+      }else if(_selectedFilter==_filterMenu[3]){
+        _previousStocks.sort((a, b) => a.v!.compareTo(b.v!));
+      }
+      return _selectedIndex!=indices.first?_previousStocks.where((element) => element.sn==_selectedSector && element.ind!.contains('$_selectedIndex|')).toList():_previousStocks.where((element) => element.sn==_selectedSector).toList();
+    }
+  }
+
+  set previousStocks(List<StockData> value) {
+    _previousStocks = value;
+    notifyListeners();
+  }
 
   List<StockData>? get stocks{
     if(_selectedSector==sector.first){
@@ -69,10 +134,12 @@ class StockProvider extends ChangeNotifier{
 
 
   void fetchStocks() async{
+
     try {
       _isLoading = true;
+      _previousStocks=_stocks;
       _stocks= await ApiClient.fetchStocks();
-
+      _opacity.addAll(stocks!.map((e) => 0.0,).toList());
     }catch (error){
       print('Error fetching indices: $error');
     }finally{
@@ -80,6 +147,7 @@ class StockProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
+
 
   bool get isLoading => _isLoading;
 

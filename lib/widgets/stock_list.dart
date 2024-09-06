@@ -1,25 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/database/scs_database.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/widgets/drop_index.dart';
 import 'package:scstrade_pro/widgets/stock_blue_text.dart';
 import 'package:scstrade_pro/widgets/stock_row_detail_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/dto/Stock_data.dart';
 
 class StockList extends StatelessWidget {
-
-  const StockList({super.key});
+  StockList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey _widgetKey = GlobalKey();
+    final db=ScsDatabase.instance;
     StockProvider stockProvider=context.read<StockProvider>();
     stockProvider.addSector(stockProvider.stocks!.map((e) => e.sn,).toList());
-    // context.read<StockProvider>().selectedSector=context.read<StockProvider>().sector.first;
+    Future.delayed(const Duration(seconds: 5),() {
+      stockProvider.opacity.forEach((element) => element==1.0?0.0:0.0,);
+    },);
+
     return Consumer<StockProvider>(
+
       builder: (BuildContext context, StockProvider provider, Widget? child) {
+      /*  for(int i=0;i<provider.stocks!.length;i++){
+          if(provider.previousStocks[i].bv!=provider.stocks?[i].bv){
+            provider.opacity[i]=1.0;
+          }
+        }*/
         return  Column(
           children: [
             Padding(
@@ -59,16 +70,18 @@ class StockList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   // var item = provider.selectedSector == provider.sector.first?provider.stocks[index]:provider.stocks.where((element) => element.sn==provider.selectedSector,).toList()[index];
                   StockData item = provider.stocks![index];
+
+
                   return Card(
-                      margin:  EdgeInsets.symmetric(vertical: 4.0,horizontal: 8.0),
+                      margin:  const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8.0),
                       child: Padding(
-                        padding:  EdgeInsets.all(8.0),
+                        padding:  const EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 height: 100,
                                 child: Column(
                                   children: [
@@ -93,7 +106,7 @@ class StockList extends StatelessWidget {
                             ),
                             Expanded(
                               flex: 2,
-                              child: Container(
+                              child: SizedBox(
                                 height: 100,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,12 +122,51 @@ class StockList extends StatelessWidget {
                                       children: [
                                         const StockRowDetailText(title: 'Vol:'),
                                         const SizedBox(width: 2.0,),
-                                        StockRowDetailText(title: '${Utils.commaSeparated(item.v!.toDouble())}')
+                                        StockRowDetailText(title: Utils.commaSeparated(item.v!.toDouble()))
                                       ],
                                     ),
                                     StockRowDetailText(title: '${item.nm}'),
                                     const Spacer(),
-                                    Center(child: StockBlueText(title: Utils.roundTwoDecimal(item.bp!.toDouble()),)
+                                    Center(
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              color: provider.previousStocks[index].bp!=provider.stocks![index].bp?Colors.red:Colors.transparent,
+                                            ),
+                                            StockBlueText(title: Utils.roundTwoDecimal(item.bp!.toDouble()),)
+                                          ],
+                                        )
+                                    )
+                                  ],
+
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: SizedBox(
+                                height: 100,
+                                child: Column(
+                                  children: [
+                                    const Spacer(),
+                                    Stack(
+                                        children:[
+                                          AnimatedOpacity(
+
+                                            opacity: provider.opacity[index],
+                                            duration: Duration(seconds: 2),
+                                            child: Container(
+                                              width: 40,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  color: provider.previousStocks[index].bv==provider.stocks![index].bv?Colors.red:Colors.transparent,
+                                                  borderRadius: BorderRadius.circular(8.0)
+                                              ),
+
+                                            ),
+                                          ),
+                                          Center(child: StockBlueText(title: '${item.bv}',))
+                                        ]
                                     )
                                   ],
                                 ),
@@ -122,31 +174,37 @@ class StockList extends StatelessWidget {
                             ),
                             Expanded(
                               flex: 1,
-                              child: Container(
+                              child: SizedBox(
                                 height: 100,
                                 child: Column(
                                   children: [
                                     const Spacer(),
-                                    StockBlueText(title: '${item.bv}',)
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 100,
-                                child: Column(
-                                  children: [
-                                    const Spacer(),
-                                    StockBlueText(title: '${Utils.roundTwoDecimal(item.ap!.toDouble())}',color: const Color(0xFFAE3197),)
+                                    Stack(
+                                      children:[
+                                        AnimatedOpacity(
+
+                                          opacity: provider.opacity[index],
+                                          duration: const Duration(seconds: 2),
+                                          child: Container(
+                                            width: 50,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                                color: provider.previousStocks![index].ap==provider.stocks![index].ap?Colors.red:Colors.transparent,
+                                                borderRadius: BorderRadius.circular(8.0)
+                                            ),
+                                          ),
+                                        ),
+                                        Center(child: StockBlueText(title: Utils.roundTwoDecimal(item.ap!.toDouble()),color: const Color(0xFFAE3197),))
+                                      ]
+                                      ,
+                                    )
                                   ],
                                 ),
                               ),
                             ),
                             Expanded(
                               flex: 3,
-                              child: Container(
+                              child: SizedBox(
                                 height: 100,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,17 +216,28 @@ class StockList extends StatelessWidget {
                                           elevation: 0.0,
                                           color: item.ch.toString().contains('-')?Colors.red.shade500:Colors.green.shade500,
                                           child: SizedBox(
-                                            width: 80,
+                                            // width: MediaQuery.of(context).size.width * 0.2,
                                             height: 20,
-                                            child: Center(child: StockBlueText(title: '${Utils.roundTwoDecimal(item.avgP!.toDouble())}',color: Colors.white,)),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width *0.03 ),
+                                              child: Center(child: StockBlueText(title: Utils.roundTwoDecimal(item.avgP!.toDouble()),color: Colors.white,)),
+                                            ),
                                           ),
                                         ),
 
                                         PopupMenuButton<String>(
 
+                                          onSelected: (v) {
+                                            provider.addWatchList(item.sym.toString());
+                                            // asyncPref.setString(item.sym.toString() , item.nm.toString());
+                                            /*asyncPref.getStringList('watchList').then((value) {
+                                              value?.add(item.sym!);
+                                              asyncPref.setStringList('watchList', value!)  ;
+                                            },);*/
+                                          },
                                           itemBuilder: (context) {
                                             return [
-                                              PopupMenuItem<String>(child: ListTile(title: Text('Add to watchlist'),))
+                                               const PopupMenuItem<String>(child: ListTile(title: Text('Add to watchlist'),) ,value: 'Add to watchlist',)
                                             ];
                                           },
                                         )
@@ -199,7 +268,20 @@ class StockList extends StatelessWidget {
                                       ],
                                     ),
                                     const Spacer(),
-                                    StockBlueText(title: '${item.av}',color: const Color(0xFFAE3197),)
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          width: 50,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              color: provider.previousStocks![index].ap==provider.stocks![index].ap?Colors.red:Colors.transparent,
+                                              borderRadius: BorderRadius.circular(8.0)
+                                          ),
+                                        ),
+                                        StockBlueText(title: '${item.av}',color: const Color(0xFFAE3197))
+                                      ],
+
+                                    )
                                   ],
                                 ),
                               ),
