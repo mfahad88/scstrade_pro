@@ -15,9 +15,9 @@ Future<void> main() async {
   runApp(
       MultiProvider(
           providers: [
-            ListenableProvider(create: (context) => StockProvider(),),
-            ListenableProvider(create: (context) => HomeProvider(),),
-            ListenableProvider(create: (context) => DashboardProvider(),),
+            ChangeNotifierProvider(create: (context) => StockProvider(),),
+            ChangeNotifierProvider(create: (context) => HomeProvider(),),
+            ChangeNotifierProvider(create: (context) => DashboardProvider(),),
 
           ],
           child: const MyApp()

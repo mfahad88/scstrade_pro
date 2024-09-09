@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'dart:convert';
@@ -24,11 +25,11 @@ class ApiClient{
     final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
     print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
     if (response.statusCode == 200) {
-  /*    await asyncPrefs.remove('stockList');
-      await asyncPrefs.setString('stockList', response.body);*/
-      List<dynamic> list = json.decode(response.body);
-      print('---------------------Response-------------------------------\n$list\n---------------------------------------------');
-      return list.map((e) => StockData.fromJson(e),).toList();
+     return await compute((message) {
+        List<dynamic> list = json.decode(message);
+        print('---------------------Response-------------------------------\n$list\n---------------------------------------------');
+        return list.map((e) => StockData.fromJson(e),).toList();
+      }, response.body);
     } else {
 
       throw Exception('Failed to load Indices');

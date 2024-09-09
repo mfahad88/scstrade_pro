@@ -19,10 +19,6 @@ class _StocksScreenState extends State<StocksScreen> {
   Timer? timer;
   @override
   void initState() {
-  /*  context.read<StockProvider>().fetchStocks();
-    timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      context.read<StockProvider>().fetchStocks();
-    },);*/
     super.initState();
   }
   @override

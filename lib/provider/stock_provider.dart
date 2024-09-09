@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
@@ -27,8 +28,22 @@ class StockProvider extends ChangeNotifier{
   List<double> get opacity => _opacity;
 
   set opacity(List<double> value) {
+    // _opacity.clear();
+    // _opacity.addAll(value);
     _opacity = value;
     notifyListeners();
+    Future.delayed(Duration(seconds: 2),() {
+      _opacity.forEach((element) => element=0.0,);
+      notifyListeners();
+    },);
+  }
+  void setOpacity(int index,double value){
+    try{
+      _opacity[index] = value;
+      notifyListeners();
+    }catch(e){
+      print(e);
+    }
   }
 
   void addWatchList(String data){
@@ -139,7 +154,13 @@ class StockProvider extends ChangeNotifier{
       _isLoading = true;
       _previousStocks=_stocks;
       _stocks= await ApiClient.fetchStocks();
-      _opacity.addAll(stocks!.map((e) => 0.0,).toList());
+
+      if(opacity.isEmpty) {
+        _opacity.addAll(
+            stocks!.map((e) => 1.0,).toList());
+        // notifyListeners();
+      }
+      // _opacity.addAll(stocks!.map((e) => 0.0,).toList());
     }catch (error){
       print('Error fetching indices: $error');
     }finally{
