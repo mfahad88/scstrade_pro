@@ -23,11 +23,12 @@ class ApiClient{
 
   static Future<List<StockData>> fetchStocks() async{
     final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
-    print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
+    // print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
     if (response.statusCode == 200) {
      return await compute((message) {
         List<dynamic> list = json.decode(message);
-        print('---------------------Response-------------------------------\n$list\n---------------------------------------------');
+        // print('---------------------Response-------------------------------\n$list\n---------------------------------------------');
+
         return list.map((e) => StockData.fromJson(e),).toList();
       }, response.body);
     } else {

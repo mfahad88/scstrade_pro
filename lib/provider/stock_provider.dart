@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
+import 'package:scstrade_pro/data/dto/change_opacity.dart';
 import 'package:scstrade_pro/database/scs_database.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,30 +22,14 @@ class StockProvider extends ChangeNotifier{
   List<StockData> _previousStocks=[];
   List<StockData> watchList=[];
   bool _isLoading=false;
-  List<double> _opacity=[];
+  List<ChangeOpacity> _opacityBp=[];
+  List<ChangeOpacity> _opacityBv=[];
+  List<ChangeOpacity> _opacityAp=[];
+  List<ChangeOpacity> _opacityAv=[];
   final db=ScsDatabase.instance;
 
 
-  List<double> get opacity => _opacity;
 
-  set opacity(List<double> value) {
-    // _opacity.clear();
-    // _opacity.addAll(value);
-    _opacity = value;
-    notifyListeners();
-    Future.delayed(Duration(seconds: 2),() {
-      _opacity.forEach((element) => element=0.0,);
-      notifyListeners();
-    },);
-  }
-  void setOpacity(int index,double value){
-    try{
-      _opacity[index] = value;
-      notifyListeners();
-    }catch(e){
-      print(e);
-    }
-  }
 
   void addWatchList(String data){
     db.create(data);
@@ -155,12 +140,61 @@ class StockProvider extends ChangeNotifier{
       _previousStocks=_stocks;
       _stocks= await ApiClient.fetchStocks();
 
-      if(opacity.isEmpty) {
-        _opacity.addAll(
-            stocks!.map((e) => 1.0,).toList());
-        // notifyListeners();
+      if(opacityBp.isEmpty) {
+        _opacityBp = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
+        _opacityBv = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
+        _opacityAp = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
+        _opacityAv = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
+
       }
-      // _opacity.addAll(stocks!.map((e) => 0.0,).toList());
+
+
+      for(int i=0;i<stocks!.length;i++){
+        if(stocks![i].bp!.compareTo(previousStocks[i].bp!)!=0){
+          _opacityBp[i]=ChangeOpacity(1.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
+          Future.delayed(const Duration(seconds: 2),() {
+            _opacityBp[i]=ChangeOpacity(0.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
+            opacityBp = opacityBp;
+          },);
+        }else{
+          _opacityBp[i]=ChangeOpacity(1.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
+          opacityBp=opacityBp;
+        }
+
+        if(stocks![i].bv!.compareTo(previousStocks[i].bv!)!=0){
+          _opacityBv[i]=ChangeOpacity(1.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
+          Future.delayed(const Duration(seconds: 2),() {
+            _opacityBv[i]=ChangeOpacity(0.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
+            opacityBv=opacityBv;
+          },);
+        }else{
+          _opacityBv[i]=_opacityBv[i]=ChangeOpacity(0.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
+          opacityBv=opacityBv;
+        }
+
+        if(stocks![i].ap!.compareTo(previousStocks[i].ap!)!=0){
+          _opacityAp[i]=ChangeOpacity(1.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
+          Future.delayed(const Duration(seconds: 2),() {
+            _opacityAp[i]=ChangeOpacity(0.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
+            opacityAp= opacityAp;
+          },);
+        }else{
+          _opacityAp[i]=ChangeOpacity(0.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
+          opacityAp= opacityAp;
+        }
+
+        if(stocks![i].av!.compareTo(previousStocks[i].av!)!=0){
+          _opacityAv[i]=ChangeOpacity(1.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
+          Future.delayed(const Duration(seconds: 2),() {
+            _opacityAv[i]=ChangeOpacity(0.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
+            opacityAv = opacityAv;
+          },);
+        }else{
+          _opacityAv[i]=ChangeOpacity(0.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
+          opacityAv= opacityAv;
+        }
+      }
+
     }catch (error){
       print('Error fetching indices: $error');
     }finally{
@@ -195,5 +229,31 @@ class StockProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  List<ChangeOpacity> get opacityAv => _opacityAv;
 
+  set opacityAv(List<ChangeOpacity> value) {
+    _opacityAv = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> get opacityAp => _opacityAp;
+
+  set opacityAp(List<ChangeOpacity> value) {
+    _opacityAp = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> get opacityBv => _opacityBv;
+
+  set opacityBv(List<ChangeOpacity> value) {
+    _opacityBv = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> get opacityBp => _opacityBp;
+
+  set opacityBp(List<ChangeOpacity> value) {
+    _opacityBp = value;
+    notifyListeners();
+  }
 }

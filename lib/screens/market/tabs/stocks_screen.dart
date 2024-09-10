@@ -1,13 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scstrade_pro/provider/stock_provider.dart';
-import 'package:scstrade_pro/widgets/stock_blue_text.dart';
 import 'package:scstrade_pro/widgets/stock_list.dart';
-import 'package:scstrade_pro/widgets/stock_row_detail_text.dart';
 
-import '../../../provider/dashboard_provider.dart';
 
 class StocksScreen extends StatefulWidget {
   const StocksScreen({super.key});
@@ -16,7 +11,6 @@ class StocksScreen extends StatefulWidget {
   State<StocksScreen> createState() => _StocksScreenState();
 }
 class _StocksScreenState extends State<StocksScreen> {
-  Timer? timer;
   @override
   void initState() {
     super.initState();
@@ -29,7 +23,6 @@ class _StocksScreenState extends State<StocksScreen> {
   @override
   void deactivate() {
     super.deactivate();
-    timer?.cancel();
   }
 
   @override

@@ -17,6 +17,8 @@
 /// IN : ""
 
 class StockData {
+
+
   StockData({
       String? sym, 
       String? nm, 
@@ -131,4 +133,8 @@ class StockData {
     return map;
   }
 
+  @override
+  String toString() {
+    return 'StockData{_sym: $_sym, _nm: $_nm, _companyLogo: $_companyLogo, _cl: $_cl, _v: $_v, _ch: $_ch, _chp: $_chp, _bp: $_bp, _bv: $_bv, _ap: $_ap, _av: $_av, _hp: $_hp, _lp: $_lp, _avgP: $_avgP, _sn: $_sn, _oc: $_oc, _ind: $_ind}';
+  }
 }
