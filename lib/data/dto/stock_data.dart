@@ -1,24 +1,22 @@
 /// SYM : "786"
 /// NM : "786 Investments Limited"
 /// company_logo : "https://www.scstrade.com/img/appicon/ogdc.jpg"
-/// CL : 6.13
-/// V : 10
-/// CH : 0.38
-/// CHP : 5.83717357910906
-/// BP : 5.71
-/// BV : 1
-/// AP : 6.12
-/// AV : 2
-/// HP : 6.13
-/// LP : 6.13
-/// AvgP : 6.13
+/// CL : 6.24
+/// V : 533
+/// CH : -0.22
+/// CHP : -3.65448504983389
+/// BP : 0
+/// BV : 0
+/// AP : 0
+/// AV : 0
+/// HP : 6.26
+/// LP : 5.63
+/// AvgP : 6.23005628517824
 /// SN : "INV. BANKS / INV. COS. / SECURITIES COS."
-/// OC : 5.75
+/// OC : 6.24
 /// IN : ""
 
 class StockData {
-
-
   StockData({
       String? sym, 
       String? nm, 
@@ -133,8 +131,4 @@ class StockData {
     return map;
   }
 
-  @override
-  String toString() {
-    return 'StockData{_sym: $_sym, _nm: $_nm, _companyLogo: $_companyLogo, _cl: $_cl, _v: $_v, _ch: $_ch, _chp: $_chp, _bp: $_bp, _bv: $_bv, _ap: $_ap, _av: $_av, _hp: $_hp, _lp: $_lp, _avgP: $_avgP, _sn: $_sn, _oc: $_oc, _ind: $_ind}';
-  }
 }

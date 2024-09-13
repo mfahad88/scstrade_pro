@@ -36,12 +36,11 @@ class _MyAppState extends State<MyApp> {
   Timer? _timer;
   @override
   Widget build(BuildContext context) {
-    return  const MaterialApp(
+    StockProvider provider = Provider.of(context,listen: false);
+    return  MaterialApp(
+      scaffoldMessengerKey: provider.snackbarKey,
       debugShowCheckedModeBanner: false,
-      // useInheritedMediaQuery: true,
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
-      home: Scaffold(
+      home: const Scaffold(
         body: SafeArea(child: HomeScreen()),
       ),
     );
@@ -50,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     context.read<StockProvider>().fetchStocks();
-    _timer=Timer.periodic(const Duration(seconds: 5), (timer) {
+    _timer=Timer.periodic(const Duration(seconds: 5), (timer) async {
       context.read<StockProvider>().fetchStocks();
     },);
     super.initState();

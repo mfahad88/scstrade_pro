@@ -11,6 +11,7 @@ import 'package:scstrade_pro/network/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StockProvider extends ChangeNotifier{
+  final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();
   Set<String> _sector={"All Sector"};
   List<String> menu=["Add to Watchlist"];
   List<String> _filterMenu=["Symbol","Company Name","Highest Volume","Lowest Volume"];
@@ -22,6 +23,12 @@ class StockProvider extends ChangeNotifier{
   List<StockData> _previousStocks=[];
   List<StockData> watchList=[];
   bool _isLoading=false;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   List<ChangeOpacity> _opacityBp=[];
   List<ChangeOpacity> _opacityBv=[];
   List<ChangeOpacity> _opacityAp=[];
@@ -31,23 +38,33 @@ class StockProvider extends ChangeNotifier{
 
 
 
-  void addWatchList(String data){
-    db.create(data);
+  Future<int> addWatchList(String data){
+    return db.create(data);
   }
 
-  List<StockData> get fetchWatchList {
+  void removeWatchList(String data){
+    db.delete(data);
+  }
+  void fetchWatchList() async {
 
-    db.readAll().then((value) {
+    try{
+      _isLoading = true;
+      List<Object?> list =await db.readAll();
+
       watchList.clear();
-      for(int i=0;i<_stocks.length;i++){
-        for(int j=0;j<value.length;j++){
-          if(stocks![i].sym==value[j]){
-            watchList.add(stocks![i]);
-          }
-        }
+      for(int j=0;j<list.length;j++){
+        watchList.add(stocks![stocks!.indexWhere((element) => element.sym == list[j],)]);
       }
-    },);
-    return watchList;
+
+
+    }catch(e){
+      throw e;
+    }finally{
+      _isLoading =false;
+      notifyListeners();
+    }
+
+
 
   }
 
@@ -93,6 +110,7 @@ class StockProvider extends ChangeNotifier{
       }else if(_selectedFilter==_filterMenu[3]){
         _stocks.sort((a, b) => a.v!.compareTo(b.v!));
       }
+
       return _selectedIndex!=indices.first?_stocks.where((element) => element.ind!.contains('$_selectedIndex|'),).toList():_stocks;
     }else{
       if(_selectedFilter==_filterMenu[0]){
@@ -104,6 +122,7 @@ class StockProvider extends ChangeNotifier{
       }else if(_selectedFilter==_filterMenu[3]){
         _stocks.sort((a, b) => a.v!.compareTo(b.v!));
       }
+
       return _selectedIndex!=indices.first?_stocks.where((element) => element.sn==_selectedSector && element.ind!.contains('$_selectedIndex|')).toList():_stocks.where((element) => element.sn==_selectedSector).toList();
     }
 
@@ -148,52 +167,7 @@ class StockProvider extends ChangeNotifier{
 
       }
 
-
-      for(int i=0;i<stocks!.length;i++){
-        if(stocks![i].bp!.compareTo(previousStocks[i].bp!)!=0){
-          _opacityBp[i]=ChangeOpacity(1.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
-          Future.delayed(const Duration(seconds: 2),() {
-            _opacityBp[i]=ChangeOpacity(0.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
-            opacityBp = opacityBp;
-          },);
-        }else{
-          _opacityBp[i]=ChangeOpacity(1.0, stocks![i].bp!.compareTo(previousStocks[i].bp!)==-1?false:stocks![i].bp!.compareTo(previousStocks[i].bp!)==1?true:null);
-          opacityBp=opacityBp;
-        }
-
-        if(stocks![i].bv!.compareTo(previousStocks[i].bv!)!=0){
-          _opacityBv[i]=ChangeOpacity(1.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
-          Future.delayed(const Duration(seconds: 2),() {
-            _opacityBv[i]=ChangeOpacity(0.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
-            opacityBv=opacityBv;
-          },);
-        }else{
-          _opacityBv[i]=_opacityBv[i]=ChangeOpacity(0.0, stocks![i].bv!.compareTo(previousStocks[i].bv!)==-1?false:stocks![i].bv!.compareTo(previousStocks[i].bv!)==1?true:null);
-          opacityBv=opacityBv;
-        }
-
-        if(stocks![i].ap!.compareTo(previousStocks[i].ap!)!=0){
-          _opacityAp[i]=ChangeOpacity(1.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
-          Future.delayed(const Duration(seconds: 2),() {
-            _opacityAp[i]=ChangeOpacity(0.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
-            opacityAp= opacityAp;
-          },);
-        }else{
-          _opacityAp[i]=ChangeOpacity(0.0, stocks![i].ap!.compareTo(previousStocks[i].ap!)==-1?false:stocks![i].ap!.compareTo(previousStocks[i].ap!)==1?true:null);
-          opacityAp= opacityAp;
-        }
-
-        if(stocks![i].av!.compareTo(previousStocks[i].av!)!=0){
-          _opacityAv[i]=ChangeOpacity(1.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
-          Future.delayed(const Duration(seconds: 2),() {
-            _opacityAv[i]=ChangeOpacity(0.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
-            opacityAv = opacityAv;
-          },);
-        }else{
-          _opacityAv[i]=ChangeOpacity(0.0, stocks![i].av!.compareTo(previousStocks[i].av!)==-1?false:stocks![i].av!.compareTo(previousStocks[i].av!)==1?true:null);
-          opacityAv= opacityAv;
-        }
-      }
+      _compareStocks();
 
     }catch (error){
       print('Error fetching indices: $error');
@@ -255,5 +229,42 @@ class StockProvider extends ChangeNotifier{
   set opacityBp(List<ChangeOpacity> value) {
     _opacityBp = value;
     notifyListeners();
+  }
+
+  void _compareStocks(){
+    for(int i=0;i<_stocks.length;i++){
+      if(_stocks![i].bp!.compareTo(_previousStocks[i].bp!)!=0){
+        _opacityBp[i]=ChangeOpacity(1.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
+
+      }else{
+        _opacityBp[i]=ChangeOpacity(1.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
+        opacityBp=_opacityBp;
+      }
+
+      if(_stocks![i].bv!.compareTo(_previousStocks[i].bv!)!=0){
+        _opacityBv[i]=ChangeOpacity(1.0, _stocks![i].bv!.compareTo(_previousStocks[i].bv!)==-1?false:_stocks![i].bv!.compareTo(_previousStocks[i].bv!)==1?true:null);
+
+      }else{
+        _opacityBv[i]=_opacityBv[i]=ChangeOpacity(0.0, _stocks![i].bv!.compareTo(_previousStocks[i].bv!)==-1?false:_stocks![i].bv!.compareTo(_previousStocks[i].bv!)==1?true:null);
+        opacityBv=_opacityBv;
+      }
+
+      if(_stocks![i].ap!.compareTo(_previousStocks[i].ap!)!=0){
+        _opacityAp[i]=ChangeOpacity(1.0, _stocks![i].ap!.compareTo(_previousStocks[i].ap!)==-1?false:_stocks![i].ap!.compareTo(_previousStocks[i].ap!)==1?true:null);
+
+      }else{
+        _opacityAp[i]=ChangeOpacity(0.0, _stocks![i].ap!.compareTo(_previousStocks[i].ap!)==-1?false:_stocks![i].ap!.compareTo(_previousStocks[i].ap!)==1?true:null);
+        opacityAp= _opacityAp;
+      }
+
+      if(_stocks![i].av!.compareTo(_previousStocks[i].av!)!=0){
+        _opacityAv[i]=ChangeOpacity(1.0, _stocks![i].av!.compareTo(_previousStocks[i].av!)==-1?false:_stocks![i].av!.compareTo(_previousStocks[i].av!)==1?true:null);
+
+      }else{
+        _opacityAv[i]=ChangeOpacity(0.0, _stocks![i].av!.compareTo(_previousStocks[i].av!)==-1?false:_stocks![i].av!.compareTo(_previousStocks[i].av!)==1?true:null);
+        opacityAv= _opacityAv;
+      }
+      // notifyListeners();
+    }
   }
 }

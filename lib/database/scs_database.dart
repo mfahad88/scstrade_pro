@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:path/path.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
+import 'package:scstrade_pro/screens/market/tabs/watchlist_screen.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ScsDatabase{
@@ -33,14 +34,16 @@ class ScsDatabase{
     return await db.execute('CREATE TABLE WatchList(id INTEGER PRIMARY KEY AUTOINCREMENT,sym TEXT UNIQUE)');
   }
 
-  Future<void> create(String data) async{
+  Future<int> create(String data) async{
     final db = await instance.database;
-    
+    int id=-1;
     // var batch=db.batch();
     try{
-      db.rawInsert('INSERT INTO WatchList (sym) VALUES ("$data")');
+      return db.rawInsert('INSERT INTO WatchList (sym) VALUES ("$data")');
     }catch(e){
       print(e);
+    }finally{
+      return id;
     }
 
   }
@@ -53,9 +56,9 @@ class ScsDatabase{
     // return result.map((json) => StockData.fromJson(json)).toList();
   }
 
-  Future<int> delete() async{
+  Future<int> delete(String symbol) async{
     final db = await instance.database;
-    return db.delete('stocks');
+    return db.delete('WatchList',where: 'sym=?',whereArgs: [symbol]);
   }
 
   Future close() async{
