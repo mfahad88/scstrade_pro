@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class StockProvider extends ChangeNotifier{
   String _selectedSector="All Sector";
   List<StockData> _stocks=[];
   List<StockData> _previousStocks=[];
+  List<StockData> _previousWatchListStocks=[];
   List<StockData> watchList=[];
   bool _isLoading=false;
 
@@ -33,6 +35,19 @@ class StockProvider extends ChangeNotifier{
   List<ChangeOpacity> _opacityBv=[];
   List<ChangeOpacity> _opacityAp=[];
   List<ChangeOpacity> _opacityAv=[];
+
+  List<ChangeOpacity> _opacityWatchListBp=[];
+
+  List<ChangeOpacity> get opacityWatchListBp => _opacityWatchListBp;
+
+  set opacityWatchListBp(List<ChangeOpacity> value) {
+    _opacityWatchListBp = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> _opacityWatchListBv=[];
+  List<ChangeOpacity> _opacityWatchListAp=[];
+  List<ChangeOpacity> _opacityWatchListAv=[];
   final db=ScsDatabase.instance;
 
 
@@ -49,21 +64,28 @@ class StockProvider extends ChangeNotifier{
 
     try{
       _isLoading = true;
-      List<Object?> list =await db.readAll();
 
+
+      _previousWatchListStocks= List.from(watchList);
+      List<Object?> list =await db.readAll();
       watchList.clear();
-      for(int j=0;j<list.length;j++){
-        watchList.add(stocks![stocks!.indexWhere((element) => element.sym == list[j],)]);
+      for (int j = 0; j < list.length; j++) {
+        watchList.add(stocks![stocks!.indexWhere((element) => element.sym ==
+            list[j],)]);
       }
 
-
+      if(_opacityWatchListBp.isEmpty){
+        _opacityWatchListBp=List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListBv=List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListAp=List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListAv=List.filled(watchList.length, ChangeOpacity(0.0, false));
+      }
+      _compareWatchListStocks();
     }catch(e){
       throw e;
     }finally{
-      _isLoading =false;
-      notifyListeners();
+      isLoading =false;
     }
-
 
 
   }
@@ -160,10 +182,10 @@ class StockProvider extends ChangeNotifier{
       _stocks= await ApiClient.fetchStocks();
 
       if(opacityBp.isEmpty) {
-        _opacityBp = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
-        _opacityBv = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
-        _opacityAp = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
-        _opacityAv = List.filled(_stocks.length, ChangeOpacity(1.0,true),growable: true);
+        _opacityBp = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
+        _opacityBv = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
+        _opacityAp = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
+        _opacityAv = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
 
       }
 
@@ -237,8 +259,8 @@ class StockProvider extends ChangeNotifier{
         _opacityBp[i]=ChangeOpacity(1.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
 
       }else{
-        _opacityBp[i]=ChangeOpacity(1.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
-        opacityBp=_opacityBp;
+        _opacityBp[i]=ChangeOpacity(0.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
+
       }
 
       if(_stocks![i].bv!.compareTo(_previousStocks[i].bv!)!=0){
@@ -246,7 +268,7 @@ class StockProvider extends ChangeNotifier{
 
       }else{
         _opacityBv[i]=_opacityBv[i]=ChangeOpacity(0.0, _stocks![i].bv!.compareTo(_previousStocks[i].bv!)==-1?false:_stocks![i].bv!.compareTo(_previousStocks[i].bv!)==1?true:null);
-        opacityBv=_opacityBv;
+
       }
 
       if(_stocks![i].ap!.compareTo(_previousStocks[i].ap!)!=0){
@@ -254,7 +276,6 @@ class StockProvider extends ChangeNotifier{
 
       }else{
         _opacityAp[i]=ChangeOpacity(0.0, _stocks![i].ap!.compareTo(_previousStocks[i].ap!)==-1?false:_stocks![i].ap!.compareTo(_previousStocks[i].ap!)==1?true:null);
-        opacityAp= _opacityAp;
       }
 
       if(_stocks![i].av!.compareTo(_previousStocks[i].av!)!=0){
@@ -262,9 +283,126 @@ class StockProvider extends ChangeNotifier{
 
       }else{
         _opacityAv[i]=ChangeOpacity(0.0, _stocks![i].av!.compareTo(_previousStocks[i].av!)==-1?false:_stocks![i].av!.compareTo(_previousStocks[i].av!)==1?true:null);
-        opacityAv= _opacityAv;
       }
+      // opacityBp=_opacityBp;
+      // opacityBv=_opacityBv;
+      // opacityAp= _opacityAp;
+      // opacityAv= _opacityAv;
+      _changeOpacity(i);
       // notifyListeners();
     }
+  }
+  void _compareWatchListStocks(){
+
+    print("Previous: $_previousWatchListStocks\nCurrent: $watchList");
+    for(int i=0;i<watchList.length;i++){
+      int index=stocks!.indexWhere((element) => element.sym==watchList[i].sym,);
+
+      // print("Index: $index");
+      if(watchList[i].bp!.compareTo(_previousWatchListStocks[i].bp!)!=0){
+
+        _opacityWatchListBp[i].opacity=1.0;
+
+      }else{
+        _opacityWatchListBp[i].opacity=0.0;
+      }
+
+      if(watchList[i].bv!.compareTo(_previousWatchListStocks[i].bv!)!=0){
+        _opacityWatchListBv[i].opacity=1.0;
+
+      }else{
+        _opacityWatchListBv[i].opacity=0.0;
+      }
+
+      if(watchList[i].ap!.compareTo(_previousWatchListStocks[i].ap!)!=0){
+        _opacityWatchListAp[i].opacity=1.0;
+
+      }else{
+        _opacityWatchListAp[i].opacity=0.0;
+      }
+
+      if(watchList[i].av!.compareTo(_previousWatchListStocks[i].av!)!=0){
+        _opacityWatchListAv[i].opacity=1.0;
+
+      }else{
+        _opacityWatchListAv[i].opacity=0.0;
+      }
+
+
+/*      opacityWatchListBp=_opacityWatchListBp;
+      opacityWatchListBv=_opacityWatchListBv;
+      opacityWatchListAp= _opacityWatchListAp;
+      opacityWatchListAv= _opacityWatchListAv;*/
+      _changeWatchListOpacity(i);
+
+    }
+  }
+
+
+  _changeOpacity(int index) {
+    Future.delayed(const Duration(seconds: 2),() {
+      if(opacityBp[index].opacity!.compareTo(0.0)!=0){
+        opacityBp[index].opacity=0.0;
+        opacityBp=opacityBp;
+      }
+      if(opacityBv[index].opacity!.compareTo(0.0)!=0){
+        opacityBv[index].opacity=0.0;
+        opacityBv=opacityBv;
+      }
+
+      if(opacityAp[index].opacity!.compareTo(0.0)!=0){
+        opacityAp[index].opacity=0.0;
+        opacityAp=opacityAp;
+      }
+      if(opacityAv[index].opacity!.compareTo(0.0)!=0){
+        opacityAv[index].opacity=0.0;
+        opacityAv=opacityAv;
+      }
+    },);
+  }
+
+  List<ChangeOpacity> get opacityWatchListBv => _opacityWatchListBv;
+
+  set opacityWatchListBv(List<ChangeOpacity> value) {
+    _opacityWatchListBv = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> get opacityWatchListAp => _opacityWatchListAp;
+
+  set opacityWatchListAp(List<ChangeOpacity> value) {
+    _opacityWatchListAp = value;
+    notifyListeners();
+  }
+
+  List<ChangeOpacity> get opacityWatchListAv => _opacityWatchListAv;
+
+  set opacityWatchListAv(List<ChangeOpacity> value) {
+    _opacityWatchListAv = value;
+    notifyListeners();
+  }
+
+  void _changeWatchListOpacity(int index) {
+    Future.delayed(const Duration(seconds: 2),() {
+      if(opacityWatchListBp[index].opacity!.compareTo(0.0)!=0){
+        opacityWatchListBp[index].opacity=0.0;
+
+      }
+      if(opacityWatchListBv[index].opacity!.compareTo(0.0)!=0){
+        opacityWatchListBv[index].opacity=0.0;
+      }
+
+      if(opacityWatchListAp[index].opacity!.compareTo(0.0)!=0){
+        opacityWatchListAp[index].opacity=0.0;
+      }
+      if(opacityWatchListAv[index].opacity!.compareTo(0.0)!=0){
+        opacityWatchListAv[index].opacity=0.0;
+      }
+      opacityWatchListBp=opacityWatchListBp;
+      opacityWatchListBv=opacityWatchListBv;
+      opacityWatchListAp=opacityWatchListAp;
+      opacityWatchListAv=opacityWatchListAv;
+
+    },);
   }
 }
