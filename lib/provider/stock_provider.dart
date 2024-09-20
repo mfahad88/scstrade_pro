@@ -57,34 +57,48 @@ class StockProvider extends ChangeNotifier{
     return db.create(data);
   }
 
-  void removeWatchList(String data){
-    db.delete(data);
+  Future<int> removeWatchList(String data){
+    // watchList.removeAt(watchList.indexWhere((element) => element.sym==data));
+    // _previousWatchListStocks.removeAt(watchList.indexWhere((element) => element.sym==data));
+    // _opacityWatchListBp.removeAt(watchList.indexWhere((element) => element.sym==data));
+    // _opacityWatchListBv.removeAt(watchList.indexWhere((element) => element.sym==data));
+    // _opacityWatchListAp.removeAt(watchList.indexWhere((element) => element.sym==data));
+    // _opacityWatchListAv.removeAt(watchList.indexWhere((element) => element.sym==data));
+    return db.delete(data);
   }
   void fetchWatchList() async {
 
     try{
-      _isLoading = true;
+      if(_previousWatchListStocks.isEmpty) {
+        _isLoading = true;
+      }
 
 
       _previousWatchListStocks= List.from(watchList);
-      List<Object?> list =await db.readAll();
-      watchList.clear();
-      for (int j = 0; j < list.length; j++) {
-        watchList.add(stocks![stocks!.indexWhere((element) => element.sym ==
-            list[j],)]);
-      }
+      await db.readAll().then((list) {
+        watchList.clear();
+        for (int j = 0; j < list.length; j++) {
+          watchList.add(stocks![stocks!.indexWhere((element) => element.sym ==
+              list[j],)]);
+        }
+        _opacityWatchListBp = List.empty();
+        _opacityWatchListBv = List.empty();
+        _opacityWatchListAp = List.empty();
+        _opacityWatchListAv = List.empty();
+        _opacityWatchListBp = List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListBv = List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListAp = List.filled(watchList.length, ChangeOpacity(0.0, false));
+        _opacityWatchListAv = List.filled(watchList.length, ChangeOpacity(0.0, false));
 
-      if(_opacityWatchListBp.isEmpty){
-        _opacityWatchListBp=List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListBv=List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListAp=List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListAv=List.filled(watchList.length, ChangeOpacity(0.0, false));
-      }
-      _compareWatchListStocks();
+        if(watchList.isNotEmpty && _previousWatchListStocks.isNotEmpty) {
+          _compareWatchListStocks();
+        }
+
+        isLoading=false;
+      },);
+
     }catch(e){
       throw e;
-    }finally{
-      isLoading =false;
     }
 
 
@@ -294,45 +308,45 @@ class StockProvider extends ChangeNotifier{
   }
   void _compareWatchListStocks(){
 
-    print("Previous: $_previousWatchListStocks\nCurrent: $watchList");
+    // print("Previous: $_previousWatchListStocks\nCurrent: $watchList");
     for(int i=0;i<watchList.length;i++){
       int index=stocks!.indexWhere((element) => element.sym==watchList[i].sym,);
 
       // print("Index: $index");
       if(watchList[i].bp!.compareTo(_previousWatchListStocks[i].bp!)!=0){
 
-        _opacityWatchListBp[i].opacity=1.0;
+        _opacityWatchListBp[i]=ChangeOpacity(1.0, false);
 
       }else{
-        _opacityWatchListBp[i].opacity=0.0;
+        _opacityWatchListBp[i]=ChangeOpacity(0.0, false);
       }
 
       if(watchList[i].bv!.compareTo(_previousWatchListStocks[i].bv!)!=0){
-        _opacityWatchListBv[i].opacity=1.0;
+        _opacityWatchListBv[i]=ChangeOpacity(1.0, false);
 
       }else{
-        _opacityWatchListBv[i].opacity=0.0;
+        _opacityWatchListBv[i]=ChangeOpacity(0.0, false);
       }
 
       if(watchList[i].ap!.compareTo(_previousWatchListStocks[i].ap!)!=0){
-        _opacityWatchListAp[i].opacity=1.0;
+        _opacityWatchListAp[i]=ChangeOpacity(1.0, false);
 
       }else{
-        _opacityWatchListAp[i].opacity=0.0;
+        _opacityWatchListAp[i]=ChangeOpacity(0.0, false);
       }
 
       if(watchList[i].av!.compareTo(_previousWatchListStocks[i].av!)!=0){
-        _opacityWatchListAv[i].opacity=1.0;
+        _opacityWatchListAv[i]=ChangeOpacity(1.0, false);
 
       }else{
-        _opacityWatchListAv[i].opacity=0.0;
+        _opacityWatchListAv[i]=ChangeOpacity(0.0, false);
       }
 
 
-/*      opacityWatchListBp=_opacityWatchListBp;
+      opacityWatchListBp=_opacityWatchListBp;
       opacityWatchListBv=_opacityWatchListBv;
       opacityWatchListAp= _opacityWatchListAp;
-      opacityWatchListAv= _opacityWatchListAv;*/
+      opacityWatchListAv= _opacityWatchListAv;
       _changeWatchListOpacity(i);
 
     }

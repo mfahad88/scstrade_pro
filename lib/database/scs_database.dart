@@ -39,7 +39,8 @@ class ScsDatabase{
     int id=-1;
     // var batch=db.batch();
     try{
-      return db.rawInsert('INSERT INTO WatchList (sym) VALUES ("$data")');
+      id= await db.rawInsert('INSERT INTO WatchList (sym) VALUES ("$data")');
+      print("id: $id");
     }catch(e){
       print(e);
     }finally{
@@ -58,7 +59,9 @@ class ScsDatabase{
 
   Future<int> delete(String symbol) async{
     final db = await instance.database;
-    return db.delete('WatchList',where: 'sym=?',whereArgs: [symbol]);
+    int id=-1;
+    id = await db.delete('WatchList',where: 'sym=?',whereArgs: [symbol]);
+    return id;
   }
 
   Future close() async{

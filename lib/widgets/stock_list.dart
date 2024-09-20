@@ -102,7 +102,7 @@ class StockList extends StatelessWidget {
 
                                 AnimatedOpacity(
 
-                                  opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBp[index].opacity!,
+                                  opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBp[index].opacity??0.0,
                                   duration: const Duration(seconds: 2),
                                   child: Container(
                                     height: 20,
@@ -137,7 +137,7 @@ class StockList extends StatelessWidget {
                             Stack(
                                 children:[
                                   AnimatedOpacity(
-                                    opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBv[index].opacity!,
+                                    opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBv[index].opacity??0.0,
                                     duration: const Duration(seconds: 2),
                                     child:  Container(
                                       height: 20,
@@ -168,7 +168,7 @@ class StockList extends StatelessWidget {
                               children:[
                                 AnimatedOpacity(
 
-                                  opacity: screenName=="Stocks"?provider.opacityAp[index].opacity!:provider.opacityWatchListAp[index].opacity!,
+                                  opacity: screenName=="Stocks"?provider.opacityAp[index].opacity!:provider.opacityWatchListAp[index].opacity??0.0,
                                   duration: const Duration(seconds: 2),
                                   child: Container(
                                       height: 20,
@@ -214,18 +214,42 @@ class StockList extends StatelessWidget {
                                     ),
                                   ),
                                   onSelected: (v) {
-                                    provider.addWatchList(item.sym.toString()).then((value) {
-                                      if(value==-1){
-                                        provider.snackbarKey.currentState?.showSnackBar(const SnackBar(content: Text("Already added to watchlist...")));
-                                      }else{
-                                        provider.snackbarKey.currentState?.showSnackBar(const SnackBar(content: Text("Added to watchlist...")));
-                                      }
-                                    },);
+                                    if(v=="Add") {
+                                      provider.addWatchList(item.sym.toString())
+                                          .then((value) {
+                                        if (value == -1) {
+                                          provider.snackbarKey.currentState
+                                              ?.showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Already added to watchlist...")));
+                                        } else {
+                                          provider.snackbarKey.currentState
+                                              ?.showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Added to watchlist...")));
+                                        }
+                                      },);
+                                    }else{
+                                      provider.removeWatchList(item.sym.toString()).then((value) {
+                                        if(value==-1){
+                                          provider.snackbarKey.currentState
+                                              ?.showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Unable to remove...")));
+                                        }else{
+                                          provider.snackbarKey.currentState
+                                              ?.showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  "Removed Successfully...")));
+                                          provider.fetchWatchList();
+                                        }
+                                      },);
+                                    }
                                   },
                                   itemBuilder: (context) {
                                     return [
 
-                                      const PopupMenuItem<String>(value: 'Add',child: ListTile(title: Text('Add to watchlist'),) ,)
+                                      screenName=='Stocks'? const PopupMenuItem<String>(value: 'Add',child: ListTile(title: Text('Add to watchlist'),) ,):const PopupMenuItem<String>(value: 'Remove',child: ListTile(title: Text('Remove from watchlist'),) ,)
                                     ];
                                   },
                                 )
@@ -261,7 +285,7 @@ class StockList extends StatelessWidget {
                               children: [
                                 AnimatedOpacity(
 
-                                    opacity: screenName=="Stocks"?provider.opacityAv[index].opacity!:provider.opacityWatchListAv[index].opacity!,
+                                    opacity: screenName=="Stocks"?provider.opacityAv[index].opacity!:provider.opacityWatchListAv[index].opacity??0.0,
                                     duration: const Duration(seconds: 2),
                                     child:
                                     Container(
