@@ -15,7 +15,6 @@ class WatchlistScreen extends StatefulWidget {
 }
 
 class _WatchlistScreenState extends State<WatchlistScreen> {
-  Timer? _timer;
 
 
 
@@ -23,19 +22,13 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   @override
   Widget build(BuildContext context) {
     StockProvider stockProvider = Provider.of(context,listen: false);
-    stockProvider.fetchWatchList();
-    _timer=Timer.periodic(const Duration(seconds: 7), (timer) =>  stockProvider.fetchWatchList());
+    // stockProvider.fetchWatchList();
+    // _timer=Timer.periodic(const Duration(seconds: 7), (timer) =>  stockProvider.fetchWatchList());
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(onPressed: () {
-            stockProvider.fetchWatchList();
-          }, icon: const Icon(Icons.refresh)),
-        ),
-
-        StockList(list: stockProvider.watchList,screenName: "WatchList",),
+        const SizedBox(height: 20,),
+        StockList(list: stockProvider.stocks,screenName: "WatchList",),
       ],
     );
   }
@@ -43,7 +36,6 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
 
   }
 }

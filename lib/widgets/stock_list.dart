@@ -2,29 +2,31 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
+import 'package:scstrade_pro/models/stock.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/widgets/drop_index.dart';
 import 'package:scstrade_pro/widgets/stock_blue_text.dart';
 import 'package:scstrade_pro/widgets/stock_row_detail_text.dart';
 import '../data/dto/Stock_data.dart';
 class StockList extends StatelessWidget {
-  final List<StockData>? list;
+  final List<Stock?> list;
   final String screenName;
   const StockList({super.key, required this.list,required this.screenName});
 
   @override
   Widget build(BuildContext context) {
     StockProvider provider=Provider.of(context,listen: true);
-    // provider.addSector(provider.stocks!.map((e) => e.sn,).toList());
 
 
     return Expanded(
       child: ListView.builder(
 
-        itemCount: list!.length,
+        itemCount: screenName=="Stock"?list.length:list.where((element) => element!.isWatchList,).toList().length,
         itemBuilder: (context, index) {
-          StockData item = list![index];
-          // _changeOpacity(provider,index);
+
+          StockData item = screenName=="Stock"?list[index]!.stockData:list.where((element) => element!.isWatchList,)
+              .map((e) => e,)
+              .toList()[index]!.stockData;
 
           return Card(
               margin:  const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8.0),
@@ -102,8 +104,8 @@ class StockList extends StatelessWidget {
 
                                 AnimatedOpacity(
 
-                                  opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBp[index].opacity??0.0,
-                                  duration: const Duration(seconds: 2),
+                                  opacity: screenName =="Stock"?list[index]!.opacityBp:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBp,
+                                  duration: const Duration(seconds: 3),
                                   child: Container(
                                     height: 20,
                                     decoration: BoxDecoration(
@@ -137,7 +139,7 @@ class StockList extends StatelessWidget {
                             Stack(
                                 children:[
                                   AnimatedOpacity(
-                                    opacity: screenName=="Stocks"?provider.opacityBp[index].opacity!:provider.opacityWatchListBv[index].opacity??0.0,
+                                    opacity: screenName =="Stock"?list[index]!.opacityBv:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBv,
                                     duration: const Duration(seconds: 2),
                                     child:  Container(
                                       height: 20,
@@ -168,7 +170,7 @@ class StockList extends StatelessWidget {
                               children:[
                                 AnimatedOpacity(
 
-                                  opacity: screenName=="Stocks"?provider.opacityAp[index].opacity!:provider.opacityWatchListAp[index].opacity??0.0,
+                                  opacity: screenName =="Stock"?list[index]!.opacityAp:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAp,
                                   duration: const Duration(seconds: 2),
                                   child: Container(
                                       height: 20,
@@ -241,7 +243,7 @@ class StockList extends StatelessWidget {
                                               ?.showSnackBar(const SnackBar(
                                               content: Text(
                                                   "Removed Successfully...")));
-                                          provider.fetchWatchList();
+                                          provider.fetchStocks();
                                         }
                                       },);
                                     }
@@ -249,7 +251,7 @@ class StockList extends StatelessWidget {
                                   itemBuilder: (context) {
                                     return [
 
-                                      screenName=='Stocks'? const PopupMenuItem<String>(value: 'Add',child: ListTile(title: Text('Add to watchlist'),) ,):const PopupMenuItem<String>(value: 'Remove',child: ListTile(title: Text('Remove from watchlist'),) ,)
+                                      screenName=='Stock'? const PopupMenuItem<String>(value: 'Add',child: ListTile(title: Text('Add to watchlist'),) ,):const PopupMenuItem<String>(value: 'Remove',child: ListTile(title: Text('Remove from watchlist'),) ,)
                                     ];
                                   },
                                 )
@@ -285,7 +287,7 @@ class StockList extends StatelessWidget {
                               children: [
                                 AnimatedOpacity(
 
-                                    opacity: screenName=="Stocks"?provider.opacityAv[index].opacity!:provider.opacityWatchListAv[index].opacity??0.0,
+                                    opacity:screenName =="Stock"?list[index]!.opacityAv:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAv,
                                     duration: const Duration(seconds: 2),
                                     child:
                                     Container(

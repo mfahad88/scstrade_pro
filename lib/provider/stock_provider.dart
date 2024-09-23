@@ -11,6 +11,8 @@ import 'package:scstrade_pro/database/scs_database.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/stock.dart';
+
 class StockProvider extends ChangeNotifier{
   final GlobalKey<ScaffoldMessengerState> snackbarKey = GlobalKey<ScaffoldMessengerState>();
   Set<String> _sector={"All Sector"};
@@ -20,209 +22,38 @@ class StockProvider extends ChangeNotifier{
   String _selectedIndex="KSE ALL";
   String _selectedFilter="Symbol";
   String _selectedSector="All Sector";
-  List<StockData> _stocks=[];
+
+  List<Stock?> _stocks=[];
+  List<StockData> _stockData=List.empty(growable: true);
   List<StockData> _previousStocks=[];
-  List<StockData> _previousWatchListStocks=[];
   List<StockData> watchList=[];
   bool _isLoading=false;
-
-  set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
-
-  List<ChangeOpacity> _opacityBp=[];
-  List<ChangeOpacity> _opacityBv=[];
-  List<ChangeOpacity> _opacityAp=[];
-  List<ChangeOpacity> _opacityAv=[];
-
-  List<ChangeOpacity> _opacityWatchListBp=[];
-
-  List<ChangeOpacity> get opacityWatchListBp => _opacityWatchListBp;
-
-  set opacityWatchListBp(List<ChangeOpacity> value) {
-    _opacityWatchListBp = value;
-    notifyListeners();
-  }
-
-  List<ChangeOpacity> _opacityWatchListBv=[];
-  List<ChangeOpacity> _opacityWatchListAp=[];
-  List<ChangeOpacity> _opacityWatchListAv=[];
-  final db=ScsDatabase.instance;
-
-
-
-
-  Future<int> addWatchList(String data){
-    return db.create(data);
-  }
-
-  Future<int> removeWatchList(String data){
-    // watchList.removeAt(watchList.indexWhere((element) => element.sym==data));
-    // _previousWatchListStocks.removeAt(watchList.indexWhere((element) => element.sym==data));
-    // _opacityWatchListBp.removeAt(watchList.indexWhere((element) => element.sym==data));
-    // _opacityWatchListBv.removeAt(watchList.indexWhere((element) => element.sym==data));
-    // _opacityWatchListAp.removeAt(watchList.indexWhere((element) => element.sym==data));
-    // _opacityWatchListAv.removeAt(watchList.indexWhere((element) => element.sym==data));
-    return db.delete(data);
-  }
-  void fetchWatchList() async {
-
-    try{
-      if(_previousWatchListStocks.isEmpty) {
-        _isLoading = true;
-      }
-
-
-      _previousWatchListStocks= List.from(watchList);
-      await db.readAll().then((list) {
-        watchList.clear();
-        for (int j = 0; j < list.length; j++) {
-          watchList.add(stocks![stocks!.indexWhere((element) => element.sym ==
-              list[j],)]);
-        }
-        _opacityWatchListBp = List.empty();
-        _opacityWatchListBv = List.empty();
-        _opacityWatchListAp = List.empty();
-        _opacityWatchListAv = List.empty();
-        _opacityWatchListBp = List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListBv = List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListAp = List.filled(watchList.length, ChangeOpacity(0.0, false));
-        _opacityWatchListAv = List.filled(watchList.length, ChangeOpacity(0.0, false));
-
-        if(watchList.isNotEmpty && _previousWatchListStocks.isNotEmpty) {
-          _compareWatchListStocks();
-        }
-
-        isLoading=false;
-      },);
-
-    }catch(e){
-      throw e;
-    }
-
-
-  }
-
-  List<StockData> get previousStocks{
-    if(_selectedSector==sector.first){
-      if(_selectedFilter==_filterMenu[0]){
-        _previousStocks.sort((a, b) => a.sym!.compareTo(b.sym!));
-      }else if(_selectedFilter==_filterMenu[1]){
-        _previousStocks.sort((a, b) => a.nm!.compareTo(b.nm!));
-      }else if(_selectedFilter==_filterMenu[2]){
-        _previousStocks.sort((a, b) => b.v!.compareTo(a.v!));
-      }else if(_selectedFilter==_filterMenu[3]){
-        _previousStocks.sort((a, b) => a.v!.compareTo(b.v!));
-      }
-      return _selectedIndex!=indices.first?_stocks.where((element) => element.ind!.contains('$_selectedIndex|'),).toList():_stocks;
-    }else{
-      if(_selectedFilter==_filterMenu[0]){
-        _previousStocks.sort((a, b) => a.sym!.compareTo(b.sym!));
-      }else if(_selectedFilter==_filterMenu[1]){
-        _previousStocks.sort((a, b) => a.nm!.compareTo(b.nm!));
-      }else if(_selectedFilter==_filterMenu[2]){
-        _previousStocks.sort((a, b) => b.v!.compareTo(a.v!));
-      }else if(_selectedFilter==_filterMenu[3]){
-        _previousStocks.sort((a, b) => a.v!.compareTo(b.v!));
-      }
-      return _selectedIndex!=indices.first?_previousStocks.where((element) => element.sn==_selectedSector && element.ind!.contains('$_selectedIndex|')).toList():_previousStocks.where((element) => element.sn==_selectedSector).toList();
-    }
-  }
-
-  set previousStocks(List<StockData> value) {
-    _previousStocks = value;
-    notifyListeners();
-  }
-
-  List<StockData>? get stocks{
-    if(_selectedSector==sector.first){
-      if(_selectedFilter==_filterMenu[0]){
-        _stocks.sort((a, b) => a.sym!.compareTo(b.sym!));
-      }else if(_selectedFilter==_filterMenu[1]){
-        _stocks.sort((a, b) => a.nm!.compareTo(b.nm!));
-      }else if(_selectedFilter==_filterMenu[2]){
-        _stocks.sort((a, b) => b.v!.compareTo(a.v!));
-      }else if(_selectedFilter==_filterMenu[3]){
-        _stocks.sort((a, b) => a.v!.compareTo(b.v!));
-      }
-
-      return _selectedIndex!=indices.first?_stocks.where((element) => element.ind!.contains('$_selectedIndex|'),).toList():_stocks;
-    }else{
-      if(_selectedFilter==_filterMenu[0]){
-        _stocks.sort((a, b) => a.sym!.compareTo(b.sym!));
-      }else if(_selectedFilter==_filterMenu[1]){
-        _stocks.sort((a, b) => a.nm!.compareTo(b.nm!));
-      }else if(_selectedFilter==_filterMenu[2]){
-        _stocks.sort((a, b) => b.v!.compareTo(a.v!));
-      }else if(_selectedFilter==_filterMenu[3]){
-        _stocks.sort((a, b) => a.v!.compareTo(b.v!));
-      }
-
-      return _selectedIndex!=indices.first?_stocks.where((element) => element.sn==_selectedSector && element.ind!.contains('$_selectedIndex|')).toList():_stocks.where((element) => element.sn==_selectedSector).toList();
-    }
-
-  }
-
-  void addSector(List<String?> list){
-    list.forEach((element) => sector.add(element!),);
-    // _selectedSector=sector.first;
-    // notifyListeners();
-  }
-
-
-  String get selectedSector => _selectedSector;
-
-  set selectedSector(String value) {
-    _selectedSector = value;
-    notifyListeners();
-  }
-
-  set selectedFilter(String value){
-    _selectedFilter = value;
-    notifyListeners();
-  }
+  ScsDatabase db=ScsDatabase.instance;
 
 
   Set<String> get sector => _sector;
 
+  set sector(Set<String> list) {
 
-
-  void fetchStocks() async{
-
-    try {
-      _isLoading = true;
-      _previousStocks=_stocks;
-      _stocks= await ApiClient.fetchStocks();
-
-      if(opacityBp.isEmpty) {
-        _opacityBp = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
-        _opacityBv = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
-        _opacityAp = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
-        _opacityAv = List.filled(_stocks.length, ChangeOpacity(0.0,true),growable: true);
-
-      }
-
-      _compareStocks();
-
-    }catch (error){
-      print('Error fetching indices: $error');
-    }finally{
-      _isLoading = false;
-      notifyListeners();
-    }
+    list.forEach((element) {
+      _sector.add(element);
+    },);
+    // _sector = value;
+    // notifyListeners();
   }
 
 
-  bool get isLoading => _isLoading;
-
-  String get selectedFilter => _selectedFilter;
 
   List<String> get filterMenu => _filterMenu;
 
   set filterMenu(List<String> value) {
     _filterMenu = value;
-    notifyListeners();
+  }
+
+  List<String> get indices => _indices;
+
+  set indices(List<String> value) {
+    _indices = value;
   }
 
   String get selectedIndex => _selectedIndex;
@@ -232,191 +63,122 @@ class StockProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  List<String> get indices => _indices;
+  String get selectedFilter => _selectedFilter;
 
-  set indices(List<String> value) {
-    _indices = value;
+  set selectedFilter(String value) {
+    _selectedFilter = value;
     notifyListeners();
   }
 
-  List<ChangeOpacity> get opacityAv => _opacityAv;
+  String get selectedSector => _selectedSector;
 
-  set opacityAv(List<ChangeOpacity> value) {
-    _opacityAv = value;
+  set selectedSector(String value) {
+    _selectedSector = value;
     notifyListeners();
   }
 
-  List<ChangeOpacity> get opacityAp => _opacityAp;
-
-  set opacityAp(List<ChangeOpacity> value) {
-    _opacityAp = value;
-    notifyListeners();
-  }
-
-  List<ChangeOpacity> get opacityBv => _opacityBv;
-
-  set opacityBv(List<ChangeOpacity> value) {
-    _opacityBv = value;
-    notifyListeners();
-  }
-
-  List<ChangeOpacity> get opacityBp => _opacityBp;
-
-  set opacityBp(List<ChangeOpacity> value) {
-    _opacityBp = value;
-    notifyListeners();
-  }
-
-  void _compareStocks(){
-    for(int i=0;i<_stocks.length;i++){
-      if(_stocks![i].bp!.compareTo(_previousStocks[i].bp!)!=0){
-        _opacityBp[i]=ChangeOpacity(1.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
-
-      }else{
-        _opacityBp[i]=ChangeOpacity(0.0, _stocks![i].bp!.compareTo(_previousStocks[i].bp!)==-1?false:_stocks![i].bp!.compareTo(_previousStocks[i].bp!)==1?true:null);
-
+  List<Stock?> get stocks{
+    if(_selectedSector==sector.first){
+      if(_selectedFilter==_filterMenu[0]){
+        _stocks.sort((a, b) => a!.stockData.sym!.compareTo(b!.stockData.sym!));
+      }else if(_selectedFilter==_filterMenu[1]){
+        _stocks.sort((a, b) => a!.stockData.nm!.compareTo(b!.stockData.nm!));
+      }else if(_selectedFilter==_filterMenu[2]){
+        _stocks.sort((a, b) => b!.stockData.v!.compareTo(a!.stockData.v!));
+      }else if(_selectedFilter==_filterMenu[3]){
+        _stocks.sort((a, b) => a!.stockData.v!.compareTo(b!.stockData.v!));
       }
 
-      if(_stocks![i].bv!.compareTo(_previousStocks[i].bv!)!=0){
-        _opacityBv[i]=ChangeOpacity(1.0, _stocks![i].bv!.compareTo(_previousStocks[i].bv!)==-1?false:_stocks![i].bv!.compareTo(_previousStocks[i].bv!)==1?true:null);
-
-      }else{
-        _opacityBv[i]=_opacityBv[i]=ChangeOpacity(0.0, _stocks![i].bv!.compareTo(_previousStocks[i].bv!)==-1?false:_stocks![i].bv!.compareTo(_previousStocks[i].bv!)==1?true:null);
-
+      return _selectedIndex!=indices.first?_stocks.where((element) => element!.stockData.ind!.contains('$_selectedIndex|'),).toList():_stocks;
+    }else{
+      if(_selectedFilter==_filterMenu[0]){
+        _stocks.sort((a, b) => a!.stockData.sym!.compareTo(b!.stockData.sym!));
+      }else if(_selectedFilter==_filterMenu[1]){
+        _stocks.sort((a, b) => a!.stockData.nm!.compareTo(b!.stockData.nm!));
+      }else if(_selectedFilter==_filterMenu[2]){
+        _stocks.sort((a, b) => b!.stockData.v!.compareTo(a!.stockData.v!));
+      }else if(_selectedFilter==_filterMenu[3]){
+        _stocks.sort((a, b) => a!.stockData.v!.compareTo(b!.stockData.v!));
       }
 
-      if(_stocks![i].ap!.compareTo(_previousStocks[i].ap!)!=0){
-        _opacityAp[i]=ChangeOpacity(1.0, _stocks![i].ap!.compareTo(_previousStocks[i].ap!)==-1?false:_stocks![i].ap!.compareTo(_previousStocks[i].ap!)==1?true:null);
-
-      }else{
-        _opacityAp[i]=ChangeOpacity(0.0, _stocks![i].ap!.compareTo(_previousStocks[i].ap!)==-1?false:_stocks![i].ap!.compareTo(_previousStocks[i].ap!)==1?true:null);
-      }
-
-      if(_stocks![i].av!.compareTo(_previousStocks[i].av!)!=0){
-        _opacityAv[i]=ChangeOpacity(1.0, _stocks![i].av!.compareTo(_previousStocks[i].av!)==-1?false:_stocks![i].av!.compareTo(_previousStocks[i].av!)==1?true:null);
-
-      }else{
-        _opacityAv[i]=ChangeOpacity(0.0, _stocks![i].av!.compareTo(_previousStocks[i].av!)==-1?false:_stocks![i].av!.compareTo(_previousStocks[i].av!)==1?true:null);
-      }
-      // opacityBp=_opacityBp;
-      // opacityBv=_opacityBv;
-      // opacityAp= _opacityAp;
-      // opacityAv= _opacityAv;
-      _changeOpacity(i);
-      // notifyListeners();
-    }
-  }
-  void _compareWatchListStocks(){
-
-    // print("Previous: $_previousWatchListStocks\nCurrent: $watchList");
-    for(int i=0;i<watchList.length;i++){
-      int index=stocks!.indexWhere((element) => element.sym==watchList[i].sym,);
-
-      // print("Index: $index");
-      if(watchList[i].bp!.compareTo(_previousWatchListStocks[i].bp!)!=0){
-
-        _opacityWatchListBp[i]=ChangeOpacity(1.0, false);
-
-      }else{
-        _opacityWatchListBp[i]=ChangeOpacity(0.0, false);
-      }
-
-      if(watchList[i].bv!.compareTo(_previousWatchListStocks[i].bv!)!=0){
-        _opacityWatchListBv[i]=ChangeOpacity(1.0, false);
-
-      }else{
-        _opacityWatchListBv[i]=ChangeOpacity(0.0, false);
-      }
-
-      if(watchList[i].ap!.compareTo(_previousWatchListStocks[i].ap!)!=0){
-        _opacityWatchListAp[i]=ChangeOpacity(1.0, false);
-
-      }else{
-        _opacityWatchListAp[i]=ChangeOpacity(0.0, false);
-      }
-
-      if(watchList[i].av!.compareTo(_previousWatchListStocks[i].av!)!=0){
-        _opacityWatchListAv[i]=ChangeOpacity(1.0, false);
-
-      }else{
-        _opacityWatchListAv[i]=ChangeOpacity(0.0, false);
-      }
-
-
-      opacityWatchListBp=_opacityWatchListBp;
-      opacityWatchListBv=_opacityWatchListBv;
-      opacityWatchListAp= _opacityWatchListAp;
-      opacityWatchListAv= _opacityWatchListAv;
-      _changeWatchListOpacity(i);
-
+      return _selectedIndex!=indices.first?_stocks.where((element) => element!.stockData.sn==_selectedSector && element!.stockData.ind!.contains('$_selectedIndex|')).toList():_stocks.where((element) => element!.stockData.sn==_selectedSector).toList();
     }
   }
 
-
-  _changeOpacity(int index) {
-    Future.delayed(const Duration(seconds: 2),() {
-      if(opacityBp[index].opacity!.compareTo(0.0)!=0){
-        opacityBp[index].opacity=0.0;
-        opacityBp=opacityBp;
-      }
-      if(opacityBv[index].opacity!.compareTo(0.0)!=0){
-        opacityBv[index].opacity=0.0;
-        opacityBv=opacityBv;
-      }
-
-      if(opacityAp[index].opacity!.compareTo(0.0)!=0){
-        opacityAp[index].opacity=0.0;
-        opacityAp=opacityAp;
-      }
-      if(opacityAv[index].opacity!.compareTo(0.0)!=0){
-        opacityAv[index].opacity=0.0;
-        opacityAv=opacityAv;
-      }
-    },);
+  set stocks(List<Stock?> value) {
+    _stocks = value;
   }
 
-  List<ChangeOpacity> get opacityWatchListBv => _opacityWatchListBv;
+  List<StockData> get stockData => _stockData;
 
-  set opacityWatchListBv(List<ChangeOpacity> value) {
-    _opacityWatchListBv = value;
-    notifyListeners();
+  set stockData(List<StockData> value) {
+    _stockData = value;
   }
 
-  List<ChangeOpacity> get opacityWatchListAp => _opacityWatchListAp;
+  List<StockData> get previousStocks => _previousStocks;
 
-  set opacityWatchListAp(List<ChangeOpacity> value) {
-    _opacityWatchListAp = value;
-    notifyListeners();
+  set previousStocks(List<StockData> value) {
+    _previousStocks = value;
   }
 
-  List<ChangeOpacity> get opacityWatchListAv => _opacityWatchListAv;
+  bool get isLoading => _isLoading;
 
-  set opacityWatchListAv(List<ChangeOpacity> value) {
-    _opacityWatchListAv = value;
-    notifyListeners();
+  set isLoading(bool value) {
+    _isLoading = value;
   }
 
-  void _changeWatchListOpacity(int index) {
-    Future.delayed(const Duration(seconds: 2),() {
-      if(opacityWatchListBp[index].opacity!.compareTo(0.0)!=0){
-        opacityWatchListBp[index].opacity=0.0;
+  Future<int> addWatchList(String data){
+    return db.create(data);
+  }
+
+  Future<int> removeWatchList(String data){
+    return db.delete(data);
+  }
+
+
+  void fetchStocks() async{
+
+    try {
+      _previousStocks=_stockData;
+      _stockData= await ApiClient.fetchStocks();
+      if(_stockData.isNotEmpty){
+        db.readAll().then((list) {
+          _stocks.clear();
+          if(list.isNotEmpty){
+
+            _stockData.forEach((element) {
+              _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
+                  list.where((e) =>e.toString() == element.sym ,).firstOrNull == null ? false:true));
+            },);
+          }else{
+            _stockData.forEach((element) {
+              _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
+                  _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
+                  false));
+            },);
+          }
+        },);
 
       }
-      if(opacityWatchListBv[index].opacity!.compareTo(0.0)!=0){
-        opacityWatchListBv[index].opacity=0.0;
-      }
 
-      if(opacityWatchListAp[index].opacity!.compareTo(0.0)!=0){
-        opacityWatchListAp[index].opacity=0.0;
-      }
-      if(opacityWatchListAv[index].opacity!.compareTo(0.0)!=0){
-        opacityWatchListAv[index].opacity=0.0;
-      }
-      opacityWatchListBp=opacityWatchListBp;
-      opacityWatchListBv=opacityWatchListBv;
-      opacityWatchListAp=opacityWatchListAp;
-      opacityWatchListAv=opacityWatchListAv;
 
-    },);
+      //_compareStocks();
+
+    }catch (error){
+      print('Error fetching indices: $error');
+    }finally{
+      notifyListeners();
+    }
+  }
+
+  void addSector(List<String?> list){
+    list.forEach((element) => sector.add(element!),);
+    // _selectedSector=sector.first;
+    // notifyListeners();
   }
 }

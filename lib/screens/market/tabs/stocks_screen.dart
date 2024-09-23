@@ -14,7 +14,8 @@ class StocksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StockProvider provider=Provider.of(context,listen: true);
-    provider.addSector(provider.stocks!.map((e) => e.sn,).toList());
+    provider.sector = provider.stocks.map((e) => e!.stockData.sn!,).toSet();
+    // provider.addSector(provider.stocks.map((e) => e.stockData.sn,).toList());
     return Column(
       children: [
         Padding(
@@ -47,7 +48,7 @@ class StocksScreen extends StatelessWidget {
             ],
           ),
         ),
-        StockList(list: provider.stocks!,screenName: "Stocks",),
+        StockList(list: provider.stocks,screenName: "Stock",),
       ],
     );
   }
