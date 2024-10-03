@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/stock.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
-import 'package:scstrade_pro/widgets/drop_index.dart';
 import 'package:scstrade_pro/widgets/stock_blue_text.dart';
 import 'package:scstrade_pro/widgets/stock_row_detail_text.dart';
 import '../data/dto/Stock_data.dart';
@@ -16,20 +14,27 @@ class StockList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StockProvider provider=Provider.of(context,listen: true);
-
+    list.where((element) => element!.stockData.ind!.contains('KMI'),)
+    .toList();
 
     return Expanded(
       child: ListView.builder(
-
-        itemCount: screenName=="Stock"?list.length:list.where((element) => element!.isWatchList,).toList().length,
+        itemCount: screenName=="Stock"?list.length:screenName=="Shariah"?list.where((element) => element!.stockData.ind!.contains('KMI')).toList().length:list.where((element) => element!.isWatchList,).toList().length,
         itemBuilder: (context, index) {
 
-          StockData item = screenName=="Stock"?list[index]!.stockData:list.where((element) => element!.isWatchList,)
+          StockData item = screenName=="Stock"?list[index]!.stockData:
+          screenName=="Shariah" ?
+          list.where((element) => element!.stockData.ind!.contains('KMI'))
+              .map((e) => e,)
+              .toList()[index]!.stockData:
+               list.where((element) => element!.isWatchList,)
               .map((e) => e,)
               .toList()[index]!.stockData;
 
           return Card(
               margin:  const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8.0),
+              elevation: 3.0,
+              color: Colors.grey.shade100,
               child: Padding(
                 padding:  const EdgeInsets.symmetric(vertical: 5.0),
                 child: Row(
@@ -104,15 +109,23 @@ class StockList extends StatelessWidget {
 
                                 AnimatedOpacity(
 
-                                  opacity: screenName =="Stock"?list[index]!.opacityBp:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBp,
+                                  opacity: screenName =="Stock"?list[index]!.opacityBp:
+                                  screenName=="Shariah" ?
+                                  list.where((element) => element!.stockData.ind!.contains('KMI'))
+                                      .map((e) => e,)
+                                      .toList()[index]!.opacityBp:
+                                  list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBp,
                                   duration: const Duration(seconds: 3),
-                                  child: Container(
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                        color: /*provider.opacityBp[index].isIncreased==false?Colors.yellow.shade200:provider.opacityBp[index].isIncreased==true?Colors.yellow.shade200:Colors.transparent*/Colors.yellow.shade200,
-                                        borderRadius: BorderRadius.circular(10.0)
-                                    ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                    child: Container(
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow.shade200,
+                                          borderRadius: BorderRadius.circular(10.0)
+                                      ),
 
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -139,7 +152,12 @@ class StockList extends StatelessWidget {
                             Stack(
                                 children:[
                                   AnimatedOpacity(
-                                    opacity: screenName =="Stock"?list[index]!.opacityBv:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBv,
+                                    opacity: screenName =="Stock"?list[index]!.opacityBv:
+                                    screenName=="Shariah" ?
+                                    list.where((element) => element!.stockData.ind!.contains('KMI'))
+                                        .map((e) => e,)
+                                        .toList()[index]!.opacityBv:
+                                    list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityBv,
                                     duration: const Duration(seconds: 2),
                                     child:  Container(
                                       height: 20,
@@ -170,7 +188,12 @@ class StockList extends StatelessWidget {
                               children:[
                                 AnimatedOpacity(
 
-                                  opacity: screenName =="Stock"?list[index]!.opacityAp:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAp,
+                                  opacity: screenName =="Stock"?list[index]!.opacityAp:
+                                  screenName=="Shariah" ?
+                                  list.where((element) => element!.stockData.ind!.contains('KMI'))
+                                      .map((e) => e,)
+                                      .toList()[index]!.opacityAp:
+                                  list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAp,
                                   duration: const Duration(seconds: 2),
                                   child: Container(
                                       height: 20,
@@ -193,19 +216,19 @@ class StockList extends StatelessWidget {
                       child:
                       ConstrainedBox(
                         constraints: const BoxConstraints(
-                            maxHeight: 100
+                          maxHeight: 100,
                         ),
                         child: Column(
                           children: [
                             Row(
                               children: [
                                 Card(
-                                  elevation: 0.0,
+                                  elevation: 3.0,
+                                  clipBehavior: Clip.none,
                                   color: item.ch.toString().contains('-')?Colors.red.shade500:Colors.green.shade500,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 10.0),
-                                    child: Center(child: StockBlueText(title: Utils.roundTwoDecimal(item.avgP!.toDouble()),color: Colors.white,)),
-                                  ),
+                                  child: SizedBox(
+                                      width: 70,
+                                      child: Center(child: StockBlueText(title: Utils.roundTwoDecimal(item.avgP!.toDouble()),color: Colors.white,))),
                                 ),
                                 PopupMenuButton<String>(
                                   child: Container(
@@ -287,15 +310,22 @@ class StockList extends StatelessWidget {
                               children: [
                                 AnimatedOpacity(
 
-                                    opacity:screenName =="Stock"?list[index]!.opacityAv:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAv,
+                                    opacity:screenName =="Stock"?list[index]!.opacityAv:
+                                    screenName=="Shariah" ?
+                                    list.where((element) => element!.stockData.ind!.contains('KMI'))
+                                        .map((e) => e,)
+                                        .toList()[index]!.opacityAv:list.where((element) => element!.isWatchList).map((e) => e,).toList()[index]!.opacityAv,
                                     duration: const Duration(seconds: 2),
                                     child:
-                                    Container(
-                                      width: 80,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                          color: /*provider.opacityAv[index].isIncreased==false?Colors.red:provider.opacityAv[index].isIncreased==true?Colors.green:Colors.transparent*/Colors.yellow.shade200,
-                                          borderRadius: BorderRadius.circular(10.0)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                      child: Container(
+
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                            color: Colors.yellow.shade200,
+                                            borderRadius: BorderRadius.circular(10.0)
+                                        ),
                                       ),
                                     )
 

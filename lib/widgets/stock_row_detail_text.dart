@@ -13,8 +13,8 @@ class StockRowDetailText extends StatelessWidget {
       maxLines: 2,
       softWrap: true,
       style: TextStyle(
-        color: color ?? Color(0xFF898989),
-        fontSize: 10,
+        color: color ?? const Color(0xFF898989),
+        fontSize: 12,
         fontWeight: FontWeight.w400
       ),
     );

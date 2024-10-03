@@ -22,7 +22,7 @@ class StockProvider extends ChangeNotifier{
   String _selectedIndex="KSE ALL";
   String _selectedFilter="Symbol";
   String _selectedSector="All Sector";
-
+  late StreamSubscription<List<StockData>> subscription;
   List<Stock?> _stocks=[];
   List<StockData> _stockData=List.empty(growable: true);
   List<StockData> _previousStocks=[];
@@ -140,31 +140,54 @@ class StockProvider extends ChangeNotifier{
 
     try {
       _previousStocks=_stockData;
-      _stockData= await ApiClient.fetchStocks();
-      if(_stockData.isNotEmpty){
-        db.readAll().then((list) {
-          _stocks.clear();
-          if(list.isNotEmpty){
 
-            _stockData.forEach((element) {
-              _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
-                  list.where((e) =>e.toString() == element.sym ,).firstOrNull == null ? false:true));
-            },);
-          }else{
-            _stockData.forEach((element) {
-              _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
-                  _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
-                  false));
-            },);
-          }
-        },);
+      // _stockData = await ApiClient.fetchStocks();
+      subscription = ApiClient.fetchStocksUsingHttpClient().listen((event) {
+        _stockData=event;
+        print('Stocks: $_stockData');
+        if(_stockData.isNotEmpty){
+          db.readAll().then((list) {
+            _stocks.clear();
+            if(list.isNotEmpty){
 
-      }
+              _stockData.forEach((element) {
+                _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
+                    list.where((e) =>e.toString() == element.sym ,).firstOrNull == null ? false:true));
+              },);
+              Future.delayed(const Duration(seconds: 2),() {
+                _stocks.map((e) => e?.opacityBp==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityBv==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityAp==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityAv==1.0?0.0:0.0,);
+                notifyListeners();
+              },);
+            }else{
+              _stockData.forEach((element) {
+                _stocks.add(Stock(element, _previousStocks.where((e) => element.sym==e.sym,).first.bp!.compareTo(element.bp!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.bv!.compareTo(element.bv!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.ap!.compareTo(element.ap!)!=0.0?1.0:0.0,
+                    _previousStocks.where((e) => element.sym==e.sym,).first.av!.compareTo(element.av!)!=0.0?1.0:0.0,
+                    false));
+              },);
+              Future.delayed(const Duration(seconds: 2),() {
+                _stocks.map((e) => e?.opacityBp==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityBv==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityAp==1.0?0.0:0.0,);
+                _stocks.map((e) => e?.opacityAv==1.0?0.0:0.0,);
+                notifyListeners();
+              },);
+            }
+
+
+          },);
+
+        }
+      },);
+
+
 
 
       //_compareStocks();
@@ -172,7 +195,8 @@ class StockProvider extends ChangeNotifier{
     }catch (error){
       print('Error fetching indices: $error');
     }finally{
-      notifyListeners();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) => notifyListeners(),);
+
     }
   }
 

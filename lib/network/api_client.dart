@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
@@ -25,7 +28,13 @@ class ApiClient{
     final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
     print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
     if (response.statusCode == 200) {
-     return await compute((message) {
+      List<dynamic> body = json.decode(response.body);
+
+
+      print('---------------------Response-------------------------------\n$body\n---------------------------------------------');
+
+      return body.map((e) => StockData.fromJson(e),).toList();
+   /*  return await compute((message) {
 
         List<dynamic> body = json.decode(message);
 
@@ -33,7 +42,25 @@ class ApiClient{
          print('---------------------Response-------------------------------\n$body\n---------------------------------------------');
 
         return body.map((e) => StockData.fromJson(e),).toList();
-      }, response.body);
+      }, response.body);*/
+    } else {
+
+      throw Exception('Failed to load Indices');
+    }
+  }
+
+
+  static Stream<List<StockData>> fetchStocksUsingHttpClient() async* {
+    final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
+    print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+
+
+      print('---------------------Response-------------------------------\n$body\n---------------------------------------------');
+
+      yield body.map((e) => StockData.fromJson(e),).toList();
+
     } else {
 
       throw Exception('Failed to load Indices');

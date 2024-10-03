@@ -22,6 +22,7 @@ class StocksScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropIndex(
                 value: provider.selectedSector,
@@ -48,7 +49,7 @@ class StocksScreen extends StatelessWidget {
             ],
           ),
         ),
-        StockList(list: provider.stocks,screenName: "Stock",),
+        provider.stocks.isEmpty?const CircularProgressIndicator():StockList(list: provider.stocks,screenName: "Stock",),
       ],
     );
   }

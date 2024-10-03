@@ -34,11 +34,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Timer? _timer;
+
+  StockProvider? _provider;
   @override
   Widget build(BuildContext context) {
-    StockProvider provider = Provider.of(context,listen: false);
     return  MaterialApp(
-      scaffoldMessengerKey: provider.snackbarKey,
+      scaffoldMessengerKey: _provider?.snackbarKey,
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
         body: SafeArea(child: HomeScreen()),
@@ -48,9 +49,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    context.read<StockProvider>().fetchStocks();
+    _provider=context.read<StockProvider>();
+    _provider?.fetchStocks();
+
     _timer=Timer.periodic(const Duration(seconds: 5), (timer) async {
-      context.read<StockProvider>().fetchStocks();
+      _provider?.fetchStocks();
     },);
     super.initState();
 
@@ -61,8 +64,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
-
-
   }
 }
 

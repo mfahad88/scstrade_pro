@@ -11,7 +11,7 @@ class StockBlueText extends StatelessWidget {
       style: TextStyle(
           color: color ?? const Color(0xFF455A87),
           overflow: TextOverflow.ellipsis,
-          fontSize: 14,
+          fontSize: 13,
           fontWeight: FontWeight.w600
       ),
     );

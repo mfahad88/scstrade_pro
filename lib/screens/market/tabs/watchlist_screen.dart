@@ -21,21 +21,19 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    StockProvider stockProvider = Provider.of(context,listen: false);
-    // stockProvider.fetchWatchList();
+  StockProvider stockProvider = Provider.of(context,listen: true);
+
     // _timer=Timer.periodic(const Duration(seconds: 7), (timer) =>  stockProvider.fetchWatchList());
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 20,),
-        StockList(list: stockProvider.stocks,screenName: "WatchList",),
+        Selector<StockProvider,bool>(builder: (context, value, child) => value==true?StockList(list: stockProvider.stocks,screenName: "WatchList",):const Center(child: Text('No record found')) , selector: (p0, p1) => p1.stocks.any((element) => element!.isWatchList),)
+
+
       ],
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
 
-  }
 }

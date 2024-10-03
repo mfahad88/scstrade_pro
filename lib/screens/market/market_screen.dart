@@ -15,12 +15,23 @@ class MarketScreen extends StatelessWidget {
       length: 5,
       child: MaterialApp(
         home: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
-            bottom: const TabBar(
-              labelStyle: TextStyle(
-                fontSize: 12
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              isScrollable: true,
+              dividerHeight: 1.0,
+              dividerColor: Colors.grey.shade400,
+              physics: const BouncingScrollPhysics(),
+              unselectedLabelColor: Colors.black87,
+              indicatorColor: Colors.blue.shade400,
+              labelColor: Colors.blue.shade400,
+              labelStyle: const TextStyle(
+                fontSize: 14,
+                letterSpacing: 1.0
               ),
-                tabs: [
+                labelPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012),
+                tabs: const [
                   Tab(text: 'Dashboard',),
                   Tab(text: 'Stocks',),
                   Tab(text: 'Shariah Stock',),
