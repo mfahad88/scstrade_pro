@@ -12,6 +12,7 @@ class ButtonHighlight extends StatelessWidget {
       height: 30,
       child: ElevatedButton(
         onPressed: onPressed,
+        clipBehavior: Clip.none,
         style: ElevatedButton.styleFrom(
             foregroundColor: isSelected?Colors.white:Colors.black,
             backgroundColor: isSelected? Colors.greenAccent.shade700:Colors.white,

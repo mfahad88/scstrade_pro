@@ -194,6 +194,7 @@ class StockProvider extends ChangeNotifier{
 
     }catch (error){
       print('Error fetching indices: $error');
+
     }finally{
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) => notifyListeners(),);
 

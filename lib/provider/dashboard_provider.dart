@@ -3,10 +3,12 @@ import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 
+import '../data/dto/Index_group.dart';
+
 class DashboardProvider extends ChangeNotifier{
   List<KseIndices>? _indices;
   List<StockData> _stocks=[];
-
+  List<IndexGroup>? _indexGroup;
   List<StockData> get stocks => _stocks;
   String? _selectedIndex;
   TextEditingController editingController = TextEditingController();
@@ -14,8 +16,12 @@ class DashboardProvider extends ChangeNotifier{
 
   set selectedIndex(String? value) {
     _selectedIndex = value;
+    _fetchIndexGroup(value??"KSE All Share Index Group");
     notifyListeners();
   }
+
+
+  List<IndexGroup>? get indexGroup => _indexGroup;
 
   List<KseIndices>? get indices => _indices;
   bool _isLoading = false;
@@ -46,6 +52,14 @@ class DashboardProvider extends ChangeNotifier{
     _isLineSelected = !isCandleSelected;
     notifyListeners();
   }
+
+ void _fetchIndexGroup(String query) async{
+    try{
+      _indexGroup=await ApiClient.fetchIndexGroup(query);
+    }catch (error){
+      print('Error fetching indices: $error');
+    }
+}
 
   fetchIndices() async {
 
