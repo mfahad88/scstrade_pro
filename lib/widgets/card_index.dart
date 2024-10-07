@@ -12,19 +12,21 @@ class CardIndex extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Card.outlined(
       clipBehavior: Clip.none,
-      elevation: 2.0,
+      color: Colors.white,
+      shadowColor: Colors.white30,
+      elevation: 5.0,
       child: SizedBox(
         width: 120,
         child: Column(
           children: [
-            SizedBox(height: 4,),
+            const SizedBox(height: 4,),
             Text('${kse_indices.indexCode}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w500
             ),),
-            Text('${kse_indices.currentIndex}',
-              style: TextStyle(
+            Text(Utils.commaSeparated(double.parse(kse_indices.currentIndex??"0")),
+              style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w500
               ),),

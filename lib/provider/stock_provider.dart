@@ -24,7 +24,7 @@ class StockProvider extends ChangeNotifier{
   String _selectedSector="All Sector";
   late StreamSubscription<List<StockData>> subscription;
   List<Stock?> _stocks=[];
-  List<StockData> _stockData=List.empty(growable: true);
+  List<StockData> _stockData=[];
   List<StockData> _previousStocks=[];
   List<StockData> watchList=[];
   bool _isLoading=false;

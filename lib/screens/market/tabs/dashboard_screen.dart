@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/data/dto/Index_group.dart';
+import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/models/index_summary.dart';
 import 'package:scstrade_pro/provider/dashboard_provider.dart';
+import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/widgets/button_highlight.dart';
 import 'package:scstrade_pro/widgets/card_index.dart';
 import 'package:scstrade_pro/widgets/custom_line_chart.dart';
@@ -13,20 +15,32 @@ import 'package:scstrade_pro/widgets/drop_index.dart';
 
 import '../../../helper/Utils.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  Timer? timer;
+  @override
+  void initState() {
+    context.read<DashboardProvider>().fetchIndices(true);
+    timer=Timer.periodic(const Duration(seconds: 5), (timer) => context.read<DashboardProvider>().fetchIndices(false),);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    context.read<DashboardProvider>().fetchIndices();
+
     return Consumer<DashboardProvider>(builder: (context, provider, child) {
-      // provider.selectedIndex = provider.indices!.first.indexCode!;
       return provider.isLoading ? const Center(child: CircularProgressIndicator(),):Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: SingleChildScrollView(
 
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
@@ -60,8 +74,9 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    Icon(Icons.arrow_drop_up,
-                      color: Colors.greenAccent.shade400,),
+                    Icon(
+                      provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.netChange!.contains('-')?Icons.arrow_drop_down:Icons.arrow_drop_up,
+                      color: provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.netChange!.contains('-')?Colors.redAccent.shade400:Colors.greenAccent.shade400,),
                     Text(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.currentIndex!,
                       style: const TextStyle(
                           fontSize: 18,
@@ -83,7 +98,7 @@ class DashboardScreen extends StatelessWidget {
                           color: Colors.black45
                       ),
                     ),
-                    Text(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.volumeTraded!,
+                    Text(Utils.formatToMillions(int.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.volumeTraded!)),
                       style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -105,14 +120,14 @@ class DashboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 4.0),
                 child: Row(
                   children: [
-                    Text('L: ${provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.lowIndex!}',
+                    Text('L: ${Utils.commaSeparated(double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.lowIndex!))} -${Utils.roundTwoDecimal(double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.lowIndex!)- provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!)} (${Utils.roundTwoDecimal(((provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose! - double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.lowIndex!))*100)/provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!)}%)',
                       style: const TextStyle(
                           fontSize: 9,
                           color: Colors.red
                       ),
                     ),
                     const Spacer(),
-                    Text('H: ${provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.highIndex!}',
+                    Text('H: ${Utils.commaSeparated(double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.highIndex!))} +${Utils.roundTwoDecimal(double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.highIndex!)- provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!)} (${Utils.roundTwoDecimal(((double.parse(provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.highIndex!) - provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!)*100)/provider.indices!.where((element) => element.indexCode==provider.selectedIndex,).toList().first.preClose!)}%)',
                       style: TextStyle(
                           fontSize: 9,
                           color: Colors.greenAccent.shade400
@@ -200,34 +215,79 @@ class DashboardScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 10.0,),
-              const Text('Volume Leaders'),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.indexGroup?.where((element) => element.type=="Volume Leaders",).map((e) => e,).toList().length ?? 0,
-                  itemBuilder: (context, index) => DashboardStockCard(indexGroup: provider.indexGroup?.where((element) => element.type=="Volume Leaders",).map((e) => e,).toList()[index])),
-              const SizedBox(height: 20.0,),
-              const Text('Gainers'),
-              const SizedBox(height: 10.0,),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.indexGroup?.where((element) => element.type=="Gainers",).map((e) => e,).toList().length??0,
-                  itemBuilder: (context, index) => DashboardStockCard(indexGroup: provider.indexGroup?.where((element) => element.type=="Gainers",).map((e) => e,).toList()[index])),
-              const SizedBox(height: 20.0,),
-              const Text('Losers'),
-              const SizedBox(height: 10.0,),
-              ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.indexGroup?.where((element) => element.type=="Losers",).map((e) => e,).toList().length??0,
-                  itemBuilder: (context, index) => DashboardStockCard(indexGroup: provider.indexGroup?.where((element) => element.type=="Losers",).map((e) => e,).toList()[index]))
+              Consumer<StockProvider>(builder: (BuildContext context, StockProvider value, Widget? child) {
+                List<StockData> volumnLeaders= List.from(value.stockData)..sort((a, b) => b.v!.compareTo(a.v!),);
+                List<StockData> gainers= List.from(value.stockData)..sort((a, b) => b.ch!.compareTo(a.ch!),);
+                List<StockData> losers= List.from(value.stockData)..sort((a, b) => a.ch!.compareTo(b.ch!),);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10.0,),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 7.0),
+                      child: Text('Volume Leaders',
+                        style: TextStyle(
+                            color: Color(0xFF808080),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800
+                        ),
+                      ),
+                    ),
+
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:volumnLeaders.isEmpty?0:volumnLeaders.sublist(0,10).length,
+                        itemBuilder: (context, index) => DashboardStockCard(stockData:volumnLeaders[index] ,)),
+                    const SizedBox(height: 20.0,),
+                    const Padding(
+                      padding: EdgeInsets.only(left:7.0),
+                      child: Text('Gainers',
+                        style: TextStyle(
+                            color: Color(0xFF808080),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0,),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: gainers.isEmpty?0:gainers.sublist(0,10).length,
+                        itemBuilder: (context, index) => DashboardStockCard(stockData: gainers[index],)),
+                    const SizedBox(height: 20.0,),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 7.0),
+                      child: Text('Losers',
+                        style: TextStyle(
+                            color: Color(0xFF808080),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0,),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: losers.isEmpty?0:losers.sublist(0,10).length,
+                        itemBuilder: (context, index) => DashboardStockCard(stockData: losers[index],))
+                  ],
+                );
+              },
+
+              )
             ],
           ),
         ),
       );
-    },
-    );
+    },);
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

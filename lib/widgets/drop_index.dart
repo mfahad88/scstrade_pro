@@ -16,10 +16,10 @@ class DropIndex extends StatelessWidget {
           return DropdownMenuItem(
               value:e,
               child: Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   child: Text(e,
                     style: const TextStyle(
-                        fontSize: 8
+                        fontSize: 10
                     ),
                   )
               )

@@ -59,7 +59,13 @@ class Utils{
   }
 
   static String commaSeparated(double value){
-    final formatter = NumberFormat('#,###');
+    final formatter = NumberFormat('#,###.##');
     return formatter.format(value);
+  }
+
+  static String formatToMillions(int number) {
+    // Convert to millions and format to 2 decimal places
+    double millions = number / 1000000;
+    return millions.toStringAsFixed(2) + 'M';
   }
 }

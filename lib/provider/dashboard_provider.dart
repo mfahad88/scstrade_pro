@@ -16,7 +16,7 @@ class DashboardProvider extends ChangeNotifier{
 
   set selectedIndex(String? value) {
     _selectedIndex = value;
-    _fetchIndexGroup(value??"KSE All Share Index Group");
+    // _fetchIndexGroup(value??"KSE All Share Index Group");
     notifyListeners();
   }
 
@@ -61,17 +61,20 @@ class DashboardProvider extends ChangeNotifier{
     }
 }
 
-  fetchIndices() async {
+  void fetchIndices(bool isFirst) async {
 
     try {
       _isLoading = true;
       _indices = await ApiClient.fetchIndices();
 
     }catch (error){
+      _isLoading = false;
       print('Error fetching indices: $error');
     }finally{
       _isLoading = false;
-      _selectedIndex=_indices!.first.indexCode!;
+      if(isFirst) {
+        _selectedIndex = _indices!.first.indexCode!;
+      }
       notifyListeners();
     }
   }
