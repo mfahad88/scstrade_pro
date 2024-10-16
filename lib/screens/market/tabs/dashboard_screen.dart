@@ -155,62 +155,65 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 builder: (BuildContext context, DashboardProvider provider, Widget? child) {
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ButtonHighlight(
-                          title: 'Line',
-                          isSelected: provider.isLineSelected,
-                          onPressed: () {
-                            provider.isLineSelected = true;
-                          },
-                        ),
-                        const SizedBox(width: 4.0,),
-                        ButtonHighlight(
-                          title: 'Candle',
-                          isSelected: provider.isCandleSelected,
-                          onPressed:() {
-                            provider.isCandleSelected = true;
-                          },
-                        ),
-                        const SizedBox(width: 4.0,),
-                        SizedBox(
-                          height: 30,
-                          child: ListView.separated(
-                            clipBehavior: Clip.none,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: provider.isTime.length,
-                            itemBuilder: (context, index) {
-                              String title='';
-                              switch (index){
-
-                              }
-
-                              return ButtonHighlight(
-                                title: 'Candle',
-                                isSelected: provider.isTime[index],
-                                onPressed:() {
-
-                                  for(int i=0;i<provider.isTime.length;i++){
-                                    if(i==index){
-                                      provider.isTime[i] = true;
-                                    }else{
-                                      provider.isTime[i] = false;
-                                    }
-                                  }
-                                  provider.isTime=provider.isTime;
-                                },
-                              );
-                            }, separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(width: 4.0,);
-                          },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 7.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ButtonHighlight(
+                            title: 'Line',
+                            isSelected: provider.isLineSelected,
+                            onPressed: () {
+                              provider.isLineSelected = true;
+                            },
                           ),
-                        ),
+                          const SizedBox(width: 4.0,),
+                          ButtonHighlight(
+                            title: 'Candle',
+                            isSelected: provider.isCandleSelected,
+                            onPressed:() {
+                              provider.isCandleSelected = true;
+                            },
+                          ),
+                          const SizedBox(width: 4.0,),
+                          SizedBox(
+                            height: 30,
+                            child: ListView.separated(
+                              clipBehavior: Clip.none,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: provider.isTime.length,
+                              itemBuilder: (context, index) {
+                                String title='';
+                                switch (index){
 
-                      ],
+                                }
+
+                                return ButtonHighlight(
+                                  title: 'Candle',
+                                  isSelected: provider.isTime[index],
+                                  onPressed:() {
+
+                                    for(int i=0;i<provider.isTime.length;i++){
+                                      if(i==index){
+                                        provider.isTime[i] = true;
+                                      }else{
+                                        provider.isTime[i] = false;
+                                      }
+                                    }
+                                    provider.isTime=provider.isTime;
+                                  },
+                                );
+                              }, separatorBuilder: (BuildContext context, int index) {
+                              return const SizedBox(width: 4.0,);
+                            },
+                            ),
+                          ),
+
+                        ],
+                      ),
                     ),
                   );
                 },

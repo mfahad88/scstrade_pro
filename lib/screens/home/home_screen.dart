@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';
+import 'package:scstrade_pro/screens/announcements/accouncements_screen.dart';
 import 'package:scstrade_pro/screens/market/market_screen.dart';
 import 'package:scstrade_pro/screens/more/more_screen.dart';
+import 'package:scstrade_pro/screens/technicals/technicals_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -34,7 +36,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
             currentIndex: homeProvider.selectedIndex,
-            selectedItemColor: Colors.green.shade700,
             onTap: (value) {
               print('value: $value');
               homeProvider.selectedIndex = value;
@@ -44,8 +45,12 @@ class HomeScreen extends StatelessWidget {
             child: Builder(builder: (context) {
               if(homeProvider.selectedIndex == 0){
                 return const MarketScreen();
+              }else if(homeProvider.selectedIndex == 2){
+                return TechnicalsScreen();
               }else if(homeProvider.selectedIndex == 3){
-                return const MoreScreen();
+                return MoreScreen(onTap: (String value) {
+                  print(value);
+                },);
               }else{
                 return const Text("This screen is under development");
               }

@@ -68,4 +68,17 @@ class Utils{
     double millions = number / 1000000;
     return millions.toStringAsFixed(2) + 'M';
   }
+
+  static String convertDate(String dateString) {
+    // Extract the timestamp from the /Date(...) format
+    var timestamp = int.parse(dateString.replaceAll(RegExp(r'[^0-9]'), ''));
+
+    // Convert timestamp to DateTime
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+    // Format the DateTime to dd-MMM-yyyy
+    String formattedDate = DateFormat('dd-MMM-yyyy').format(date);
+
+    return formattedDate;
+  }
 }

@@ -11,9 +11,7 @@ class CardIndex extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Card.outlined(
-      clipBehavior: Clip.none,
-      color: Colors.white,
-      shadowColor: Colors.white30,
+
       elevation: 5.0,
       child: SizedBox(
         width: 120,
