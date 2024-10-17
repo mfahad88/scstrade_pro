@@ -7,19 +7,35 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.text.SimpleDateFormat
 import java.util.*
+import android.content.Intent
+import android.net.Uri
+import androidx.annotation.NonNull
 class MainActivity: FlutterActivity(){
-    private val CHANNEL = "com.example.datepicker/date"
-
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    private val channel = "com.example.native"
+    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
                 call, result ->
-            if (call.method == "showDatePicker") {
-                showDatePicker(result)
-            } else {
-                result.notImplemented()
+            when (call.method) {
+                "openUrl" -> {
+                    val url = call.argument<String>("url")
+                    if (url != null) {
+                        openUrl(url)
+                        result.success(null)
+                    } else {
+                        result.error("INVALID_ARGUMENT", "URL is required", null)
+                    }
+                }
+                else -> result.notImplemented()
             }
         }
+    }
+
+    private fun openUrl(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        startActivity(intent)
     }
 
     private fun showDatePicker(result: MethodChannel.Result) {

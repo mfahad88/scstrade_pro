@@ -81,4 +81,13 @@ class Utils{
 
     return formattedDate;
   }
+
+  static DateTime epochDate(String dateString) {
+    // Extract the timestamp from the /Date(...) format
+    var timestamp = int.parse(dateString.replaceAll(RegExp(r'[^0-9]'), ''));
+
+    // Convert timestamp to DateTime
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return date;
+  }
 }

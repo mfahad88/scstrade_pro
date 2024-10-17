@@ -11,20 +11,22 @@ import 'package:scstrade_pro/data/dto/announcement/News.dart';
 import 'dart:convert';
 
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
+import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/provider/announcement_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiClient{
   static const String _baseUrl = 'https://dataapi.scstrade.com';
   static SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
-  static Future<List<KseIndices>> fetchIndices() async{
-    final response = await http.get(Uri.parse('$_baseUrl/Data?que=KSE Indices'));
+  static Future<List<KseIndices>> fetchIndices() async {
+    final response = await http.get(
+        Uri.parse('$_baseUrl/Data?que=KSE Indices'));
+
 
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
       print(list);
       return list.map((e) => KseIndices.fromJson(e),).toList();
     } else {
-
       throw Exception('Failed to load Indices');
     }
   }
@@ -107,17 +109,26 @@ class ApiClient{
     if(responses[0].statusCode==200 && responses[1].statusCode==200 && responses[2].statusCode==200){
       List<dynamic> news=json.decode(responses[0].body);
       List<dynamic> meetings=json.decode(responses[1].body);
-      List<dynamic> accouncement=json.decode(responses[2].body);
+      List<dynamic> announcement=json.decode(responses[2].body);
 
       // meetings.forEach((element) => print('Company: ${element['company_code']}'),);
 
       provider.news = news.map((e) {
         return  News.fromJson(e);
+      },).toList().where((element) {
+        return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
       },).toList();
       provider.meetings = meetings.map((e) {
         return Meetings.fromJson(e);
+      },).toList().where((element) {
+
+        return Utils.epochDate(element.bmDate!).isAfter(provider.startDate!) && Utils.epochDate(element.bmDate!).isBefore(provider.endDate!);
       },).toList();
-      // provider.announcement = accouncement.map((e) => Announcement.fromJson(accouncement),).toList();
+      provider.announcement = announcement.map((e) {
+        return Announcement.fromJson(e);
+      },).toList().where((element) {
+        return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
+      },).toList();
     }else{
       throw Exception('Failed to load Announcments');
 

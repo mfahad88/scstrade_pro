@@ -12,17 +12,32 @@ class AccouncementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> title=['News','Meetings','Announcements'];
-    AnnouncementProvider announcementProvider = Provider.of(context,listen: false);
-    announcementProvider.fetchAccouncements();
+    /*AnnouncementProvider announcementProvider = Provider.of(context,listen: false);
+    announcementProvider.fetchAccouncements();*/
     return Scaffold(
         body:SafeArea(
             child: Consumer<AnnouncementProvider>(builder: (BuildContext context, AnnouncementProvider provider, Widget? child) {
               return provider.isLoading?const Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    borderDate('Start Date: '),
+
                     SizedBox(height: 20.0,),
-                    borderDate('End Date: '),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        children: [
+                          borderDate(context: context,text: 'Start Date: ',provider: provider),
+                          SizedBox(width: 20.0,),
+                          borderDate(context: context,text: 'End Date: ',provider: provider),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10.0,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: FilledButton(onPressed: () => provider.fetchAccouncements(), child: Text('Show')),
+                    ),
                     SizedBox(height: 20.0,),
                     Column(
                       children: [
@@ -39,7 +54,7 @@ class AccouncementsScreen extends StatelessWidget {
                                   );
                                 },
                                 body:
-                                index==0?NewsScreen(news: provider.news,):index==1?MeetingScreen(meetings: provider.meetings,):AnnouncementScreen(),  // Replace with your body widget
+                                index==0?NewsScreen(news: provider.news,):index==1?MeetingScreen(meetings: provider.meetings,):AnnouncementScreen(announcements:provider.announcement),  // Replace with your body widget
                                 isExpanded: provider.expandable[index],   // Control expansion state if needed
                               ),
                             );
@@ -57,7 +72,7 @@ class AccouncementsScreen extends StatelessWidget {
     );
   }
 
-  Widget borderDate(String text){
+  Widget borderDate({required BuildContext context,required String text,required AnnouncementProvider provider}){
     return Row(
       children: [
         Text(text),
@@ -70,9 +85,20 @@ class AccouncementsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0)
 
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}'),
+            child: GestureDetector(
+              onTap: () async {
+                final DateTime? pickedDate=await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year), lastDate: DateTime(DateTime.now().year+20));
+                if(text.contains('Start')){
+                  provider.startDate=pickedDate;
+                }else{
+                  provider.endDate=pickedDate;
+                }
+              },
+              child: Padding(              
+                padding: const EdgeInsets.all(8.0),
+                child: Text(text.contains('Start')?'${provider.startDate?.day}/${provider.startDate?.month}/${provider.startDate?.year}':'${provider.endDate?.day}/${provider.endDate?.month}/${provider.endDate?.year}'),
+                
+              ),
             )
         )
       ],

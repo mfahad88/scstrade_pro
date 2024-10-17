@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
@@ -11,6 +13,15 @@ class DashboardProvider extends ChangeNotifier{
   List<IndexGroup>? _indexGroup;
   List<StockData> get stocks => _stocks;
   String? _selectedIndex;
+  String _errorMessage='';
+
+  String get errorMessage => _errorMessage;
+
+  set errorMessage(String value) {
+    _errorMessage = value;
+    notifyListeners();
+  }
+
   TextEditingController editingController = TextEditingController();
   String? get selectedIndex => _selectedIndex;
 
@@ -66,10 +77,12 @@ class DashboardProvider extends ChangeNotifier{
     try {
       _isLoading = true;
       _indices = await ApiClient.fetchIndices();
-
+      _errorMessage = '';
     }catch (error){
       _isLoading = false;
-      print('Error fetching indices: $error');
+      _errorMessage='Check your internet connect...';
+
+      // print('Error fetching indices: $error');
     }finally{
       _isLoading = false;
       if(isFirst) {

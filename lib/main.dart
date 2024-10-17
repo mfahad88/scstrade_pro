@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:schedulers/schedulers.dart';
 import 'package:scstrade_pro/provider/announcement_provider.dart';
 import 'package:scstrade_pro/provider/dashboard_provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';

@@ -13,7 +13,7 @@ class MeetingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: meetings.length,
       itemBuilder: (context, index) => Card(
         child: Column(
@@ -27,45 +27,45 @@ class MeetingScreen extends StatelessWidget {
             ),),
             Row(
               children: [
-                Icon(Icons.date_range),
+                const Icon(Icons.date_range),
                 const Text('Date',style: TextStyle(
                   fontSize: 15
                 ),
                 ),
-                SizedBox(width: 20.0,),
-                Text(Utils.convertDate(meetings[index].bmDate??"0"),style: TextStyle(
+                const SizedBox(width: 20.0,),
+                Text(Utils.convertDate(meetings[index].bmDate??"0"),style: const TextStyle(
                     fontSize: 15
                 ),)
               ],
             ),
             Row(
               children: [
-                Icon(Icons.timer),
-                Text('Time'),
-                SizedBox(width: 20.0,),
-                Text(Utils.convertDate(meetings[index].bmTime??"0"))
+                const Icon(Icons.timer),
+                const Text('Time'),
+                const SizedBox(width: 20.0,),
+                Text(meetings[index].bmTime??"0")
               ],
             ),
             Row(
               children: [
-                Icon(Icons.pin_drop),
-                Text('Place'),
-                SizedBox(width: 20.0,),
+                const Icon(Icons.pin_drop),
+                const Text('Place'),
+                const SizedBox(width: 20.0,),
                 Text(meetings[index].bmPlace??"")
               ],
             ),
             Row(
               children: [
-                Icon(Icons.calendar_today_sharp),
-                Text('Year End'),
-                SizedBox(width: 20.0,),
+                const Icon(Icons.calendar_today_sharp),
+                const Text('Year End'),
+                const SizedBox(width: 20.0,),
                 Text(meetings[index].bmYear??"")
               ],
             ),
             Row(
               children: [
-                Text('Quarter'),
-                SizedBox(width: 20.0,),
+                const Text('Quarter'),
+                const SizedBox(width: 20.0,),
                 Text(meetings[index].bmQuarterNumber??"")
               ],
             )

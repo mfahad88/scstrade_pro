@@ -10,11 +10,21 @@ class AnnouncementProvider extends ChangeNotifier{
   List<Meetings> _meetings=List.empty(growable: true);
   List<Announcement> _announcement=List.empty(growable: true);
   List<bool> expandable=List.generate(3, (index) => false,);
+  DateTime? _startDate=DateTime.now();
+  DateTime? _endDate=DateTime.now();
   bool _isLoading=false;
 
   bool get isLoading => _isLoading;
 
   List<News> get news => _news;
+
+
+  DateTime? get startDate => _startDate;
+
+  set startDate(DateTime? value) {
+    _startDate = value;
+    notifyListeners();
+  }
 
   void setExpandable(int index,bool value){
     expandable[index]=value;
@@ -53,5 +63,12 @@ class AnnouncementProvider extends ChangeNotifier{
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>notifyListeners() ,);
 
     }
+  }
+
+  DateTime? get endDate => _endDate;
+
+  set endDate(DateTime? value) {
+    _endDate = value;
+    notifyListeners();
   }
 }
