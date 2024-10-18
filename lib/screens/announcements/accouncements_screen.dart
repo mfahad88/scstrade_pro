@@ -24,11 +24,11 @@ class AccouncementsScreen extends StatelessWidget {
 
                     SizedBox(height: 20.0,),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Row(
                         children: [
                           borderDate(context: context,text: 'Start Date: ',provider: provider),
-                          SizedBox(width: 20.0,),
+                          Spacer(),
                           borderDate(context: context,text: 'End Date: ',provider: provider),
                         ],
                       ),
@@ -48,13 +48,18 @@ class AccouncementsScreen extends StatelessWidget {
                               index,
                               ExpansionPanel(
                                 canTapOnHeader: true,
+                                backgroundColor: Colors.grey.shade50,
                                 headerBuilder: (context, isExpanded) {
                                   return ListTile(
-                                    title: Text('Title: $e'),  // You can use the index here
+                                    title: Text('$e',
+                                      style:const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.black45
+                                      ) ,),  // You can use the index here
                                   );
                                 },
-                                body:
-                                index==0?NewsScreen(news: provider.news,):index==1?MeetingScreen(meetings: provider.meetings,):AnnouncementScreen(announcements:provider.announcement),  // Replace with your body widget
+                                body: index==0?NewsScreen(news: provider.news,):index==1?MeetingScreen(meetings: provider.meetings,):AnnouncementScreen(announcements:provider.announcement),  // Replace with your body widget
                                 isExpanded: provider.expandable[index],   // Control expansion state if needed
                               ),
                             );

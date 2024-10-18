@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:scstrade_pro/data/dto/announcement/Announcement.dart';
 import 'package:scstrade_pro/data/dto/announcement/Meetings.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 
 import '../data/dto/announcement/News.dart';
+import '../helper/Utils.dart';
 
 class AnnouncementProvider extends ChangeNotifier{
   List<News> _news=List.empty(growable: true);
@@ -52,15 +55,39 @@ class AnnouncementProvider extends ChangeNotifier{
     _announcement = value;
   }
 
-  void fetchAccouncements(){
+  Future<void> fetchAccouncements() async {
     try{
+      for(int i=0;i<expandable.length;i++){
+        expandable[i]=false;
+      }
       _isLoading=true;
-      ApiClient.fetchAccouncements(this);
+      var responses=await ApiClient.fetchAccouncements(this);
+      List<dynamic> newz=json.decode(responses[0].body);
+      List<dynamic> meetingz=json.decode(responses[1].body);
+      List<dynamic> announcementz=json.decode(responses[2].body);
+
+      _news = newz.map((e) {
+        return  News.fromJson(e);
+      },).toList().where((element) {
+        return Utils.epochDate(element.newsDate!).isAfter(startDate!) && Utils.epochDate(element.newsDate!).isBefore(endDate!);
+      },).toList();
+      _meetings = meetingz.map((e) {
+        return Meetings.fromJson(e);
+      },).toList().where((element) {
+
+        return Utils.epochDate(element.bmDate!).isAfter(startDate!) && Utils.epochDate(element.bmDate!).isBefore(endDate!);
+      },).toList();
+      announcement = announcementz.map((e) {
+        return Announcement.fromJson(e);
+      },).toList().where((element) {
+        return Utils.epochDate(element.newsDate!).isAfter(startDate!) && Utils.epochDate(element.newsDate!).isBefore(endDate!);
+      },).toList();
     }catch(e){
       throw Exception(e);
     }finally{
       _isLoading=false;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>notifyListeners() ,);
+      notifyListeners();
+      // WidgetsBinding.instance.addPostFrameCallback((timeStamp) =>notifyListeners() ,);
 
     }
   }

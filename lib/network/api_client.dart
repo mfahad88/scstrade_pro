@@ -100,7 +100,7 @@ class ApiClient{
   }
   
   
-  static Future<void> fetchAccouncements(AnnouncementProvider provider) async {
+  static Future<List<http.Response>> fetchAccouncements(AnnouncementProvider provider) async {
     var responses= await Future.wait([
       http.get(Uri.parse('$_baseUrl/Data?que=News')),
       http.get(Uri.parse('$_baseUrl/Data?que=Meetings')),
@@ -112,8 +112,8 @@ class ApiClient{
       List<dynamic> announcement=json.decode(responses[2].body);
 
       // meetings.forEach((element) => print('Company: ${element['company_code']}'),);
-
-      provider.news = news.map((e) {
+      return responses;
+     /* provider.news = news.map((e) {
         return  News.fromJson(e);
       },).toList().where((element) {
         return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
@@ -128,7 +128,7 @@ class ApiClient{
         return Announcement.fromJson(e);
       },).toList().where((element) {
         return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
-      },).toList();
+      },).toList();*/
     }else{
       throw Exception('Failed to load Announcments');
 
