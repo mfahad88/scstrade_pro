@@ -107,28 +107,10 @@ class ApiClient{
       http.get(Uri.parse('$_baseUrl/Data?que=Announcement'))
     ]);
     if(responses[0].statusCode==200 && responses[1].statusCode==200 && responses[2].statusCode==200){
-      List<dynamic> news=json.decode(responses[0].body);
-      List<dynamic> meetings=json.decode(responses[1].body);
-      List<dynamic> announcement=json.decode(responses[2].body);
 
       // meetings.forEach((element) => print('Company: ${element['company_code']}'),);
       return responses;
-     /* provider.news = news.map((e) {
-        return  News.fromJson(e);
-      },).toList().where((element) {
-        return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
-      },).toList();
-      provider.meetings = meetings.map((e) {
-        return Meetings.fromJson(e);
-      },).toList().where((element) {
 
-        return Utils.epochDate(element.bmDate!).isAfter(provider.startDate!) && Utils.epochDate(element.bmDate!).isBefore(provider.endDate!);
-      },).toList();
-      provider.announcement = announcement.map((e) {
-        return Announcement.fromJson(e);
-      },).toList().where((element) {
-        return Utils.epochDate(element.newsDate!).isAfter(provider.startDate!) && Utils.epochDate(element.newsDate!).isBefore(provider.endDate!);
-      },).toList();*/
     }else{
       throw Exception('Failed to load Announcments');
 

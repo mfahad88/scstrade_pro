@@ -11,7 +11,7 @@ class MeetingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return meetings.isEmpty?ListTile(title: Text('No records found'),):ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: meetings.length,

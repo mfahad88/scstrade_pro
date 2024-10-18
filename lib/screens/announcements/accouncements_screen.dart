@@ -92,7 +92,7 @@ class AccouncementsScreen extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () async {
-                final DateTime? pickedDate=await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year), lastDate: DateTime(DateTime.now().year+20));
+                final DateTime? pickedDate=await showDatePicker(context: context, initialDate: DateTime.now(),firstDate: DateTime(DateTime.now().year-30), lastDate: DateTime(DateTime.now().year+20));
                 if(text.contains('Start')){
                   provider.startDate=pickedDate;
                 }else{

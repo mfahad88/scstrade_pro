@@ -15,7 +15,12 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final _flutterMediaDownloaderPlugin = MediaDownload();
-    return ListView.builder(
+    return news.isEmpty?Card(
+          elevation: 5.0,
+        color: Colors.grey.shade200,
+        clipBehavior: Clip.none,
+        child: ListTile(title: Text('No records found'),)
+    ): ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {

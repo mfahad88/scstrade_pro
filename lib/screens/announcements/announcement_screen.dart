@@ -13,7 +13,7 @@ class AnnouncementScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final _flutterMediaDownloaderPlugin = MediaDownload();
-    return ListView.builder(
+    return announcements.isEmpty?ListTile(title: Text('No records found'),):ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
