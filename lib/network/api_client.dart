@@ -100,7 +100,7 @@ class ApiClient{
   }
   
   
-  static Future<List<http.Response>> fetchAccouncements(AnnouncementProvider provider) async {
+  static Future<List<http.Response>> fetchAccouncements() async {
     var responses= await Future.wait([
       http.get(Uri.parse('$_baseUrl/Data?que=News')),
       http.get(Uri.parse('$_baseUrl/Data?que=Meetings')),
@@ -115,6 +115,23 @@ class ApiClient{
       throw Exception('Failed to load Announcments');
 
     }
+  }
 
+  static Future<List<http.Response>> fetchSnapshot(String symbol) async {
+    var responses= await Future.wait([
+      http.get(Uri.parse('$_baseUrl/SnapOverview?symbolin=$symbol')),
+      http.get(Uri.parse('$_baseUrl/SnapDetails?symbolin=$symbol')),
+      http.get(Uri.parse('$_baseUrl/SnapCharting?symbolin=$symbol'))
+    ]);
+    if(responses[0].statusCode==200 && responses[1].statusCode==200 && responses[2].statusCode==200){
+      responses.forEach((element) => print(element.request),);
+
+      // meetings.forEach((element) => print('Company: ${element['company_code']}'),);
+      return responses;
+
+    }else{
+      throw Exception('Failed to load Snapshot');
+
+    }
   }
 }

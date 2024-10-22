@@ -61,7 +61,7 @@ class AnnouncementProvider extends ChangeNotifier{
         expandable[i]=false;
       }
       _isLoading=true;
-      var responses=await ApiClient.fetchAccouncements(this);
+      var responses=await ApiClient.fetchAccouncements();
       List<dynamic> newz=json.decode(responses[0].body);
       List<dynamic> meetingz=json.decode(responses[1].body);
       List<dynamic> announcementz=json.decode(responses[2].body);

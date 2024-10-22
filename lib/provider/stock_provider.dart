@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/data/dto/change_opacity.dart';
+import 'package:scstrade_pro/data/dto/snapshot/Overview.dart';
 import 'package:scstrade_pro/database/scs_database.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +28,8 @@ class StockProvider extends ChangeNotifier{
   List<StockData> _stockData=[];
   List<StockData> _previousStocks=[];
   List<StockData> watchList=[];
+  Overview? overview;
+  String? errorMessage;
   bool _isLoading=false;
   ScsDatabase db=ScsDatabase.instance;
 
@@ -205,5 +208,19 @@ class StockProvider extends ChangeNotifier{
     list.forEach((element) => sector.add(element!),);
     // _selectedSector=sector.first;
     // notifyListeners();
+  }
+
+  Future<void> fetchSnapshot(String symbol) async {
+    try{
+      _isLoading=true;
+      var responses=await ApiClient.fetchSnapshot(symbol);
+
+      overview=Overview.fromJson(json.decode(responses[0].body));
+    }catch(e){
+      throw Exception(e);
+    }finally{
+      _isLoading=false;
+      notifyListeners();
+    }
   }
 }
