@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 
 import 'package:path/path.dart';
-import 'package:scstrade_pro/data/dto/Stock_data.dart';
-import 'package:scstrade_pro/screens/market/tabs/watchlist_screen.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ScsDatabase{

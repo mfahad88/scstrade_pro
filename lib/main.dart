@@ -83,7 +83,9 @@ class _MyAppState extends State<MyApp> {
       ),
       home: const Scaffold(
 
-        body: SafeArea(child: HomeScreen()),
+        body: SafeArea(
+            child: HomeScreen()
+        ),
       ),
     );
   }

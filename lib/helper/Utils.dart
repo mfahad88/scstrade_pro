@@ -63,10 +63,12 @@ class Utils{
     return formatter.format(value);
   }
 
-  static String formatToMillions(int number) {
-    // Convert to millions and format to 2 decimal places
-    double millions = number / 1000000;
-    return millions.toStringAsFixed(2) + 'M';
+  static String formatToMillions(double number) {
+    if (number < 1000) {
+      return number.toStringAsFixed(2); // e.g., 1373.39
+    } else {
+      return (number / 1000000).toStringAsFixed(1) + 'M'; // e.g., 1.4M
+    }
   }
 
   static String convertDate(String dateString) {

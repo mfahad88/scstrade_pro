@@ -125,7 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 color: Colors.black45
                             ),
                           ),
-                          Text(Utils.formatToMillions(int.parse(provider.indices!
+                          Text(Utils.formatToMillions(double.parse(provider.indices!
                               .where((element) =>
                           element.indexCode == provider.selectedIndex,)
                               .toList()
