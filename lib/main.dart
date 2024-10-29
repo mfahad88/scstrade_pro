@@ -7,6 +7,7 @@ import 'package:scstrade_pro/provider/dashboard_provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/screens/home/home_screen.dart';
+import 'package:scstrade_pro/screens/intro/intro_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,10 +82,10 @@ class _MyAppState extends State<MyApp> {
       darkTheme: ThemeData(
 
       ),
-      home: const Scaffold(
+      home: Scaffold(
 
         body: SafeArea(
-            child: HomeScreen()
+            child: IntroScreen()
         ),
       ),
     );
