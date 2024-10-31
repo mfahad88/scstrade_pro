@@ -11,6 +11,7 @@ import 'package:scstrade_pro/screens/intro/ui/intro_one.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
 import 'package:scstrade_pro/screens/intro/viewmodel/intro_viewmodel.dart';
 import 'package:scstrade_pro/screens/login/ui/login_screen.dart';
+import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 import 'package:scstrade_pro/theme/ttheme_dark.dart';
 import 'package:scstrade_pro/theme/ttheme_light.dart';
 
@@ -21,6 +22,7 @@ Future<void> main() async {
   runApp(
       MultiProvider(
           providers: [
+            ChangeNotifierProvider(create: (context) => LoginViewModel(),),
             ChangeNotifierProvider(create: (context) => IntroViewModel(),),
             ChangeNotifierProvider(create: (context) => StockProvider(),),
             ChangeNotifierProvider(create: (context) => HomeProvider(),),
