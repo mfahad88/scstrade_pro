@@ -10,6 +10,9 @@ import 'package:scstrade_pro/screens/home/home_screen.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_one.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
 import 'package:scstrade_pro/screens/intro/viewmodel/intro_viewmodel.dart';
+import 'package:scstrade_pro/screens/login/ui/login_screen.dart';
+import 'package:scstrade_pro/theme/ttheme_dark.dart';
+import 'package:scstrade_pro/theme/ttheme_light.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,31 +49,18 @@ class _MyAppState extends State<MyApp> {
     return  MaterialApp(
       scaffoldMessengerKey: _provider?.snackbarKey,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          cardTheme: CardTheme(
-            color: Colors.white,
-            shape: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xFFA5A5A5),
-                width: 2.0
-              ),
-                borderRadius: BorderRadius.circular(14.0)
-            ),
-          )
-
-      ),
-      darkTheme: ThemeData(
-        cardTheme: CardTheme(
-          color: Colors.black,
-          shape: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0)
-          ),
-        )
-      ),
+      themeMode: ThemeMode.system,
+      theme: ttheme_light,
+      darkTheme: ttheme_dark,
       home: Scaffold(
 
-        body: SafeArea(
-            child: IntroScreen()
+        body: Builder(
+          builder: (context) {
+            return SafeArea(
+                child: LoginScreen(),
+            );
+          },
+
         ),
       ),
     );

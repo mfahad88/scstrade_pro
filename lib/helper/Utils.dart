@@ -92,4 +92,9 @@ class Utils{
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     return date;
   }
+
+  static double responsiveSize(double width,double baseSize){
+
+    return (baseSize/320)*width;
+  }
 }
