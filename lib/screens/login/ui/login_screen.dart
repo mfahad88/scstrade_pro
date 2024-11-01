@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/login/ui/card_indices.dart';
+import 'package:scstrade_pro/screens/login/ui/my_tab_bar.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
-import 'package:scstrade_pro/widgets/drop_index.dart';
 
 import '../../../helper/Utils.dart';
 
@@ -23,39 +24,27 @@ class LoginScreen extends StatelessWidget {
             )
         ),
         LayoutBuilder(
-            builder: (context, constraints) {
-              return Column(
-                children: [
-                  Gap(21),
-                  Image.asset('images/scs_logo.png'),
-                  Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
-                  Container(
-                    decoration: ShapeDecoration(
-                      color: Color(0xFF142117),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1, color: Color(0xFF333333)),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      shadows: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 34,
-                          offset: Offset(0, 24),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        DropIndex(value: viewModel.selectedValue, items: viewModel.indices?.map((e) => e.indexCode,).toList()??List.empty(), onChanged: (value) {
-                          viewModel.selectedValue=value;
-                        },)
-                      ],
-                    ),
-                  )
-                ],
-              );
-            },
+          builder: (context, constraints) {
+            return Column(
+              children: [
+                const Gap(21),
+                SizedBox(
+                  height: constraints.maxHeight*0.3,
+                  child: Column(
+                    children: [
+                      Image.asset('images/scs_logo.png'),
+                      Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
+                      Gap(10),
+                      CardIndices(),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                    height: constraints.maxHeight*0.6,
+                    child: MyTabBar())
+              ],
+            );
+          },
         ),
       ],
     );

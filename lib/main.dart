@@ -55,14 +55,9 @@ class _MyAppState extends State<MyApp> {
       theme: ttheme_light,
       darkTheme: ttheme_dark,
       home: Scaffold(
-
-        body: Builder(
-          builder: (context) {
-            return SafeArea(
-                child: LoginScreen(),
-            );
-          },
-
+          resizeToAvoidBottomInset: false,
+        body: SafeArea(
+            child: LoginScreen(),
         ),
       ),
     );
@@ -70,12 +65,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _provider=context.read<StockProvider>();
+   /* _provider=context.read<StockProvider>();
     _provider?.fetchStocks();
 
     _timer=Timer.periodic(const Duration(seconds: 5), (timer) async {
       _provider?.fetchStocks();
-    },);
+    },);*/
     super.initState();
 
 

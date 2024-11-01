@@ -93,8 +93,8 @@ class Utils{
     return date;
   }
 
-  static double responsiveSize(double width,double baseSize){
-
-    return (baseSize/320)*width;
+  static double responsiveSize(double screenWidth,double baseWidth){
+    double scaleFactor = screenWidth / 480;
+    return  baseWidth * scaleFactor;
   }
 }

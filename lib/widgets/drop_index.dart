@@ -4,13 +4,15 @@ class DropIndex extends StatelessWidget {
   final List<dynamic> items;
   final ValueChanged onChanged;
   final String value;
-  const DropIndex({super.key,required this.value,required this.items,required this.onChanged});
+  final TextStyle? style;
+  const DropIndex({super.key,required this.value,required this.items,required this.onChanged,this.style});
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
         value: value,
         enableFeedback: true,
+        style: style,
         padding: EdgeInsets.zero,
         items: items.map((e) {
           return DropdownMenuItem(
@@ -18,9 +20,7 @@ class DropIndex extends StatelessWidget {
               child: Container(
                   width: MediaQuery.of(context).size.width * 0.25,
                   child: Text(e,
-                    style: const TextStyle(
-                        fontSize: 10
-                    ),
+                    style: style,
                   )
               )
           );
