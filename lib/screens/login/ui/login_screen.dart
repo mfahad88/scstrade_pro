@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/login/ui/card_indices.dart';
-import 'package:scstrade_pro/screens/login/ui/my_tab_bar.dart';
+import 'package:scstrade_pro/screens/login/ui/widgets/card_indices.dart';
+import 'package:scstrade_pro/screens/login/ui/widgets/my_tab_bar.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 
 import '../../../helper/Utils.dart';

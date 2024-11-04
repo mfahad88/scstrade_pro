@@ -11,7 +11,7 @@ class Text14 extends StatelessWidget {
     return Text(
       data??'',
       style: style??TextStyle(
-        color: Colors.white,
+        color: Utils.isDark(context)?Colors.white:Color(0xFF222230),
         fontSize: MediaQuery.of(context).size.width * 0.029,
         fontFamily: 'DM Sans',
         fontWeight: FontWeight.w400,

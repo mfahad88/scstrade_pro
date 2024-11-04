@@ -6,6 +6,7 @@ import 'package:scstrade_pro/provider/announcement_provider.dart';
 import 'package:scstrade_pro/provider/dashboard_provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
+import 'package:scstrade_pro/screens/dashboard/ui/dashboard_screen.dart';
 import 'package:scstrade_pro/screens/home/home_screen.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_one.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
@@ -57,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
           resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: LoginScreen(),
+            child: HomeScreen(),
         ),
       ),
     );

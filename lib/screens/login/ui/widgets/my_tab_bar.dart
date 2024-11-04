@@ -6,7 +6,7 @@ import 'package:scstrade_pro/screens/login/ui/virtual_trading.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 import 'package:scstrade_pro/widgets/text_16.dart';
 
-import '../../../helper/Utils.dart';
+import '../../../../helper/Utils.dart';
 
 class MyTabBar extends StatelessWidget {
   const MyTabBar({super.key});
