@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../helper/Utils.dart';
+import '../../../widgets/text_10.dart';
+import '../../../widgets/text_13.dart';
+import '../../../widgets/text_32.dart';
 
 class IntroTwo extends StatelessWidget {
   const IntroTwo({super.key});
@@ -17,10 +20,7 @@ class IntroTwo extends StatelessWidget {
           Gap(21),
           Image.asset('images/scs_logo.png'),
           Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
-          Text('Real-Time Market Insights',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
+          Text32(data:'Real-Time Market Insights'),
           const Gap(100),
           Stack(
             clipBehavior: Clip.none,
@@ -52,7 +52,7 @@ class IntroTwo extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
+                      side: const BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
                       borderRadius: BorderRadius.circular(7.88),
                     ),
                   ),
@@ -65,16 +65,15 @@ class IntroTwo extends StatelessWidget {
                         child: Container(
                           height: 29,
                           padding: const EdgeInsets.all(6.0),
-                          decoration: BoxDecoration(color: Utils.isDark(context)?Color(0xFF2CE52F):Color(0xFF0B4702)),
-                          child: Row(
+                          decoration: BoxDecoration(color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702)),
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                'Deposits',
-                                style: Theme.of(context).textTheme.labelSmall,
-                              ),
+                              Text13(
+                                data: 'Deposits',
+                              )
                             ],
                           ),
                         ),
@@ -88,10 +87,10 @@ class IntroTwo extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                  'Withdraw',
+                              Text13(
+                                  data:'Withdraw',
                                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                      color: Color(0XFFA5A5A5)
+                                      color: const Color(0XFFA5A5A5)
                                   )
                               ),
                             ],
@@ -108,35 +107,30 @@ class IntroTwo extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: double.infinity,
-                        child: Text(
-                          'Enter amount',
-                          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: Utils.isDark(context)?Colors.white:Color(0xFF1D1D1D)
-                          ),
+                        child: Text13(
+                          data:'Enter amount',
+
                         ),
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(7.88),
                         decoration: ShapeDecoration(
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 0.66, color: Color(0xFFE1E1E1)),
+                            side: const BorderSide(width: 0.66, color: Color(0xFFE1E1E1)),
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'USD \$100',
-                              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                  color: Utils.isDark(context)?Colors.white:Color(0xFF1D1D1D)
-                              ),
+                            Text13(
+                              data:'USD \$100',
                             ),
                           ],
                         ),
@@ -144,7 +138,7 @@ class IntroTwo extends StatelessWidget {
                     ],
                   ),
                 ),
-                Gap(23),
+                const Gap(23),
                 Container(
                   width: 200,
                   child: Row(
@@ -157,24 +151,18 @@ class IntroTwo extends StatelessWidget {
                         height: 24.50,
                         padding: const EdgeInsets.all(5.25),
                         decoration: ShapeDecoration(
-                          color: Color(0xFFD6FFCC),
+                          color: const Color(0xFFD6FFCC),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              '+ \$100',
-                              style: TextStyle(
-                                color: Color(0xFF1D1D1D),
-                                fontSize: 10.50,
-                                fontFamily: 'DM Sans',
-                                fontWeight: FontWeight.w400,
-                              ),
+                            Text13(
+                              data:'+ \$100',
                             ),
                           ],
                         ),
@@ -185,24 +173,18 @@ class IntroTwo extends StatelessWidget {
                         height: 24.50,
                         padding: const EdgeInsets.all(5.25),
                         decoration: ShapeDecoration(
-                          color: Color(0xFFD6FFCC),
+                          color: const Color(0xFFD6FFCC),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              '+ \$500',
-                              style: TextStyle(
-                                color: Color(0xFF1D1D1D),
-                                fontSize: 10.50,
-                                fontFamily: 'DM Sans',
-                                fontWeight: FontWeight.w400,
-                              ),
+                            Text10(
+                              data:'+ \$500',
                             ),
                           ],
                         ),
@@ -213,24 +195,18 @@ class IntroTwo extends StatelessWidget {
                         height: 24.50,
                         padding: const EdgeInsets.all(5.25),
                         decoration: ShapeDecoration(
-                          color: Color(0xFFD6FFCC),
+                          color: const Color(0xFFD6FFCC),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              '+ \$1000',
-                              style: TextStyle(
-                                color: Color(0xFF1D1D1D),
-                                fontSize: 10.50,
-                                fontFamily: 'DM Sans',
-                                fontWeight: FontWeight.w400,
-                              ),
+                            Text10(
+                              data:'+ \$1000',
                             ),
                           ],
                         ),
@@ -238,13 +214,13 @@ class IntroTwo extends StatelessWidget {
                     ],
                   ),
                 ),
-                Gap(23),
+                const Gap(23),
                 Container(
                   width: 288.16,
                   height: 37,
                   padding: const EdgeInsets.symmetric(horizontal: 7.88, vertical: 10.50),
                   decoration: ShapeDecoration(
-                    color: Utils.isDark(context)?Color(0xFF2CE52F):Color(0xFF0B4702),
+                    color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7.88),
                     ),
@@ -254,11 +230,8 @@ class IntroTwo extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Deposit money',
-                        style:Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: Utils.isDark(context)?Color(0xFF1D1D1D):Color(0xFF2CE52F)
-                        ),
+                      Text13(
+                        data:'Deposit money',
                       ),
                     ],
                   ),

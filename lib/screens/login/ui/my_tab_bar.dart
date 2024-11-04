@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/login/ui/real_trading.dart';
+import 'package:scstrade_pro/screens/login/ui/virtual_trading.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
+import 'package:scstrade_pro/widgets/text_16.dart';
 
 import '../../../helper/Utils.dart';
 
@@ -49,56 +52,23 @@ class MyTabBar extends StatelessWidget {
             ],
           ),
         ),
-        body: LayoutBuilder(
-          builder: (context, constraints) => TabBarView(
-            children: <Widget>[
-              Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.033, vertical: constraints.maxWidth*0.05),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 1,color:Utils.isDark(context)?Color(0xFF737180):Color(0xFFE1E1E1)),
-                            borderRadius: BorderRadius.circular(8),
-                          )
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.033, vertical: constraints.maxWidth*0.0025),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Consumer<LoginViewModel>(
-                        builder: (BuildContext context, LoginViewModel value, Widget? child) {
-                          return  TextField(
-                            obscureText: value.obscureText,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(onPressed: () => value.obscureText=!value.obscureText, icon: Icon(value.obscureText?Icons.visibility:Icons.visibility_off)),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1,color:Utils.isDark(context)?Color(0xFF737180):Color(0xFFE1E1E1)),
-                                  borderRadius: BorderRadius.circular(8),
-                                )
-                            ),
-
-                          );
-                        },
-
-                      ),
-                    ),
-                  ),
+        body: Container(
+          color: Utils.isDark(context)?Color(0xFF1D1D1D):Colors.white,
+          child: LayoutBuilder(
+            builder: (context, constraints) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.033, vertical: constraints.maxWidth*0.05),
+              child: TabBarView(
+                children: <Widget>[
+                  RealTrading(),
+                  VirtualTrading(),
                 ],
               ),
-              Column(
-
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+

@@ -56,7 +56,7 @@ class CardIndices extends StatelessWidget {
                       ),),
                       Gap(screenWidth*0.0167),
                       Text(
-                        'M.Vol: ${Utils.commaSeparated(double.parse(value.indices?.where((element) => element.indexCode==value.selectedValue,).first.volumeTraded??'0.0'))}',
+                        'M.Vol: ${Utils.commaSeparated(double.parse(value.indices?.where((element) => element.indexCode==value.selectedValue,).first.volumeTraded??'0.0000'))}',
                         style: TextStyle(
                           color: Utils.isDark(context)? Colors.white:const Color(0xFF222230),
                           fontSize: screenWidth*0.033,
@@ -96,7 +96,7 @@ class CardIndices extends StatelessWidget {
                       children: [
                         Icon(Icons.arrow_upward,color: Color(0xFF2CE52F),size: screenWidth*0.044,),
                         Text(
-                          '0.47%',
+                          value.dailyPercentChange,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: screenWidth*0.029,
@@ -107,7 +107,7 @@ class CardIndices extends StatelessWidget {
                         ),
                         Gap(5),
                         Text(
-                          '+409.06',
+                          value.dailyChange,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: screenWidth*0.029,

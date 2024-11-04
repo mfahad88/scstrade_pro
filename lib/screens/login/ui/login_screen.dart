@@ -25,24 +25,25 @@ class LoginScreen extends StatelessWidget {
         ),
         LayoutBuilder(
           builder: (context, constraints) {
-            return Column(
-              children: [
-                const Gap(21),
-                SizedBox(
-                  height: constraints.maxHeight*0.3,
-                  child: Column(
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
                     children: [
-                      Image.asset('images/scs_logo.png'),
+                      Container(
+                        margin:EdgeInsets.only(top:constraints.maxWidth*0.043),
+                          child: Image.asset('images/scs_logo.png')
+                      ),
                       Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
                       Gap(10),
                       CardIndices(),
                     ],
                   ),
-                ),
-                SizedBox(
-                    height: constraints.maxHeight*0.6,
-                    child: MyTabBar())
-              ],
+                  SizedBox(
+                      height: constraints.maxHeight*0.7,
+                      child: MyTabBar())
+                ],
+              ),
             );
           },
         ),

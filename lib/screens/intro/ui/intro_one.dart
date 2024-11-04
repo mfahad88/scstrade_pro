@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:scstrade_pro/widgets/text_13.dart';
+import 'package:scstrade_pro/widgets/text_32.dart';
 
 import '../../../helper/Utils.dart';
+import '../../../widgets/text_10.dart';
 
 class IntroOne extends StatelessWidget {
   const IntroOne({super.key});
@@ -14,13 +17,10 @@ class IntroOne extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Gap(21),
+          const Gap(21),
           Image.asset('images/scs_logo.png'),
           Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
-          Text('Seamless Trading Experience',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
+          const Text32(data: 'Seamless Trading Experience',),
           const Gap(100),
           Stack(
             clipBehavior: Clip.none,
@@ -41,232 +41,205 @@ class IntroOne extends StatelessWidget {
 
   SizedBox _cardBox(BuildContext context,double width) {
     return SizedBox(
-                width: width*0.8,
-                child: Card.outlined(
-                  child: Padding(
-                    padding: const EdgeInsets.all(21.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
-                              borderRadius: BorderRadius.circular(7.88),
-                            ),
-                          ),
-                          child: Row(
+        width: width*0.8,
+        child: Card.outlined(
+          child: Padding(
+            padding: const EdgeInsets.all(21.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
+                      borderRadius: BorderRadius.circular(7.88),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 29,
+                          padding: const EdgeInsets.all(6.0),
+                          decoration: BoxDecoration(color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702)),
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Container(
-                                  height: 29,
-                                  padding: const EdgeInsets.all(6.0),
-                                  decoration: BoxDecoration(color: Utils.isDark(context)?Color(0xFF2CE52F):Color(0xFF0B4702)),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Deposits',
-                                        style: Theme.of(context).textTheme.labelSmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 29.13,
-                                  padding: const EdgeInsets.all(6.56),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Withdraw',
-                                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                          color: Color(0XFFA5A5A5)
-                                      )
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              Text13(
+                                data: 'Deposits',
+                              )
                             ],
                           ),
                         ),
-                        Gap(width*0.05),
-                        Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: double.infinity,
-                                child: Text(
-                                  'Enter amount',
-                                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: Utils.isDark(context)?Colors.white:Color(0xFF1D1D1D)
-                                  ),
-                                ),
-                              ),
-                              Gap(10),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(7.88),
-                                decoration: ShapeDecoration(
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(width: 0.66, color: Color(0xFFE1E1E1)),
-                                    borderRadius: BorderRadius.circular(5.25),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'USD \$100',
-                                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                          color: Utils.isDark(context)?Colors.white:Color(0xFF1D1D1D)
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Gap(23),
-                        Container(
-                          width: 200,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 56,
-                                height: 24.50,
-                                padding: const EdgeInsets.all(5.25),
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFD6FFCC),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.25),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '+ \$100',
-                                      style: TextStyle(
-                                        color: Color(0xFF1D1D1D),
-                                        fontSize: 10.50,
-                                        fontFamily: 'DM Sans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 5.25),
-                              Container(
-                                width: 56,
-                                height: 24.50,
-                                padding: const EdgeInsets.all(5.25),
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFD6FFCC),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.25),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '+ \$500',
-                                      style: TextStyle(
-                                        color: Color(0xFF1D1D1D),
-                                        fontSize: 10.50,
-                                        fontFamily: 'DM Sans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 5.25),
-                              Container(
-                                width: 56,
-                                height: 24.50,
-                                padding: const EdgeInsets.all(5.25),
-                                decoration: ShapeDecoration(
-                                  color: Color(0xFFD6FFCC),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.25),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '+ \$1000',
-                                      style: TextStyle(
-                                        color: Color(0xFF1D1D1D),
-                                        fontSize: 10.50,
-                                        fontFamily: 'DM Sans',
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Gap(23),
-                        Container(
-                          width: 288.16,
-                          height: 37,
-                          padding: const EdgeInsets.symmetric(horizontal: 7.88, vertical: 10.50),
-                          decoration: ShapeDecoration(
-                            color: Utils.isDark(context)?Color(0xFF2CE52F):Color(0xFF0B4702),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.88),
-                            ),
-                          ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: 29.13,
+                          padding: const EdgeInsets.all(6.56),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                'Deposit money',
-                                style:Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: Utils.isDark(context)?Color(0xFF1D1D1D):Color(0xFF2CE52F)
-                                ),
+                              Text13(
+                                  data:'Withdraw',
+                                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                                      color: const Color(0XFFA5A5A5)
+                                  )
                               ),
                             ],
                           ),
-                        )
-                      ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Gap(width*0.05),
+                Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: double.infinity,
+                        child: Text13(
+                          data:'Enter amount',
+
+                        ),
+                      ),
+                      const Gap(10),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(7.88),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(width: 0.66, color: Color(0xFFE1E1E1)),
+                            borderRadius: BorderRadius.circular(5.25),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text13(
+                              data:'USD \$100',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(23),
+                Container(
+                  width: 200,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 24.50,
+                        padding: const EdgeInsets.all(5.25),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFD6FFCC),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.25),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text13(
+                              data:'+ \$100',
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 5.25),
+                      Container(
+                        width: 56,
+                        height: 24.50,
+                        padding: const EdgeInsets.all(5.25),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFD6FFCC),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.25),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text10(
+                              data:'+ \$500',
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 5.25),
+                      Container(
+                        width: 56,
+                        height: 24.50,
+                        padding: const EdgeInsets.all(5.25),
+                        decoration: ShapeDecoration(
+                          color: const Color(0xFFD6FFCC),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.25),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text10(
+                             data:'+ \$1000',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(23),
+                Container(
+                  width: 288.16,
+                  height: 37,
+                  padding: const EdgeInsets.symmetric(horizontal: 7.88, vertical: 10.50),
+                  decoration: ShapeDecoration(
+                    color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7.88),
                     ),
                   ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text13(
+                        data:'Deposit money',
+                      ),
+                    ],
+                  ),
                 )
-            );
+              ],
+            ),
+          ),
+        )
+    );
   }
 }
