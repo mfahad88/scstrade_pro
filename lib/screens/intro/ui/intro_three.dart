@@ -16,10 +16,12 @@ class IntroThree extends StatelessWidget {
           children: [
             Gap(21),
             Image.asset('images/scs_logo.png'),
-            Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
+            Text('SCS Trade Pro',style: Theme.of(context).textTheme.bodyLarge,),
             Text('Manage Your Portfolio with Ease',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineLarge,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  fontSize: (width*(Theme.of(context).textTheme.headlineMedium!.fontSize!/480))
+              ),
             ),
             Gap(width*0.15),
             Padding(

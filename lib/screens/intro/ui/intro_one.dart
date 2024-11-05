@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:scstrade_pro/widgets/text_13.dart';
-import 'package:scstrade_pro/widgets/text_32.dart';
-
 import '../../../helper/Utils.dart';
-import '../../../widgets/text_10.dart';
 
 class IntroOne extends StatelessWidget {
   const IntroOne({super.key});
@@ -19,8 +15,13 @@ class IntroOne extends StatelessWidget {
         children: [
           const Gap(21),
           Image.asset('images/scs_logo.png'),
-          Text('SCS Trade Pro',style: Theme.of(context).textTheme.headlineSmall,),
-          const Text32(data: 'Seamless Trading Experience',),
+          Text('SCS Trade Pro',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.bodyLarge!.fontSize!/480))
+          ),),
+          Text('Seamless Trading Experience',
+            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.headlineMedium!.fontSize!/480))
+            ),),
           const Gap(100),
           Stack(
             clipBehavior: Clip.none,
@@ -66,13 +67,16 @@ class IntroOne extends StatelessWidget {
                           height: 29,
                           padding: const EdgeInsets.all(6.0),
                           decoration: BoxDecoration(color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702)),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text13(
-                                data: 'Deposits',
+                              Text(
+                                'Deposits',
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                                ),
                               )
                             ],
                           ),
@@ -87,10 +91,10 @@ class IntroOne extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text13(
-                                  data:'Withdraw',
-                                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                                      color: const Color(0XFFA5A5A5)
+                              Text('Withdraw',
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      color: const Color(0XFFA5A5A5),
+                                      fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
                                   )
                               ),
                             ],
@@ -107,10 +111,14 @@ class IntroOne extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: double.infinity,
-                        child: Text13(
-                          data:'Enter amount',
+                        child: Text(
+                          'Enter amount',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                          ),
 
                         ),
                       ),
@@ -124,13 +132,16 @@ class IntroOne extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text13(
-                              data:'USD \$100',
+                            Text('USD \$100',
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                              ),
                             ),
                           ],
                         ),
@@ -156,13 +167,17 @@ class IntroOne extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text13(
-                              data:'+ \$100',
+                            Text('+ \$100',
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF1D1D1D),
+                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                              ),
                             ),
                           ],
                         ),
@@ -178,13 +193,17 @@ class IntroOne extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text10(
-                              data:'+ \$500',
+                            Text('+ \$500',
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF1D1D1D),
+                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                              ),
                             ),
                           ],
                         ),
@@ -200,13 +219,17 @@ class IntroOne extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5.25),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text10(
-                             data:'+ \$1000',
+                            Text('+ \$1000',
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF1D1D1D),
+                                    fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                                )
                             ),
                           ],
                         ),
@@ -230,8 +253,10 @@ class IntroOne extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text13(
-                        data:'Deposit money',
+                      Text('Deposit money',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                        ),
                       ),
                     ],
                   ),

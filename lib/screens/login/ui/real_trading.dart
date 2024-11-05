@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/home/home_screen.dart';
 
 import '../../../helper/Utils.dart';
-import '../../../widgets/text_16.dart';
 import '../viewmodel/login_viewmodel.dart';
 
 class RealTrading extends StatelessWidget {
@@ -78,17 +78,17 @@ class RealTrading extends StatelessWidget {
                 activeColor: Color(0xFF2CE52F),
                 value: value.isChecked, onChanged: (v) => value.isChecked=!value.isChecked,
               ),
-              Text16(data: 'Remember Me',),
+              Text('Remember Me',style: Theme.of(context).textTheme.bodyLarge,),
               Spacer(),
-              Text16(data: 'Forget Password',),
+              Text('Forget Password',style: Theme.of(context).textTheme.bodyLarge,),
             ],
           ),
           Row(
             children: [
               Expanded(
                 child: ElevatedButton(onPressed: () {
-
-                }, child: Text16(data: 'Login',),
+                  Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),));
+                }, child: Text('Login',style: Theme.of(context).textTheme.bodyLarge,),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF2CE52F),
                       shape: RoundedRectangleBorder(
@@ -102,14 +102,12 @@ class RealTrading extends StatelessWidget {
               Expanded(
                 child: ElevatedButton(onPressed: () {
 
-                }, child: Text16(data: 'Open Account',
-                    style: TextStyle(
-                      color: Color(0xFF2CE52F),
-                      fontSize: 16,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      height: 0.08,
-                    )),
+                }, child: Text('Open Account'
+                  ,style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Color(0xFF2CE52F),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF142117),
                       shape: RoundedRectangleBorder(

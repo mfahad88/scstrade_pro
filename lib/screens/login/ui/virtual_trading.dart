@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
-import 'package:scstrade_pro/widgets/text_16.dart';
 
 class VirtualTrading extends StatelessWidget {
   const VirtualTrading({super.key});
@@ -27,12 +26,9 @@ class VirtualTrading extends StatelessWidget {
               children: [
                 Image.asset('images/google_logo.png'),
                 Gap(4),
-                Text16(data: 'Google',style: TextStyle().copyWith(
+                Text('Google',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Utils.isDark(context)? Colors.white:Color(0xFF222230),
-                  fontSize: 16,
-                  fontFamily: 'DM Sans',
                   fontWeight: FontWeight.w600,
-                  height: 0.08,
                 ),)
               ],
             ),
@@ -56,14 +52,11 @@ class VirtualTrading extends StatelessWidget {
               children: [
                 Image.asset('images/facebook_logo.png'),
                 Gap(4),
-                Text16(data: 'Facebook',
-                  style: TextStyle().copyWith(
-                    color: Utils.isDark(context)? Colors.white:Color(0xFF222230),
-                    fontSize: 16,
-                    fontFamily: 'DM Sans',
-                    fontWeight: FontWeight.w600,
-                    height: 0.08,
-                  ),
+                Text('Facebook',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Utils.isDark(context)? Colors.white:Color(0xFF222230),
+                      fontWeight: FontWeight.w600,
+                    )
                 )
               ],
             ),
@@ -92,13 +85,10 @@ class VirtualTrading extends StatelessWidget {
               children: [
                 Icon(Icons.email_outlined,color: Utils.isDark(context)? Colors.white:Color(0xFF222230),),
                 Gap(4),
-                Text16(data: 'Email',
-                  style: TextStyle().copyWith(
+                Text('Email',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Utils.isDark(context)? Colors.white:Color(0xFF222230),
-                    fontSize: 16,
-                    fontFamily: 'DM Sans',
                     fontWeight: FontWeight.w600,
-                    height: 0.08,
                   ),
                 )
               ],
@@ -123,13 +113,10 @@ class VirtualTrading extends StatelessWidget {
               children: [
                 Icon(Icons.phone,color: Utils.isDark(context)? Colors.white:Color(0xFF222230),),
                 Gap(4),
-                Text16(data: 'Phone Number',
-                  style: TextStyle().copyWith(
+                Text('Phone Number',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: Utils.isDark(context)? Colors.white:Color(0xFF222230),
-                    fontSize: 16,
-                    fontFamily: 'DM Sans',
                     fontWeight: FontWeight.w600,
-                    height: 0.08,
                   ),
                 )
               ],

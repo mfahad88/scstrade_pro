@@ -7,6 +7,7 @@ import 'package:scstrade_pro/provider/dashboard_provider.dart';
 import 'package:scstrade_pro/provider/home_provider.dart';
 import 'package:scstrade_pro/provider/stock_provider.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/dashboard_screen.dart';
+import 'package:scstrade_pro/screens/dashboard/ui/viewmodel/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/screens/home/home_screen.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_one.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
@@ -24,6 +25,7 @@ Future<void> main() async {
       MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context) => LoginViewModel(),),
+            ChangeNotifierProvider(create: (context) => DashboardViewModel(),),
             ChangeNotifierProvider(create: (context) => IntroViewModel(),),
             ChangeNotifierProvider(create: (context) => StockProvider(),),
             ChangeNotifierProvider(create: (context) => HomeProvider(),),
@@ -58,7 +60,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
           resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: HomeScreen(),
+            child: IntroScreen(),
         ),
       ),
     );

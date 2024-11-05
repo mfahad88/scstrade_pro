@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
-import 'package:scstrade_pro/widgets/text_14.dart';
-
-import '../../../../widgets/text_10.dart';
 
 class PortfolioCard extends StatelessWidget {
   const PortfolioCard({super.key});
@@ -26,25 +23,27 @@ class PortfolioCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text14(data: 'Your Portfolio Value',),
+          Text('Your Portfolio Value',style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize!/480*width,
+            fontWeight: FontWeight.w400,
+            color: Utils.isDark(context)?Colors.white:const Color(0XFF222230)
+          ),),
           Text.rich(
             TextSpan(
               children: [
                 TextSpan(
                   text: 'PKR 198,876',
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     color: Utils.isDark(context)? Colors.white : Color(0xFF222230),
-                    fontSize: (width*36/480),
-                    fontFamily: 'DM Sans',
+                    fontSize: (width*Theme.of(context).textTheme.headlineMedium!.fontSize!/480),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 TextSpan(
                   text: '.00',
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Utils.isDark(context)?Color(0xFF737180):Color(0xFF3A3A3A),
-                    fontSize: (width*20/480),
-                    fontFamily: 'DM Sans',
+                    fontSize: (width*Theme.of(context).textTheme.titleLarge!.fontSize!/480),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -65,12 +64,16 @@ class PortfolioCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.arrow_upward,color: Color(0xFF2CE52F),size: width * 0.021,),
-              Text10(
-                data: '+PKR ',
+              Icon(Icons.arrow_upward,color: Color(0xFF2CE52F),size: width * Theme.of(context).textTheme.labelSmall!.fontSize!/480,),
+              Text( '+PKR ',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontSize: Theme.of(context).textTheme.labelSmall!.fontSize!/480*width
+                ),
               ),
-              Text10(
-                data: '29,409.06',
+              Text( '29,409.06',
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      fontSize: Theme.of(context).textTheme.labelSmall!.fontSize!/480*width
+                  ),
               )
             ],
           ),

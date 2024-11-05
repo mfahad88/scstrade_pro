@@ -12,22 +12,28 @@ ThemeData ttheme_light=ThemeData(
       ),
     ),
     textTheme:  const TextTheme(
-        headlineSmall: TextStyle(
+        bodyLarge: TextStyle(     //16
             color: Color(0xFF1D1D1D),
-            fontSize: 16,
             fontWeight: FontWeight.w400
         ),
-        headlineLarge:  TextStyle(
+        headlineMedium:  TextStyle(     //34
           color: Color(0xFF1D1D1D),
-          fontSize: 32,
           fontFamily: 'DM Sans',
           fontWeight: FontWeight.w400,
         ),
-        labelSmall: TextStyle(
+        bodyMedium: TextStyle(      //14
           color: Color(0xFF2CE52F),
-          fontSize: 13.13,
           fontFamily: 'DM Sans',
           fontWeight: FontWeight.w600,
+        ),
+      labelSmall: TextStyle(      //10
+        color: Color(0xFF1D1D1D),
+        fontFamily: 'DM Sans',
+        fontWeight: FontWeight.w400,
+      ),
+        titleLarge:TextStyle( //20
+          fontFamily: 'DM Sans',
+          fontWeight: FontWeight.w400,
         )
     ),
 

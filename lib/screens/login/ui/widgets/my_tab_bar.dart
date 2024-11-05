@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/login/ui/real_trading.dart';
 import 'package:scstrade_pro/screens/login/ui/virtual_trading.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
-import 'package:scstrade_pro/widgets/text_16.dart';
 
 import '../../../../helper/Utils.dart';
 
