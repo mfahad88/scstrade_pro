@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/home/home_screen.dart';
+import 'package:scstrade_pro/screens/home/ui/home_screen.dart';
 
 import '../../../helper/Utils.dart';
 import '../viewmodel/login_viewmodel.dart';

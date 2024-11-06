@@ -2,17 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/provider/announcement_provider.dart';
-import 'package:scstrade_pro/provider/dashboard_provider.dart';
-import 'package:scstrade_pro/provider/home_provider.dart';
-import 'package:scstrade_pro/provider/stock_provider.dart';
-import 'package:scstrade_pro/screens/dashboard/ui/dashboard_screen.dart';
-import 'package:scstrade_pro/screens/dashboard/ui/viewmodel/dashboard_viewmodel.dart';
-import 'package:scstrade_pro/screens/home/home_screen.dart';
-import 'package:scstrade_pro/screens/intro/ui/intro_one.dart';
+import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
+import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
 import 'package:scstrade_pro/screens/intro/viewmodel/intro_viewmodel.dart';
-import 'package:scstrade_pro/screens/login/ui/login_screen.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 import 'package:scstrade_pro/theme/ttheme_dark.dart';
 import 'package:scstrade_pro/theme/ttheme_light.dart';
@@ -27,10 +20,7 @@ Future<void> main() async {
             ChangeNotifierProvider(create: (context) => LoginViewModel(),),
             ChangeNotifierProvider(create: (context) => DashboardViewModel(),),
             ChangeNotifierProvider(create: (context) => IntroViewModel(),),
-            ChangeNotifierProvider(create: (context) => StockProvider(),),
-            ChangeNotifierProvider(create: (context) => HomeProvider(),),
-            ChangeNotifierProvider(create: (context) => DashboardProvider(),),
-            ChangeNotifierProvider(create: (context) => AnnouncementProvider(),),
+            ChangeNotifierProvider(create: (context) => HomeViewModel(),),
 
           ],
           child: const MyApp()
@@ -48,11 +38,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Timer? _timer;
 
-  StockProvider? _provider;
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      scaffoldMessengerKey: _provider?.snackbarKey,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
       theme: ttheme_light,

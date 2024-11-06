@@ -5,14 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:scstrade_pro/data/dto/Index_group.dart';
 import 'package:scstrade_pro/data/dto/Stock_data.dart';
-import 'package:scstrade_pro/data/dto/announcement/Announcement.dart';
-import 'package:scstrade_pro/data/dto/announcement/Meetings.dart';
-import 'package:scstrade_pro/data/dto/announcement/News.dart';
 import 'dart:convert';
 
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
-import 'package:scstrade_pro/helper/Utils.dart';
-import 'package:scstrade_pro/provider/announcement_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiClient{
   static const String _baseUrl = 'https://dataapi.scstrade.com';

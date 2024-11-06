@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/provider/home_provider.dart';
-import 'package:scstrade_pro/screens/announcements/accouncements_screen.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/dashboard_screen.dart';
-import 'package:scstrade_pro/screens/market/market_screen.dart';
-import 'package:scstrade_pro/screens/more/more_screen.dart';
-import 'package:scstrade_pro/screens/technicals/technicals_screen.dart';
+import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeProvider>(builder: (context, homeProvider, child) {
+    return Consumer<HomeViewModel>(builder: (context, homeProvider, child) {
       return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -49,13 +46,7 @@ class HomeScreen extends StatelessWidget {
             child: Builder(builder: (context) {
               if(homeProvider.selectedIndex == 0){
                 return DashboardScreen();
-              }else if(homeProvider.selectedIndex == 2){
-                return TechnicalsScreen();
-              }else if(homeProvider.selectedIndex == 3){
-                return MoreScreen(onTap: (String value) {
-                  print(value);
-                },);
-              }else{
+              } else{
                 return const Text("This screen is under development");
               }
             },),
