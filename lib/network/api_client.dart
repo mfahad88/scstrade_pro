@@ -26,6 +26,21 @@ class ApiClient{
     }
   }
 
+  static Future<List<http.Response>> fetchDashboad() async {
+    final response = await Future.wait([
+      http.get(Uri.parse('$_baseUrl/Data?que=KSE Indices')),
+      http.get(Uri.parse('$_baseUrl/Data?que=KSE 100 Index Group')),
+    ]);
+
+
+    if (response[0].statusCode == 200 && response[1].statusCode==200) {
+      return response;
+    } else {
+      throw Exception('Failed to load Dashboard');
+    }
+  }
+
+
   static Future<List<StockData>> fetchStocks() async{
     final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
     print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');

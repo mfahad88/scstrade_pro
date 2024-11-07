@@ -32,7 +32,11 @@ class MyText extends StatelessWidget {
       return Theme.of(context).textTheme.labelSmall!.copyWith(
         fontSize: Theme.of(context).textTheme.labelSmall!.fontSize!/480*width
       );
-    } else if(textSize == 14){
+    } else if(textSize == 12){
+      return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          fontSize: Theme.of(context).textTheme.bodySmall!.fontSize!/480*width
+      );
+    }else if(textSize == 14){
       return Theme.of(context).textTheme.bodyMedium!.copyWith(
           fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize!/480*width
       );

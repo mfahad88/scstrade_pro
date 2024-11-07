@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
+import 'package:scstrade_pro/screens/dashboard/ui/widgets/title_listview.dart';
 import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/widgets/card_index.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/widgets/portfolio_card.dart';
@@ -18,28 +19,30 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width=MediaQuery.of(context).size.width;
+    DashboardViewModel viewModel=Provider.of(context,listen: false);
+    viewModel.fetchDashboard();
     return Consumer<DashboardViewModel>(
       builder: (BuildContext context, DashboardViewModel value, Widget? child) {
         return Padding(
           padding: const EdgeInsets.all(12),
           child: ListView(
             children: [
-              PortfolioCard(),
-              Gap(10),
+              const PortfolioCard(),
+              const Gap(10),
               Container(
                 height: width*100/480,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 3,
+                  itemCount: value.kseIndices.where((element) => element.indexCode!="KSE All Share Index",).toList().length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 6.0),
-                      child: CardIndex(),
+                      child: CardIndex(value.kseIndices.where((element) => element.indexCode!="KSE All Share Index",).toList()[index]),
                     );
                   },
                 ),
               ),
-              Gap(10),
+              const Gap(10),
               RoundedContainer(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: width*4/480,horizontal: width*10/480),
@@ -54,14 +57,14 @@ class DashboardScreen extends StatelessWidget {
                               print(value);
                             },
                           ),
-                          Spacer(),
+                          const Spacer(),
                           MyText('Volume:',
                             textSize: 16,
                             myStyle: const TextStyle().copyWith(
-                              color: Utils.isDark(context)?Colors.white:const Color(0xFF222230)
+                                color: Utils.isDark(context)?Colors.white:const Color(0xFF222230)
                             ),
                           ),
-                          Gap(2.0),
+                          const Gap(2.0),
                           MyText('365.941m',
                             textSize: 16,
                             myStyle: const TextStyle().copyWith(
@@ -75,13 +78,13 @@ class DashboardScreen extends StatelessWidget {
                           VolumeIndex(
                             '86,466.57',
                             textSize: 34,
-                            style: TextStyle().copyWith(
+                            style: const TextStyle().copyWith(
                                 fontWeight: FontWeight.w600,
-                                color: Utils.isDark(context)?Colors.white:Color(0xFF222230)
+                                color: Utils.isDark(context)?Colors.white:const Color(0xFF222230)
                             ),
                           ),
-                          Spacer(),
-                          mChip(
+                          const Spacer(),
+                          const mChip(
                             changePercent: '0.47%',
                             changeValue: '+409.06',
                           )
@@ -90,9 +93,128 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
-            ],
+              ),
+              const Gap(10),
+              Container(
+                height: width*115/480,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 3,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: Container(
+                      width: width*200/480,
+                      decoration: ShapeDecoration(
+                        color: Utils.isDark(context)?const Color(0XFF212121):Colors.white,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1,color: Utils.isDark(context)?const Color(0xFF2D2D2D):const Color(0xFFE1E1E1)),
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(width*12/480),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                MyText('REGULAR',
+                                  textSize: 14,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF222230)
+                                  ),
+                                ),
+                                const Spacer(),
+                                Container(
 
+                                  padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 2.0),
+                                  decoration: ShapeDecoration(
+                                      color: const Color(0XFFE6263D),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(4.0)
+                                      )),
+                                  child: MyText('Closed',
+                                    textSize: 10,
+                                    myStyle: const TextStyle().copyWith(
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const Gap(5.0),
+                            Row(
+                              children: [
+                                MyText('Trade',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                                const Spacer(),
+                                MyText('271,840',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Gap(2.0),
+                            Row(
+                              children: [
+                                MyText('Volume',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                                const Spacer(),
+                                MyText('546,275m',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Gap(2.0),
+                            Row(
+                              children: [
+                                MyText('Value',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                                const Spacer(),
+                                MyText('PKR 24,117.21m',textSize: 12,
+                                  myStyle: const TextStyle().copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: Utils.isDark(context)?Colors.white:const Color(0xFF5A5A5C)
+                                  ),
+                                ),
+                              ],
+                            ),
+
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Gap(10.0),
+              TitleListview(width: width,title: 'Leaders',),
+              const Gap(10.0),
+              TitleListview(width: width,title: 'Gainers',),
+              const Gap(10.0),
+              TitleListview(width: width,title: 'Losers',)
+            ],
           ),
         );
       },
