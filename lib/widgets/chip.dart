@@ -13,10 +13,10 @@ class mChip extends StatelessWidget {
     double width=MediaQuery.of(context).size.width;
     return Container(
       decoration: ShapeDecoration(
-        color: Color(0xFFF4FBF6),
+        color: changeValue!.contains('-')?Color(0xFFFEF4F5):Color(0xFFF4FBF6),
         shape: RoundedRectangleBorder(
             side: BorderSide(
-              width: 1,color: Color(0xFF1FAC53),
+              width: 1,color: changeValue!.contains('-')?Color(0XFFE6263D):Color(0xFF1FAC53),
             ),
             borderRadius: BorderRadius.circular(12)
         ),
@@ -26,10 +26,10 @@ class mChip extends StatelessWidget {
         child:Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.arrow_upward,color: Color(0xFF1FAC53),size: width*10/480,),
+            Icon(changeValue!.contains('-')?Icons.arrow_downward:Icons.arrow_upward,color: changeValue!.contains('-')?Color(0XFFE6263D):Color(0xFF1FAC53),size: width*10/480,),
             MyText(changePercent,textSize: 10,),
             Gap(4),
-            MyText(changeValue,textSize: 10,)
+            MyText(changeValue?.contains('-')??false?changeValue:'+$changeValue',textSize: 10,)
           ],
         ),
       ),

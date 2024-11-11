@@ -4,11 +4,14 @@ class MyText extends StatelessWidget {
   final String? data;
   final double? textSize;
   final TextStyle? myStyle;
-  const MyText(this.data ,{super.key,this.textSize,this.myStyle});
+  final int? maxLines;
+  const MyText(this.data ,{super.key,this.maxLines,this.textSize,this.myStyle});
 
   @override
   Widget build(BuildContext context) {
     return Text(data??"",
+      softWrap: true,
+      maxLines: maxLines,
       style:getTextStyle(context)!.copyWith(
           color:myStyle?.color,
           backgroundColor:myStyle?.backgroundColor,

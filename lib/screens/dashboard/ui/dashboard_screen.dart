@@ -23,7 +23,8 @@ class DashboardScreen extends StatelessWidget {
     viewModel.fetchDashboard();
     return Consumer<DashboardViewModel>(
       builder: (BuildContext context, DashboardViewModel value, Widget? child) {
-        return Padding(
+
+        return value.isLoading?Center(child: CircularProgressIndicator(),):Padding(
           padding: const EdgeInsets.all(12),
           child: ListView(
             children: [
@@ -51,10 +52,11 @@ class DashboardScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          DropIndex(value: 'KSE 100',
-                            items: ['KSE 100','KSE 30','KMI All','KMI 30'],
-                            onChanged: (value) {
-                              print(value);
+                          DropIndex(value: value.selectedValue,
+                            items: /*value.kseIndices.where((element) => element.indexCode!='KSE All Share Index',).map((e) => e.indexCode,).toList()*/['KSE 100','KSE 30','KMI 30'],
+                            onChanged: (v) {
+                              value.selectedValue=v.toString();
+                              value.fetchGroupIndex(v);
                             },
                           ),
                           const Spacer(),
@@ -65,7 +67,7 @@ class DashboardScreen extends StatelessWidget {
                             ),
                           ),
                           const Gap(2.0),
-                          MyText('365.941m',
+                          MyText(Utils.formatToMillions(double.parse(value.kseIndices.where((element) => element.indexCode?.contains(value.selectedValue)??false,).first.volumeTraded??'0.0')),
                             textSize: 16,
                             myStyle: const TextStyle().copyWith(
                                 color: Utils.isDark(context)?Colors.white:const Color(0xFF222230)
@@ -76,7 +78,7 @@ class DashboardScreen extends StatelessWidget {
                       Row(
                         children: [
                           VolumeIndex(
-                            '86,466.57',
+                            Utils.commaSeparated(double.parse(value.kseIndices.where((element) => element.indexCode?.contains(value.selectedValue)??false,).first.currentIndex??'0.0')),
                             textSize: 34,
                             style: const TextStyle().copyWith(
                                 fontWeight: FontWeight.w600,
@@ -84,9 +86,9 @@ class DashboardScreen extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          const mChip(
-                            changePercent: '0.47%',
-                            changeValue: '+409.06',
+                          mChip(
+                            changePercent: '${Utils.roundTwoDecimal(value.percentChange)}%',
+                            changeValue: Utils.roundTwoDecimal(value.netChange),
                           )
                         ],
                       )
@@ -95,7 +97,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
               const Gap(10),
-              Container(
+              /*Container(                                  //Discussed by ahsan not needed
                 height: width*115/480,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
@@ -207,13 +209,13 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
               const Gap(10.0),
-              TitleListview(width: width,title: 'Leaders',),
+              TitleListview(width: width,title: 'Leaders',indexGroups: value.indexGroup.where((element) => element.type?.contains('Volume Leaders')??false,).toList(),),
               const Gap(10.0),
-              TitleListview(width: width,title: 'Gainers',),
+              TitleListview(width: width,title: 'Gainers',indexGroups: value.indexGroup.where((element) => element.type?.contains('Gainers')??false,).toList()),
               const Gap(10.0),
-              TitleListview(width: width,title: 'Losers',)
+              TitleListview(width: width,title: 'Losers',indexGroups: value.indexGroup.where((element) => element.type?.contains('Losers')??false,).toList())
             ],
           ),
         );

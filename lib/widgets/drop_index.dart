@@ -17,11 +17,8 @@ class DropIndex extends StatelessWidget {
         items: items.map((e) {
           return DropdownMenuItem(
               value:e,
-              child: Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  child: Text(e,
-                    style: style,
-                  )
+              child: Text(e,
+                style: style,
               )
           );
         }).toList(),

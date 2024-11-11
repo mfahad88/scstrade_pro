@@ -26,10 +26,10 @@ class ApiClient{
     }
   }
 
-  static Future<List<http.Response>> fetchDashboad() async {
+  static Future<List<http.Response>> fetchDashboad(String selectedIndex) async {
     final response = await Future.wait([
       http.get(Uri.parse('$_baseUrl/Data?que=KSE Indices')),
-      http.get(Uri.parse('$_baseUrl/Data?que=KSE 100 Index Group')),
+      http.get(Uri.parse('$_baseUrl/Data?que=$selectedIndex Index Group')),
     ]);
 
 
@@ -67,7 +67,7 @@ class ApiClient{
   }
 
   static Future<List<IndexGroup>> fetchIndexGroup(String query) async{
-    final response = await http.get(Uri.parse('$_baseUrl/Data?que=$query Group'));
+    final response = await http.get(Uri.parse('$_baseUrl/Data?que=$query Index Group'));
     print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
     if (response.statusCode == 200) {
       List<dynamic> body = json.decode(response.body);
