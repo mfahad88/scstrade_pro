@@ -34,9 +34,13 @@ class Utils{
   return value.toStringAsFixed(2);
   }
 
-  static String commaSeparated(double value){
+  static String commaSeparated(String? value){
+    double v=0.0;
+    if(value?.isNotEmpty??true){
+      v=double.parse(value!);
+    }
     final formatter = NumberFormat('#,###.##');
-    return formatter.format(value);
+    return formatter.format(v);
   }
 
   static String formatToMillions(double number) {

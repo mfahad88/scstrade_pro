@@ -34,6 +34,7 @@ class DashboardScreen extends StatelessWidget {
                 height: width*100/480,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
                   itemCount: value.kseIndices.where((element) => element.indexCode!="KSE All Share Index",).toList().length,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -78,7 +79,7 @@ class DashboardScreen extends StatelessWidget {
                       Row(
                         children: [
                           VolumeIndex(
-                            Utils.commaSeparated(double.parse(value.kseIndices.where((element) => element.indexCode?.contains(value.selectedValue)??false,).first.currentIndex??'0.0')),
+                            Utils.commaSeparated(value.kseIndices.where((element) => element.indexCode?.contains(value.selectedValue)??false,).first.currentIndex),
                             textSize: 34,
                             style: const TextStyle().copyWith(
                                 fontWeight: FontWeight.w600,

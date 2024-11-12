@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -8,13 +10,38 @@ import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 import '../../../helper/Utils.dart';
 
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+
+
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Timer? _timer;
+  LoginViewModel? viewModel;
+  @override
+  void initState() {
+
+
+    viewModel=Provider.of(context,listen: false);
+    viewModel?.fetchIndices();
+    _timer=Timer.periodic(const Duration(seconds: 5), (timer) {
+      viewModel?.fetchIndices();
+    },);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    LoginViewModel viewModel=Provider.of(context,listen: false);
-    viewModel.fetchIndices();
+
     return MaterialApp(
       home: Scaffold(
         body: Stack(
@@ -57,4 +84,7 @@ class LoginScreen extends StatelessWidget {
 
     );
   }
+
+
 }
+

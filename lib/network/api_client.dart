@@ -19,7 +19,7 @@ class ApiClient{
 
     if (response.statusCode == 200) {
       List<dynamic> list = json.decode(response.body);
-      print(list);
+      print(response.request.toString());
       return list.map((e) => KseIndices.fromJson(e),).toList();
     } else {
       throw Exception('Failed to load Indices');

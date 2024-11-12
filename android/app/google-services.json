@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "340217773345",
+    "project_id": "scstradepro",
+    "storage_bucket": "scstradepro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340217773345:android:cab967fd3e66485dfb5260",
+        "android_client_info": {
+          "package_name": "com.example.scstrade_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340217773345-qcku5p5jqcuqkm0c2np2ogareeeagtbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.scstrade_pro",
+            "certificate_hash": "97ba53d7fc98b4a8edb275c314e728514f735418"
+          }
+        },
+        {
+          "client_id": "340217773345-oud0qp7op6ipmgajj2tkv2d03v1vq339.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiaZmvExqmK7SLexwtkCoF4mVjm8GoDHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340217773345-oud0qp7op6ipmgajj2tkv2d03v1vq339.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
@@ -12,7 +13,14 @@ import 'package:scstrade_pro/theme/ttheme_light.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: 'AIzaSyCiaZmvExqmK7SLexwtkCoF4mVjm8GoDHI',
+        appId: '1:340217773345:android:cab967fd3e66485dfb5260',
+        messagingSenderId: '340217773345',
+        projectId: 'scstradepro',
+      )
+  );
 
   runApp(
       MultiProvider(
@@ -40,6 +48,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.system,
