@@ -13,24 +13,25 @@ class IntroTwo extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          Gap(21),
+          Gap(constraints.maxHeight *0.05),
           Image.asset('images/scs_logo.png'),
           Text('SCS Trade Pro',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.bodyLarge!.fontSize!/480))
+              fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.bodyLarge!.fontSize!*0.0025))
           ),),
           Text('Real-Time Market Insights',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.headlineMedium!.fontSize!/480))
+                fontSize: (constraints.maxWidth*(Theme.of(context).textTheme.headlineMedium!.fontSize!*0.004))
             ),),
-          const Gap(100),
+          Gap(constraints.maxHeight *0.10),
           Stack(
             clipBehavior: Clip.none,
             children: [
-              _cardBox(context,constraints.maxWidth),
+              _cardBox(context,constraints.maxWidth,constraints.maxHeight),
               Positioned(
                 left: -30,
                 top: -43,
-                child: _cardBox(context,constraints.maxWidth),
+                child: _cardBox(context,constraints.maxWidth,constraints.maxHeight),
               )
             ],
           ),
@@ -40,12 +41,13 @@ class IntroTwo extends StatelessWidget {
     },);
   }
 
-  SizedBox _cardBox(BuildContext context,double width) {
+  Widget _cardBox(BuildContext context,double width,double height) {
     return SizedBox(
         width: width*0.8,
+        height: height*0.4,
         child: Card.outlined(
           child: Padding(
-            padding: const EdgeInsets.all(21.0),
+            padding: EdgeInsets.symmetric(horizontal: width*0.04,vertical: height * 0.04),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -53,7 +55,7 @@ class IntroTwo extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      side: const BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
+                      side: BorderSide(width: 0.66, color: Color(0xFF2CE52F)),
                       borderRadius: BorderRadius.circular(7.88),
                     ),
                   ),
@@ -64,7 +66,7 @@ class IntroTwo extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Container(
-                          height: 29,
+                          height: height*0.05,
                           padding: const EdgeInsets.all(6.0),
                           decoration: BoxDecoration(color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702)),
                           child: Row(
@@ -75,7 +77,7 @@ class IntroTwo extends StatelessWidget {
                               Text(
                                 'Deposits',
                                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                                    fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                                 ),
                               )
                             ],
@@ -84,7 +86,7 @@ class IntroTwo extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          height: 29.13,
+                          height: height*0.05,
                           padding: const EdgeInsets.all(6.56),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -94,7 +96,7 @@ class IntroTwo extends StatelessWidget {
                               Text('Withdraw',
                                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       color: const Color(0XFFA5A5A5),
-                                      fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                                      fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                                   )
                               ),
                             ],
@@ -117,12 +119,12 @@ class IntroTwo extends StatelessWidget {
                           'Enter amount',
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w600,
-                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                           ),
 
                         ),
                       ),
-                      const Gap(10),
+                      Gap(height*0.01),
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(7.88),
@@ -140,7 +142,7 @@ class IntroTwo extends StatelessWidget {
                             Text('USD \$100',
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                               ),
                             ),
                           ],
@@ -149,99 +151,77 @@ class IntroTwo extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Gap(23),
-                Container(
-                  width: 200,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 56,
-                        height: 24.50,
-                        padding: const EdgeInsets.all(5.25),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFFD6FFCC),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.25),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('+ \$100',
-                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF1D1D1D),
-                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
-                              ),
-                            ),
-                          ],
+                Gap(width*0.025),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: width*0.15,
+                      height: height*0.035,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFD6FFCC),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.25),
                         ),
                       ),
-                      const SizedBox(width: 5.25),
-                      Container(
-                        width: 56,
-                        height: 24.50,
-                        padding: const EdgeInsets.all(5.25),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFFD6FFCC),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.25),
+                      child:Center(
+                        child: Text('+ \$100',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF1D1D1D),
+                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                           ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('+ \$500',
-                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFF1D1D1D),
-                                  fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
-                              ),
-                            ),
-                          ],
+                      ),
+                    ),
+                    Gap(width*0.02),
+                    Container(
+                      width: width*0.15,
+                      height: height*0.035,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFD6FFCC),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.25),
                         ),
                       ),
-                      const SizedBox(width: 5.25),
-                      Container(
-                        width: 56,
-                        height: 24.50,
-                        padding: const EdgeInsets.all(5.25),
-                        decoration: ShapeDecoration(
-                          color: const Color(0xFFD6FFCC),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.25),
+                      child:Center(
+                        child: Text('+ \$500',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF1D1D1D),
+                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                           ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('+ \$1000',
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xFF1D1D1D),
-                                    fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
-                                )
-                            ),
-                          ],
+                      ),
+                    ),
+                    Gap(width*0.02),
+                    Container(
+                      width: width*0.17,
+                      height: height*0.035,
+                      decoration: ShapeDecoration(
+                        color: const Color(0xFFD6FFCC),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.25),
                         ),
                       ),
-                    ],
-                  ),
+                      child:Center(
+                        child: Text('+ \$1000',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF1D1D1D),
+                              fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const Gap(23),
+                Gap(height*0.02),
                 Container(
-                  width: 288.16,
-                  height: 37,
-                  padding: const EdgeInsets.symmetric(horizontal: 7.88, vertical: 10.50),
+                  width: width*0.8,
+                  height: height*0.05,
                   decoration: ShapeDecoration(
                     color: Utils.isDark(context)?const Color(0xFF2CE52F):const Color(0xFF0B4702),
                     shape: RoundedRectangleBorder(
@@ -255,7 +235,7 @@ class IntroTwo extends StatelessWidget {
                     children: [
                       Text('Deposit money',
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!/480))
+                            fontSize: (width*(Theme.of(context).textTheme.bodyMedium!.fontSize!*0.0025))
                         ),
                       ),
                     ],

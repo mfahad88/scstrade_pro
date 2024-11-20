@@ -14,7 +14,7 @@ class IntroThree extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Gap(21),
+            Gap(constraints.maxHeight *0.05),
             Image.asset('images/scs_logo.png'),
             Text('SCS Trade Pro',style: Theme.of(context).textTheme.bodyLarge,),
             Text('Manage Your Portfolio with Ease',
