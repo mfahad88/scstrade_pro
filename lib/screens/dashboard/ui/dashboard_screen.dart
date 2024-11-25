@@ -6,6 +6,7 @@ import 'package:scstrade_pro/screens/dashboard/ui/widgets/title_listview.dart';
 import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/widgets/card_index.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/widgets/portfolio_card.dart';
+import 'package:scstrade_pro/screens/viewmodel/shared_viewmodel.dart';
 import 'package:scstrade_pro/widgets/chip.dart';
 import 'package:scstrade_pro/widgets/drop_index.dart';
 import 'package:scstrade_pro/widgets/my_text.dart';
@@ -19,8 +20,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width=MediaQuery.of(context).size.width;
-    DashboardViewModel viewModel=Provider.of(context,listen: false);
-    viewModel.fetchDashboard();
+
     return Consumer<DashboardViewModel>(
       builder: (BuildContext context, DashboardViewModel value, Widget? child) {
 
@@ -211,12 +211,22 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
               ),*/
-              const Gap(10.0),
-              TitleListview(width: width,title: 'Leaders',indexGroups: value.indexGroup.where((element) => element.type?.contains('Volume Leaders')??false,).toList(),),
-              const Gap(10.0),
-              TitleListview(width: width,title: 'Gainers',indexGroups: value.indexGroup.where((element) => element.type?.contains('Gainers')??false,).toList()),
-              const Gap(10.0),
-              TitleListview(width: width,title: 'Losers',indexGroups: value.indexGroup.where((element) => element.type?.contains('Losers')??false,).toList())
+              Consumer<SharedViewModel>(
+                builder: (BuildContext context, SharedViewModel sharedValue, Widget? child) {
+                  return Column(
+                    children: [
+                      const Gap(10.0),
+
+                      TitleListview(width: width,title: 'Leaders',indexGroups: (sharedValue.stockData..sort((a, b) => b.v!.compareTo(a.v!))).take(10).toList(),),
+                      const Gap(10.0),
+                      TitleListview(width: width,title: 'Gainers',indexGroups: (sharedValue.stockData..sort((a, b) => b.chp!.compareTo(a.chp!))).take(10).toList()),
+                      const Gap(10.0),
+                      TitleListview(width: width,title: 'Losers',indexGroups: (sharedValue.stockData..sort((a, b) => a.chp!.compareTo(b.chp!))).take(10).toList()),
+                    ],
+                  );
+                },
+
+              )
             ],
           ),
         );

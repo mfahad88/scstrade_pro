@@ -144,4 +144,21 @@ class ApiClient{
 
     }
   }
+
+  /*static Future<List<IndexWise>> fetchIndexWise(String query) async {
+    final response = await http.get(Uri.parse('$_baseUrl/Data?que=AllData'));
+    print('---------------------Request-------------------------------\n${response.request.toString()}\n---------------------------------------------');
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body);
+
+
+      print('---------------------Response-------------------------------\n$body\n---------------------------------------------');
+      return body.map((e) => IndexWise.fromJson(e),).toList();
+      // yield body.map((e) => StockData.fromJson(e),).toList();
+
+    } else {
+
+      throw Exception('Failed to load Indices');
+    }
+  }*/
 }

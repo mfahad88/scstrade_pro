@@ -8,6 +8,8 @@ import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
 import 'package:scstrade_pro/screens/intro/viewmodel/intro_viewmodel.dart';
 import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
+import 'package:scstrade_pro/screens/viewmodel/shared_viewmodel.dart';
+import 'package:scstrade_pro/screens/watchlist/viewmodel/watchlist_viewmodel.dart';
 import 'package:scstrade_pro/theme/ttheme_dark.dart';
 import 'package:scstrade_pro/theme/ttheme_light.dart';
 
@@ -27,6 +29,9 @@ Future<void> main() async {
           providers: [
             ChangeNotifierProvider(create: (context) => LoginViewModel(),),
             ChangeNotifierProvider(create: (context) => DashboardViewModel(),),
+            ChangeNotifierProvider(create: (context) => SharedViewModel(),),
+            // ProxyProvider<DashboardViewModel,WatchListViewModel>(update: (context, value, previous) => WatchListViewModel(value),),
+            ChangeNotifierProvider(create: (context) => WatchListViewModel(),),
             ChangeNotifierProvider(create: (context) => IntroViewModel(),),
             ChangeNotifierProvider(create: (context) => HomeViewModel(),),
 

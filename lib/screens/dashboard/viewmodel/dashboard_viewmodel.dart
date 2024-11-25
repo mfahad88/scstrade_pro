@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:scstrade_pro/data/dto/Index_group.dart';
+import 'package:scstrade_pro/data/dto/Stock_data.dart';
 import 'package:scstrade_pro/data/dto/kse_indices.dart';
 import 'package:scstrade_pro/network/api_client.dart';
 
 class DashboardViewModel extends ChangeNotifier{
   GlobalKey key=GlobalKey();
+
   List<KseIndices> kseIndices=List.empty(growable: true);
   List<IndexGroup> indexGroup=List.empty(growable: true);
   bool isLoading=false;
@@ -16,7 +19,7 @@ class DashboardViewModel extends ChangeNotifier{
   var percentChange=0.0;
   var netChange=0.0;
   String get selectedValue => _selectedValue;
-
+  Timer? _timer;
   set selectedValue(String value) {
     _selectedValue = value;
     _currentIndex=double.parse(kseIndices.where((element) => element.indexCode?.contains(selectedValue)??false,).first.currentIndex??'0.0');
@@ -33,6 +36,13 @@ class DashboardViewModel extends ChangeNotifier{
       var responses=await ApiClient.fetchDashboad(_selectedValue);
       kseIndices=(jsonDecode(responses[0].body) as List).map((e) => KseIndices.fromJson(e),).toList();
       indexGroup=(jsonDecode(responses[1].body) as List).map((e) => IndexGroup.fromJson(e),).toList();
+      _timer=Timer.periodic(Duration(seconds: 5), (timer) async {
+        responses=await ApiClient.fetchDashboad(_selectedValue);
+        kseIndices=(jsonDecode(responses[0].body) as List).map((e) => KseIndices.fromJson(e),).toList();
+        indexGroup=(jsonDecode(responses[1].body) as List).map((e) => IndexGroup.fromJson(e),).toList();
+        notifyListeners();
+      },
+      );
     }catch(e){
       print(e.toString());
     }finally{
@@ -46,6 +56,13 @@ class DashboardViewModel extends ChangeNotifier{
   fetchGroupIndex(String value) async {
     indexGroup=await ApiClient.fetchIndexGroup(value);
     notifyListeners();
+  }
 
+
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }

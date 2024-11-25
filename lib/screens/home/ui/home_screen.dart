@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/screens/dashboard/ui/dashboard_screen.dart';
 import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
+import 'package:scstrade_pro/screens/viewmodel/shared_viewmodel.dart';
+import 'package:scstrade_pro/screens/watchlist/ui/watchlist_screen.dart';
+
+import '../../dashboard/viewmodel/dashboard_viewmodel.dart';
 
 
 class HomeScreen extends StatelessWidget {
@@ -9,6 +13,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DashboardViewModel viewModel=Provider.of(context,listen: false);
+    SharedViewModel sharedViewModel=Provider.of(context,listen: false);
+    sharedViewModel.fetchStocks();
+    viewModel.fetchDashboard();
+
     return Consumer<HomeViewModel>(builder: (context, homeProvider, child) {
       return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
@@ -23,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 icon:Image.asset('images/watchlist.png'),
                 label: 'Watchlist',
               ),
-               BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: Image.asset('images/account.png'),
                 label: 'Account',
               ),
@@ -45,8 +54,10 @@ class HomeScreen extends StatelessWidget {
           body: Container(
             child: Builder(builder: (context) {
               if(homeProvider.selectedIndex == 0){
-                return DashboardScreen();
-              } else{
+                return const DashboardScreen();
+              }else if(homeProvider.selectedIndex==1){
+                return const WatchlistScreen();
+              }else{
                 return const Text("This screen is under development");
               }
             },),

@@ -18,7 +18,7 @@ class CardIndex extends StatelessWidget {
     double currentIndex=double.parse(kse.currentIndex??'0.0');
     double preClose=kse.preClose??0.0;
     String percentageChange=currentIndex.compareTo(0.0)!=0?'${Utils.roundTwoDecimal(((currentIndex-preClose)/preClose*100))}%':'0.0%';
-    String netChange=Utils.roundTwoDecimal(currentIndex-preClose).contains('-')?'-':'+'+Utils.roundTwoDecimal(currentIndex-preClose);
+    String netChange=Utils.roundTwoDecimal(currentIndex-preClose).contains('-')?'-':Utils.roundTwoDecimal(currentIndex-preClose);
     print('$percentageChange $netChange');
     return RoundedContainer(
       width: width*150/480,
