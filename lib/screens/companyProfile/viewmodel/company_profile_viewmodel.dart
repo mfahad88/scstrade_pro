@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
 
-
-class WatchListViewModel extends ChangeNotifier{
+class CompanyProfileViewModel extends ChangeNotifier{
   int _selectedIndex=0;
-
 
   int get selectedIndex => _selectedIndex;
 
@@ -12,6 +9,4 @@ class WatchListViewModel extends ChangeNotifier{
     _selectedIndex = value;
     notifyListeners();
   }
-
-
 }

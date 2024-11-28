@@ -8,10 +8,11 @@ import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
 import '../../../../helper/Utils.dart';
 
 class MyTabBar extends StatelessWidget {
-  const MyTabBar({super.key});
+  final BuildContext context;
+  const MyTabBar(this.context,{super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
@@ -54,11 +55,11 @@ class MyTabBar extends StatelessWidget {
         body: Container(
           color: Utils.isDark(context)?Color(0xFF1D1D1D):Colors.white,
           child: LayoutBuilder(
-            builder: (context, constraints) => Padding(
+            builder: (_, constraints) => Padding(
               padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth*0.033, vertical: constraints.maxWidth*0.05),
               child: TabBarView(
                 children: <Widget>[
-                  RealTrading(),
+                  RealTrading(context),
                   VirtualTrading(),
                 ],
               ),

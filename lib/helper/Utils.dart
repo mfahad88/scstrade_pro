@@ -36,7 +36,7 @@ class Utils{
 
   static String commaSeparated(String? value){
     double v=0.0;
-    if(value?.isNotEmpty??true){
+    if(value?.isNotEmpty??false){
       v=double.parse(value!);
     }
     final formatter = NumberFormat('#,###.##');

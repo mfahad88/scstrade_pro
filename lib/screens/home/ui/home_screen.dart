@@ -9,16 +9,17 @@ import '../../dashboard/viewmodel/dashboard_viewmodel.dart';
 
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final BuildContext context;
+  const HomeScreen(this.context,{super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     DashboardViewModel viewModel=Provider.of(context,listen: false);
     SharedViewModel sharedViewModel=Provider.of(context,listen: false);
     sharedViewModel.fetchStocks();
     viewModel.fetchDashboard();
 
-    return Consumer<HomeViewModel>(builder: (context, homeProvider, child) {
+    return Consumer<HomeViewModel>(builder: (_, homeProvider, child) {
       return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -52,9 +53,9 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           body: Container(
-            child: Builder(builder: (context) {
+            child: Builder(builder: (_) {
               if(homeProvider.selectedIndex == 0){
-                return const DashboardScreen();
+                return DashboardScreen(context);
               }else if(homeProvider.selectedIndex==1){
                 return const WatchlistScreen();
               }else{

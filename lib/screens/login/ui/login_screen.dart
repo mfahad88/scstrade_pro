@@ -53,12 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 )
             ),
             LayoutBuilder(
-              builder: (context, constraints) {
+              builder: (_, constraints) {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
                       Column(
                         children: [
+                          Gap(40),
                           Container(
                               margin:EdgeInsets.only(top:constraints.maxWidth*0.043),
                               child: Image.asset('images/scs_logo.png')
@@ -70,9 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           CardIndices(),
                         ],
                       ),
+
                       SizedBox(
                           height: constraints.maxHeight*0.7,
-                          child: MyTabBar())
+                          child: MyTabBar(context))
                     ],
                   ),
                 );

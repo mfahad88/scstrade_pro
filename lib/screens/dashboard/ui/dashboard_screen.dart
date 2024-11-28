@@ -15,19 +15,21 @@ import 'package:scstrade_pro/widgets/rounded_container.dart';
 import '../../../widgets/volume_index.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
+  final BuildContext context;
+  const DashboardScreen(this.context,{super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     double width=MediaQuery.of(context).size.width;
 
     return Consumer<DashboardViewModel>(
-      builder: (BuildContext context, DashboardViewModel value, Widget? child) {
+      builder: (BuildContext _, DashboardViewModel value, Widget? child) {
 
         return value.isLoading?Center(child: CircularProgressIndicator(),):Padding(
           padding: const EdgeInsets.all(12),
           child: ListView(
             children: [
+
               const PortfolioCard(),
               const Gap(10),
               Container(

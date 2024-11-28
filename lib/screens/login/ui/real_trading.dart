@@ -7,16 +7,18 @@ import '../../../helper/Utils.dart';
 import '../viewmodel/login_viewmodel.dart';
 
 class RealTrading extends StatelessWidget {
-  const RealTrading({
+  final BuildContext context;
+  const RealTrading(this.context,{
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(builder: (context, value, child) {
+  Widget build(BuildContext _) {
+    return Consumer<LoginViewModel>(builder: (_, value, child) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           SizedBox(
             width: double.infinity,
             child: TextField(
@@ -87,7 +89,7 @@ class RealTrading extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton(onPressed: () {
-                  Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),));
+                  Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(context),));
                 }, child: Text('Login',style: Theme.of(context).textTheme.bodyLarge,),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF2CE52F),

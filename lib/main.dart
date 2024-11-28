@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/screens/companyProfile/viewmodel/company_profile_viewmodel.dart';
 import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
 import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
 import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
@@ -32,6 +33,7 @@ Future<void> main() async {
             ChangeNotifierProvider(create: (context) => SharedViewModel(),),
             // ProxyProvider<DashboardViewModel,WatchListViewModel>(update: (context, value, previous) => WatchListViewModel(value),),
             ChangeNotifierProvider(create: (context) => WatchListViewModel(),),
+            ChangeNotifierProvider(create: (context) => CompanyProfileViewModel(),),
             ChangeNotifierProvider(create: (context) => IntroViewModel(),),
             ChangeNotifierProvider(create: (context) => HomeViewModel(),),
 

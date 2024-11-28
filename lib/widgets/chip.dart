@@ -13,7 +13,7 @@ class mChip extends StatelessWidget {
     double width=MediaQuery.of(context).size.width;
     return Container(
       decoration: ShapeDecoration(
-        color: changeValue!.contains('-')?Color(0xFFFEF4F5):Color(0xFFF4FBF6),
+        color: changeValue!.contains('-')?Color(0x1AFEF4F5):Color(0x1AF4FBF6),
         shape: RoundedRectangleBorder(
             side: BorderSide(
               width: 1,color: changeValue!.contains('-')?Color(0XFFE6263D):Color(0xFF1FAC53),

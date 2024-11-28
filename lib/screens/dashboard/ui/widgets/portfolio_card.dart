@@ -46,8 +46,8 @@ class PortfolioCard extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Container(
-              width: (width * 118/480),
-              height: (width * 28/480),
+              width: (width * 0.27),
+              height: (width * 0.06),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: ShapeDecoration(
                 color: Utils.isDark(context)?Color(0xFF23372A):Color(0xFFF4FBF6),

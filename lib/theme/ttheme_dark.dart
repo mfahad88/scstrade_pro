@@ -10,6 +10,7 @@ ThemeData ttheme_dark=ThemeData(
       ),
       shadowColor: Color(0x8C000000)
   ),
+
   textTheme: const TextTheme(
       bodyLarge: TextStyle(     //16
           color: Colors.white,
@@ -27,7 +28,7 @@ ThemeData ttheme_dark=ThemeData(
         fontWeight: FontWeight.w600,
       ),
       labelSmall: TextStyle(  //10
-        color: Color(0xFF1D1D1D),
+        color: Colors.white,
         fontFamily: 'DM Sans',
         fontWeight: FontWeight.w400,
       ),
