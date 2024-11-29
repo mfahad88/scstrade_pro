@@ -27,7 +27,7 @@ class StockRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => CompanypprofileScreen(),)),
+      onTap: () => Navigator.of(context,rootNavigator: true).push(MaterialPageRoute(builder: (context) => CompanypprofileScreen(),)),
       child: Container(
         margin: const EdgeInsets.only(bottom: 10.0),
         padding: const EdgeInsets.all(12),
