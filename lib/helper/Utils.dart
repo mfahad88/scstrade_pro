@@ -77,4 +77,16 @@ class Utils{
     double scaleFactor = screenWidth / 480;
     return  baseWidth * scaleFactor;
   }
+
+  static void showErrorDialog(BuildContext context,String errorMessage) async {
+    showDialog<void>(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('Error'),
+        content: Text(errorMessage),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('Ok'))
+        ],
+      );
+    },);
+  }
 }

@@ -22,9 +22,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   Timer? _timer;
   LoginViewModel? viewModel;
+  GlobalKey<ScaffoldState>? _scaffoldKey;
   @override
   void initState() {
-
+    _scaffoldKey=GlobalKey<ScaffoldState>();
 
     viewModel=Provider.of(context,listen: false);
     viewModel?.fetchIndices();
@@ -44,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return MaterialApp(
       home: Scaffold(
+        key: _scaffoldKey,
         body: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -68,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize:  (constraints.maxWidth * (Theme.of(context).textTheme.bodyLarge!.fontSize!/480))
                           ),),
                           Gap(10),
-                          CardIndices(),
+                          CardIndices(_scaffoldKey),
                         ],
                       ),
 
