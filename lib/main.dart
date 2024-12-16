@@ -1,21 +1,25 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:scstrade_pro/screens/companyProfile/viewmodel/company_profile_viewmodel.dart';
-import 'package:scstrade_pro/screens/dashboard/viewmodel/dashboard_viewmodel.dart';
-import 'package:scstrade_pro/screens/home/viewmodel/home_viewmodel.dart';
-import 'package:scstrade_pro/screens/intro/ui/intro_screen.dart';
-import 'package:scstrade_pro/screens/intro/viewmodel/intro_viewmodel.dart';
-import 'package:scstrade_pro/screens/login/viewmodel/login_viewmodel.dart';
-import 'package:scstrade_pro/screens/viewmodel/shared_viewmodel.dart';
-import 'package:scstrade_pro/screens/watchlist/viewmodel/watchlist_viewmodel.dart';
-import 'package:scstrade_pro/theme/ttheme_dark.dart';
-import 'package:scstrade_pro/theme/ttheme_light.dart';
+import 'package:scstrade_pro/helper/Utils.dart';
+import 'package:scstrade_pro/models/response/api_response.dart';
+import 'package:scstrade_pro/models/todos/Todos.dart';
+import 'package:scstrade_pro/repositories/todo_repository.dart';
+import 'package:scstrade_pro/services/api_client.dart';
+import 'package:scstrade_pro/viewmodels/todo_viewmodel.dart';
+import 'package:scstrade_pro/widgets/showErrorDialog.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+import 'models/todos/Todo.dart';
+
+
+
+void main() async {
+  // runApp(MyApp());
+/*  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: const FirebaseOptions(
         apiKey: 'AIzaSyCiaZmvExqmK7SLexwtkCoF4mVjm8GoDHI',
@@ -23,19 +27,14 @@ Future<void> main() async {
         messagingSenderId: '340217773345',
         projectId: 'scstradepro',
       )
-  );
-
+  );*/
+  final _apiClient=ApiClient();
+  final _todoRepository=TodoRepository(_apiClient);
+  final _todoViewModel=TodoViewModel(_todoRepository);
   runApp(
       MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (context) => LoginViewModel(),),
-            ChangeNotifierProvider(create: (context) => DashboardViewModel(),),
-            ChangeNotifierProvider(create: (context) => SharedViewModel(),),
-            // ProxyProvider<DashboardViewModel,WatchListViewModel>(update: (context, value, previous) => WatchListViewModel(value),),
-            ChangeNotifierProvider(create: (context) => WatchListViewModel(),),
-            ChangeNotifierProvider(create: (context) => CompanyProfileViewModel(),),
-            ChangeNotifierProvider(create: (context) => IntroViewModel(),),
-            ChangeNotifierProvider(create: (context) => HomeViewModel(),),
+          ChangeNotifierProvider(create: (context) => _todoViewModel,)
 
           ],
           child: const MyApp()
@@ -43,51 +42,79 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
+    TodoViewModel viewModel=context.read();
+    viewModel.fetchTodos(true);
+    return MaterialApp(
 
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: ttheme_light,
-      darkTheme: ttheme_dark,
       home: Scaffold(
-          resizeToAvoidBottomInset: false,
         body: SafeArea(
-            child: IntroScreen(),
+          top: true,
+          minimum: const EdgeInsets.all(40),
+          child: Column(
+          
+            children: [
+              TextButton(onPressed: () => viewModel.fetchTodos(false),
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey.shade300
+                ),
+                child: const Text('Reload'),
+              ),
+              const Gap(10),
+              Consumer<TodoViewModel>(
+                  builder: (_, value, child) {
+
+                    final response = value.responseTodos;
+
+                    switch(response?.status){
+                      case Status.loading :
+                        return const Center(child: CircularProgressIndicator(),);
+                      case Status.completed:
+                        return Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: response?.data?.todos?.length??0,
+                            itemBuilder: (context, index) {
+                              Todos? todo=response?.data?.todos?[index];
+                              return ListTile(
+                                leading: Text(todo?.id.toString()??'0'),
+                                title: Text(todo?.todo??'No record found'),
+                                trailing: Text(todo?.completed.toString()??'No status'),
+                              );
+                            },),
+                        );
+                      case Status.error:
+                        return Builder(
+                          builder: (context) {
+                            return showErrorDialog(
+                              context: context,
+                              content: Text(response?.message??""),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            );
+                          }
+                        );
+                        // return Center(child: Container(),);
+                      default:
+                        return const Center(child: Text('Unknown state'),);
+                    }
+                  },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+  
 
-  @override
-  void initState() {
-   /* _provider=context.read<StockProvider>();
-    _provider?.fetchStocks();
-
-    _timer=Timer.periodic(const Duration(seconds: 5), (timer) async {
-      _provider?.fetchStocks();
-    },);*/
-    super.initState();
-
-
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
 }
+
 
 
