@@ -12,7 +12,7 @@ class TodoRepository{
 
   Future<ApiResponse<Todo>?> getTodos() async {
     try {
-      final result = await InternetAddress.lookup(ApiClient.baseUrl);
+      final result = await InternetAddress.lookup(ApiClient.baseUrl.replaceAll('https://', ''));
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return await _apiClient.fetchTodos();
       }
