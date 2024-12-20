@@ -7,11 +7,14 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.Intent
 import android.net.Uri
 import androidx.annotation.NonNull
+import android.content.Intent
+import android.os.Handler
 class MainActivity: FlutterActivity(){
     private val channel = "com.example.native"
+
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
