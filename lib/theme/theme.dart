@@ -373,6 +373,11 @@ class MaterialTheme {
         borderRadius: BorderRadius.circular(8.0)
       )
     ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(lightScheme().primary)
+      )
+    ),
     scaffoldBackgroundColor: colorScheme.background,
     canvasColor: colorScheme.surface,
   );

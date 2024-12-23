@@ -22,4 +22,16 @@ class LoginRepository{
       );
     }
   }
+
+  Future<ApiResponse<String>> submitRegister({required String name, required String email, required String mobileNo}) async{
+    try{
+      return await apiClient.submitRegister(name: name, email: email, mobileNo: mobileNo);
+    }catch (e){
+      return ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
+    }
+  }
 }

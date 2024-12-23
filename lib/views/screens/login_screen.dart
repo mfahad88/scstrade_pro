@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/main.dart';
+import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
+import 'package:scstrade_pro/views/widgets/greyOverlay.dart';
 import 'package:scstrade_pro/views/widgets/mCard.dart';
+import 'package:scstrade_pro/views/widgets/m_checkbox.dart';
+import 'package:scstrade_pro/views/widgets/m_dropdown.dart';
 import 'package:scstrade_pro/views/widgets/showErrorDialog.dart';
 
 import '../../models/response/api_response.dart';
+import '../widgets/m_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,69 +27,214 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     LoginViewModel viewModel = context.read();
     viewModel.fetchKseIndices();
+
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-
+    Size screenSize=MediaQuery.of(context).size;
+    print('Screen: $screenSize');
     return Consumer<LoginViewModel>(
-        builder: (context,value,child) {
+        builder: (_,value,child) {
           if(value.responseKseIndices?.status==Status.loading){
             return const Center(child: CircularProgressIndicator(),);
           }else if(value.responseKseIndices?.status==Status.error){
             return showErrorDialog(context: context, content: Text(value.responseKseIndices?.message??''), onPressed: () => Navigator.of(context).pop(),);
           }else{
-            return LayoutBuilder(
-                builder: (context,constraints) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: constraints.maxHeight*0.22,
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => SizedBox(
-                                  width: constraints.maxWidth*0.9,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 2.0),
-                                    child: mCard(kseIndices: value.responseKseIndices!.data![index],spots: value.spots,),
-                                  ),
-                                ),
-                                separatorBuilder: (context, index) => const SizedBox(),
-                                itemCount: value.responseKseIndices!.data!.length),
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter your Name',
-                                label: Text('Full Name')
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: Utils.percentToPx(percent: 5, size: screenSize)),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: Utils.percentToPx(percent: 20, size: screenSize,isWidth: false),
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => SizedBox(
+                            width: Utils.percentToPx(percent: 80, size: screenSize),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 2.0),
+                              child: mCard(kseIndices: value.responseKseIndices!.data![index],spots: value.spots,),
                             ),
                           ),
-                          Gap(10.0),
-                          TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter your email',
-                                label: Text('Email')
-                            ),
-                          ),
-                          Gap(10.0),
-                          TextField(
-                            decoration: InputDecoration(
-                                hintText: 'Enter your mobile number',
-                                label: Text('Mobile Number')
-                            ),
-                          )
-                        ],
-                      ),
+                          separatorBuilder: (context, index) => const SizedBox(),
+                          itemCount: value.responseKseIndices!.data!.length),
                     ),
-                  );
-                }
+                    Gap(Utils.percentToPx(percent: 2, size: screenSize,isWidth: false)),
+                    mTextField(
+                      label: 'Full Name',
+                      hintText:'Enter your Name' ,
+                      controller: value.fullNameController,
+                      keyboardType: TextInputType.name,
+                    ),
+                    Gap(Utils.percentToPx(percent: 1.7, size: screenSize,isWidth: false)),
+                    mTextField(
+                      hintText: 'Enter your email',
+                      label: 'Email',
+                      controller: value.emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow( RegExp(r'[a-zA-Z0-9._%+-@]'))
+                      ],
+
+                    ),
+                    Gap(Utils.percentToPx(percent: 1.7, size: screenSize,isWidth: false)),
+                    Row(
+                      children: [
+                        mDropdown<String>(
+                          value: value.selectedCountryCode,
+                          width: Utils.percentToPx(percent: 28, size: screenSize),
+                          dropdownMenuEntries: value.countryCode,
+                          onSelected: (v) =>value.selectedCountryCode=v! ,),
+                        Gap(Utils.percentToPx(percent: 2, size: screenSize),),
+                        SizedBox(
+                          width: Utils.percentToPx(percent: 65, size: screenSize),
+                          child: mTextField(
+                            hintText: 'Enter your mobile number',
+                            label: 'Mobile Number',
+                            controller: value.mobileController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                            ],
+                            maxLength: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gap(Utils.percentToPx(percent: 1, size: screenSize,isWidth: false)),
+                    mCheckbox(title: 'Remember Me', value: value.isRemember, onChanged: (v) => value.isRemember=v??false,),
+                    Gap(Utils.percentToPx(percent: 1.5, size: screenSize,isWidth: false)),
+                    FilledButton(onPressed: () {
+                      value.submitRegister(context);
+                      observeRegister(context:context,value:value);
+                    }, child: Text('Register',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.white
+                    ),)),
+                    Gap(Utils.percentToPx(percent: 2, size: screenSize,isWidth: false)),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Utils.isDark(context)?const Color(0xFF333333):MaterialTheme.lightScheme().scrim.withOpacity(0.6),
+                    ),
+                    Gap(Utils.percentToPx(percent: 1.7, size: screenSize,isWidth: false)),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text('Continue with Google/Facebook',
+                        style: Theme.of(context).textTheme.bodyLarge,),
+                    ),
+                    Gap(Utils.percentToPx(percent: 2, size: screenSize,isWidth: false)),
+                    Row(
+                      children: [
+                        Container(
+                          width: Utils.percentToPx(percent: 42, size: screenSize),
+                          height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
+                          decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(
+                                      color: Color(0xFFC7C7CC),
+                                      width: 1
+                                  )
+                              )
+                          ),
+                          child: Image.asset('images/google.png'),
+                        ),
+                        Gap(Utils.percentToPx(percent: 5, size: screenSize),),
+                        Container(
+                          width: Utils.percentToPx(percent: 42, size: screenSize),
+                          height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
+                          decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(
+                                      color: Color(0xFFC7C7CC),
+                                      width: 1
+                                  )
+                              )
+                          ),
+                          child: Image.asset('images/facebook.png'),
+                        )
+                      ],
+                    ),
+                    Gap(Utils.percentToPx(percent: 5, size: screenSize,isWidth: false)),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset('images/scs_logo.png'),
+                            Gap(Utils.percentToPx(percent: 1, size: screenSize)),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('SCS Trade Pro',style: Theme.of(context).textTheme.bodyLarge,),
+                                Text('Committed to intelligent investing',style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    fontSize: 8.0
+                                ))
+                              ],
+                            ),
+                            Spacer(),
+                            Text('Version 1.0',style: Theme.of(context).textTheme.titleSmall,)
+                          ],
+                        )),
+                    Gap(Utils.percentToPx(percent: 5, size: screenSize,isWidth: false)),
+                  ],
+                ),
+              ),
             );
           }
         }
     );
+  }
+
+  void observeRegister({required BuildContext context, required LoginViewModel value}) {
+
+    if(value.responseRegister.status==Status.loading){
+
+     /* ScaffoldMessenger.of(context).showSnackBar(
+
+          const SnackBar(
+
+            behavior: SnackBarBehavior.fixed,
+              content: Row(
+                children: [
+                  CircularProgressIndicator(),
+                  Gap(10),
+                  Text('Please wait open your account')
+                ],
+              )
+          )
+      );*/
+       showDialog(context: context,
+        builder: (context) {
+        return AlertDialog(
+          title: Text('Please wait'),
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+            ],
+          ),
+        );
+      },);
+    }else if(value.responseRegister.status==Status.error){
+      showDialog(context: context, builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(value.responseRegister.message??''),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('ok'))
+        ],
+      ),
+        barrierDismissible: false,
+      );
+      // showErrorDialog(context:context ,content: Text(response.message??''),onPressed: () => Navigator.of(context).pop(),);
+    }else{
+
+      print(value.responseRegister.data);
+    }
   }
 }

@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
 
       themeMode: ThemeMode.system,
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(100.0),
           child: AppBar(

@@ -9,7 +9,15 @@ import '../models/response/api_response.dart';
 
 class LoginViewModel extends ChangeNotifier{
   final LoginRepository loginRepository;
+  final List<String> countryCode=['+92','+971'];
+  String _selectedCountryCode='+92';
+  bool _isRemember=false;
+
   ApiResponse<List<KseIndices>>? responseKseIndices=ApiResponse<List<KseIndices>>(status: Status.loading);
+  ApiResponse<String> responseRegister=ApiResponse<String>(status: Status.loading);
+  TextEditingController fullNameController=TextEditingController();
+  TextEditingController emailController=TextEditingController();
+  TextEditingController mobileController=TextEditingController();
   List<FlSpot> spots=[
     FlSpot(0, 0.1+(Random().nextDouble()*(5.0-0.1))),
     FlSpot(1, 0.1+(Random().nextDouble()*(5.0-0.1))),
@@ -30,4 +38,29 @@ class LoginViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> submitRegister(BuildContext context) async {
+    responseRegister=ApiResponse<String>(status: Status.loading);
+    if(fullNameController.text.isNotEmpty && emailController.text.isNotEmpty && mobileController.text.isNotEmpty){
+
+      responseRegister=await loginRepository.submitRegister(name: fullNameController.text, email: emailController.text, mobileNo: '$selectedCountryCode${mobileController.text.replaceFirst(RegExp('^0'), '')}');
+      Navigator.of(context).pop();
+    }else{
+      responseRegister=ApiResponse<String>(status: Status.error,message: 'Please check all the fields');
+    }
+    notifyListeners();
+  }
+
+  String get selectedCountryCode => _selectedCountryCode;
+
+  set selectedCountryCode(String value) {
+    _selectedCountryCode = value;
+    notifyListeners();
+  }
+
+  bool get isRemember => _isRemember;
+
+  set isRemember(bool value) {
+    _isRemember = value;
+    notifyListeners();
+  }
 }

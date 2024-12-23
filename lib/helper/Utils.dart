@@ -94,6 +94,14 @@ class Utils{
     },);
 
   }
+  static double percentToPx({required double percent,required Size size, bool isWidth=true}){
+    if(isWidth){
+
+      return size.width*(percent/100);
+    }else{
+      return size.height*(percent/100);
+    }
+  }
 
  static TextTheme createTextTheme(
      BuildContext context, String bodyFontString, String displayFontString) {
