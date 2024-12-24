@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
@@ -6,6 +8,7 @@ import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/main.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
+import 'package:scstrade_pro/views/screens/otp_screen.dart';
 import 'package:scstrade_pro/views/widgets/greyOverlay.dart';
 import 'package:scstrade_pro/views/widgets/mCard.dart';
 import 'package:scstrade_pro/views/widgets/m_checkbox.dart';
@@ -83,14 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     Gap(Utils.percentToPx(percent: 1.7, size: screenSize,isWidth: false)),
                     Row(
                       children: [
-                        mDropdown<String>(
-                          value: value.selectedCountryCode,
-                          width: Utils.percentToPx(percent: 28, size: screenSize),
-                          dropdownMenuEntries: value.countryCode,
-                          onSelected: (v) =>value.selectedCountryCode=v! ,),
+                        Expanded(
+                          flex: 2,
+                          child: mDropdown<String>(
+                            value: value.selectedCountryCode,
+                            // width: Utils.percentToPx(percent: 28, size: screenSize),
+                            dropdownMenuEntries: value.countryCode,
+                            onSelected: (v) =>value.selectedCountryCode=v! ,),
+                        ),
                         Gap(Utils.percentToPx(percent: 2, size: screenSize),),
-                        SizedBox(
-                          width: Utils.percentToPx(percent: 65, size: screenSize),
+                        Expanded(
+                          flex: 5,
+                          // width: Utils.percentToPx(percent: 65, size: screenSize),
                           child: mTextField(
                             hintText: 'Enter your mobile number',
                             label: 'Mobile Number',
@@ -108,8 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     mCheckbox(title: 'Remember Me', value: value.isRemember, onChanged: (v) => value.isRemember=v??false,),
                     Gap(Utils.percentToPx(percent: 1.5, size: screenSize,isWidth: false)),
                     FilledButton(onPressed: () {
-                      value.submitRegister(context);
-                      observeRegister(context:context,value:value);
+                      value.submitRegister(context).then((v) => observeRegister(context:context,value:value),);
+                      print('Status: ${value.responseRegister.status}');
+                      
+
                     }, child: Text('Register',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: Colors.white
                     ),)),
@@ -128,34 +137,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     Gap(Utils.percentToPx(percent: 2, size: screenSize,isWidth: false)),
                     Row(
                       children: [
-                        Container(
-                          width: Utils.percentToPx(percent: 42, size: screenSize),
-                          height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
-                          decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(
-                                      color: Color(0xFFC7C7CC),
-                                      width: 1
-                                  )
-                              )
+                        Expanded(
+                          child: Container(
+                            height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
+                            decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFFC7C7CC),
+                                        width: 1
+                                    )
+                                )
+                            ),
+                            child: Image.asset('images/google.png'),
                           ),
-                          child: Image.asset('images/google.png'),
                         ),
                         Gap(Utils.percentToPx(percent: 5, size: screenSize),),
-                        Container(
-                          width: Utils.percentToPx(percent: 42, size: screenSize),
-                          height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
-                          decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(
-                                      color: Color(0xFFC7C7CC),
-                                      width: 1
-                                  )
-                              )
+                        Expanded(
+                          child: Container(
+                            height: Utils.percentToPx(percent: 7, size: screenSize,isWidth: false),
+                            decoration: ShapeDecoration(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    side: const BorderSide(
+                                        color: Color(0xFFC7C7CC),
+                                        width: 1
+                                    )
+                                )
+                            ),
+                            child: Image.asset('images/facebook.png'),
                           ),
-                          child: Image.asset('images/facebook.png'),
                         )
                       ],
                     ),
@@ -192,49 +203,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void observeRegister({required BuildContext context, required LoginViewModel value}) {
+      print('Status: ${value.responseRegister.status}');
+    if(value.responseRegister.status==Status.completed){
+      print(value.responseRegister.data);
+      Navigator.push(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => OtpScreen(),));
+      // Navigator.of(context).pop();
 
-    if(value.responseRegister.status==Status.loading){
-
-     /* ScaffoldMessenger.of(context).showSnackBar(
-
-          const SnackBar(
-
-            behavior: SnackBarBehavior.fixed,
-              content: Row(
-                children: [
-                  CircularProgressIndicator(),
-                  Gap(10),
-                  Text('Please wait open your account')
-                ],
-              )
-          )
-      );*/
-       showDialog(context: context,
-        builder: (context) {
-        return AlertDialog(
-          title: Text('Please wait'),
-          content: Row(
-            children: [
-              CircularProgressIndicator(),
-              Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+    }else if(value.responseRegister.status==Status.error) {
+      showDialog(context: context, builder: (context) =>
+          AlertDialog(
+            title: Text('Error'),
+            content: Text(value.responseRegister.message ?? ''),
+            actions: [
+              TextButton(onPressed: () => Navigator.of(context).pop(),
+                  child: Text('ok'))
             ],
           ),
-        );
-      },);
-    }else if(value.responseRegister.status==Status.error){
-      showDialog(context: context, builder: (context) => AlertDialog(
-        title: Text('Error'),
-        content: Text(value.responseRegister.message??''),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('ok'))
-        ],
-      ),
         barrierDismissible: false,
       );
       // showErrorDialog(context:context ,content: Text(response.message??''),onPressed: () => Navigator.of(context).pop(),);
-    }else{
-
-      print(value.responseRegister.data);
     }
   }
 }

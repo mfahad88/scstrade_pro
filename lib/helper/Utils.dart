@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Utils{
@@ -77,6 +78,18 @@ class Utils{
   static double responsiveSize(double screenWidth,double baseWidth){
     double scaleFactor = screenWidth / 480;
     return  baseWidth * scaleFactor;
+  }
+
+  static Future<void> saveCredentials({required String name,required String email,required String mobileNo}) async {
+    final SharedPreferencesAsync preferences= SharedPreferencesAsync();
+    preferences.setString('name', name);
+    preferences.setString('email', email);
+    preferences.setString('mobileNo', mobileNo);
+  }
+
+  static Future<String?> fetchCredentials(String key) async {
+    SharedPreferencesAsync preferences=SharedPreferencesAsync();
+     return preferences.getString(key);
   }
 
   static void showErrorDialog(BuildContext context,String errorMessage){

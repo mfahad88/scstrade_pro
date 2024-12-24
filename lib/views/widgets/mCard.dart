@@ -39,7 +39,7 @@ class mCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        kseIndices.valuetraded!.contains('-')?Icon(Icons.arrow_drop_down,color: Utils.isDark(context)? MaterialTheme.darkScheme().error : Color(0xFF6E0000FF),):Icon(Icons.arrow_drop_up,color: Utils.isDark(context)? MaterialTheme.darkScheme().secondary : MaterialTheme.lightScheme().primary,),
+                        kseIndices.netchange!.contains('-')?Icon(Icons.arrow_drop_down,color: Color(0xFFD01B10),):Icon(Icons.arrow_drop_up,color: Utils.isDark(context)? MaterialTheme.darkScheme().secondary : MaterialTheme.lightScheme().primary,),
 
                         Text(Utils.formatToMillions(double.parse(kseIndices.valuetraded??'0.0')),
                           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -49,11 +49,12 @@ class mCard extends StatelessWidget {
                       ],
                     ),
                     Container(
+
                       decoration: BoxDecoration(
-                        color: Utils.isDark(context)?Colors.transparent:MaterialTheme.lightScheme().primary.withOpacity(0.1),
+                        color: Utils.isDark(context)?kseIndices.netchange!.contains('-')?MaterialTheme.darkScheme().error.withOpacity(0.2):Colors.transparent:kseIndices.netchange!.contains('-')?MaterialTheme.lightScheme().error.withOpacity(0.2):MaterialTheme.lightScheme().primary.withOpacity(0.1),
                         border: Border.all(
                             width: 1,
-                            color: Utils.isDark(context)?Colors.white:Color(0xFF3DA526)
+                            color: Utils.isDark(context)?kseIndices.netchange!.contains('-')? Color(0xFFD01B10):Colors.white:kseIndices.netchange!.contains('-')?Color(0xFFD01B10):Color(0xFF3DA526)
                         ),
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -61,11 +62,11 @@ class mCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
                         child: Row(
                           children: [
-                            kseIndices.netchange!.contains('-')?Icon(Icons.arrow_downward,color: Utils.isDark(context)?MaterialTheme.darkScheme().error:Color(0xFF6E0000FF),):Icon(Icons.arrow_upward,color: Utils.isDark(context)?MaterialTheme.darkScheme().secondary:MaterialTheme.lightScheme().primary,),
+                            kseIndices.netchange!.contains('-')?Icon(Icons.arrow_downward,color: Utils.isDark(context)?MaterialTheme.darkScheme().error:Color(0xFFD01B10),):Icon(Icons.arrow_upward,color: Utils.isDark(context)?MaterialTheme.darkScheme().secondary:MaterialTheme.lightScheme().primary,),
                             Text('${Utils.roundTwoDecimal(changePercent)}%',
                               style: Theme.of(context).textTheme.labelSmall,),
                             Gap(5.0),
-                            Text(kseIndices.netchange!.contains('-')?'-':'+'+'${kseIndices.netchange}',
+                            Text(kseIndices.netchange!.contains('-')?'${kseIndices.netchange}':'+ ${kseIndices.netchange}',
                             style: Theme.of(context).textTheme.labelSmall,)
                           ],
                         ),

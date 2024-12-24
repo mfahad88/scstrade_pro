@@ -50,17 +50,16 @@ class ApiClient{
   }
   Future<ApiResponse<String>> submitRegister({required String name, required String email, required String mobileNo}) async {
     try{
-
+      ApiResponse<String> apiResponse=ApiResponse<String>(status: null);
       final response=await http.get(Uri.parse('$baseUrl/Data?que=Registration|$name|$email|$mobileNo'));
       print(response.request);
       List body = jsonDecode(response.body);
 
-      ApiResponse<String> apiResponse=ApiResponse<String>(
+      apiResponse=ApiResponse<String>(
           status: Status.completed,
           data: body.first['Status'],
           message: null
       );
-      print(apiResponse.data);
       return apiResponse;
     }catch(e){
       return ApiResponse(

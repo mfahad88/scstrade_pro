@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:scstrade_pro/models/indices/Kse_indices.dart';
 import 'package:scstrade_pro/repositories/login_repository.dart';
 
+import '../helper/Utils.dart';
 import '../models/response/api_response.dart';
+import '../views/screens/otp_screen.dart';
 
 class LoginViewModel extends ChangeNotifier{
   final LoginRepository loginRepository;
@@ -39,15 +41,19 @@ class LoginViewModel extends ChangeNotifier{
   }
 
   Future<void> submitRegister(BuildContext context) async {
-    responseRegister=ApiResponse<String>(status: Status.loading);
-    if(fullNameController.text.isNotEmpty && emailController.text.isNotEmpty && mobileController.text.isNotEmpty){
 
-      responseRegister=await loginRepository.submitRegister(name: fullNameController.text, email: emailController.text, mobileNo: '$selectedCountryCode${mobileController.text.replaceFirst(RegExp('^0'), '')}');
-      Navigator.of(context).pop();
+    if(fullNameController.text.isNotEmpty && emailController.text.isNotEmpty && mobileController.text.isNotEmpty){
+      if(isRemember){
+        Utils.saveCredentials(name: fullNameController.text, email: emailController.text, mobileNo: mobileController.text);
+      }
+     responseRegister= await loginRepository.submitRegister(name: fullNameController.text, email: emailController.text, mobileNo: '$selectedCountryCode${mobileController.text.replaceFirst(RegExp('^0'), '')}');
+      // responseRegister=ApiResponse<String>(status: Status.loading);
+      // Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => OtpScreen(),));
+      // Navigator.of(context).pop();
     }else{
       responseRegister=ApiResponse<String>(status: Status.error,message: 'Please check all the fields');
+
     }
-    notifyListeners();
   }
 
   String get selectedCountryCode => _selectedCountryCode;

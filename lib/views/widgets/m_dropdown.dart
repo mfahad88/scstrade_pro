@@ -22,6 +22,7 @@ class mDropdown<T> extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 8.0),
         child: DropdownButton<T>(
+          isExpanded: true,
           underline: SizedBox.shrink(),
             borderRadius: BorderRadius.circular(10.0),
             value: value,
