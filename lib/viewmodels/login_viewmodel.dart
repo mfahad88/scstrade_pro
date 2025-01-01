@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -14,7 +15,8 @@ class LoginViewModel extends ChangeNotifier{
   final List<String> countryCode=['+92','+971'];
   String _selectedCountryCode='+92';
   bool _isRemember=false;
-
+  Timer? _timer;
+  int counter=56;
   ApiResponse<List<KseIndices>>? responseKseIndices=ApiResponse<List<KseIndices>>(status: Status.loading);
   ApiResponse<String> responseRegister=ApiResponse<String>(status: Status.loading);
   TextEditingController fullNameController=TextEditingController();
@@ -38,6 +40,21 @@ class LoginViewModel extends ChangeNotifier{
       print('Error: $e');
     }
     notifyListeners();
+  }
+
+  void startTimer(){
+    counter=56;
+    //notifyListeners();
+    _timer=Timer.periodic(const Duration(milliseconds: 1500), (_) {
+      if(counter>=0){
+        counter--;
+        notifyListeners();
+      }else{
+        _timer?.cancel();
+      }
+
+      //
+    },);
   }
 
   Future<void> submitRegister(BuildContext context) async {
@@ -68,5 +85,11 @@ class LoginViewModel extends ChangeNotifier{
   set isRemember(bool value) {
     _isRemember = value;
     notifyListeners();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _timer?.cancel();
+    super.dispose();
   }
 }

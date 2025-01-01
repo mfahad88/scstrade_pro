@@ -380,6 +380,7 @@ class MaterialTheme {
     ),
     scaffoldBackgroundColor: colorScheme.background,
     canvasColor: colorScheme.surface,
+
   );
 
   /// Special Headline

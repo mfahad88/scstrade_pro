@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/theme/theme.dart';
+import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
+import 'package:scstrade_pro/views/screens/main_screen.dart';
 import 'package:scstrade_pro/views/widgets/otp_box.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -10,8 +13,10 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size screenSize=MediaQuery.of(context).size;
+    LoginViewModel viewModel=context.read();
     String? mobileNo;
     Utils.fetchCredentials('mobileNo').then((value) => mobileNo=value,);
+    viewModel.startTimer();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: Utils.percentToPx(percent: 13, size: screenSize,isWidth: false),
@@ -38,7 +43,7 @@ class OtpScreen extends StatelessWidget {
               children: [
                 Gap(Utils.percentToPx(percent: 5, size: screenSize)),
                 Text('Register An Account',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Colors.white
+                    color: Colors.white
                 ),),
               ],
             )
@@ -46,66 +51,136 @@ class OtpScreen extends StatelessWidget {
         ),
         flexibleSpace: Image.asset('images/toolbar.png',fit: BoxFit.fill,),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Utils.percentToPx(percent: 10, size: screenSize)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Gap(Utils.percentToPx(percent: 7, size: screenSize,isWidth: false)),
-            Align(
-              alignment: Alignment.center,
-              child: Text('OTP Code',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Utils.isDark(context)?MaterialTheme.darkScheme().secondaryFixedDim:MaterialTheme.lightScheme().primary,
-                fontWeight: FontWeight.w700
-              ),),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: 'Please type a OTP verification code sent to',
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: [
-                      TextSpan(text: '(+92) 314 3966681 & your email.',style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.w600
-                      ))
-                    ]
+      body: Consumer<LoginViewModel>(builder: (BuildContext context, LoginViewModel value, Widget? child) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: Utils.percentToPx(percent: 10, size: screenSize)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Gap(Utils.percentToPx(percent: 7, size: screenSize,isWidth: false)),
+              Align(
+                alignment: Alignment.center,
+                child: Text('OTP Code',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    color: Utils.isDark(context)?MaterialTheme.darkScheme().secondaryFixedDim:MaterialTheme.lightScheme().primary,
+                    fontWeight: FontWeight.w700
+                ),),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: 'Please type a OTP verification code sent to',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      children: [
+                        TextSpan(text: '(+92) 314 3966681 & your email.',style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.w600
+                        ))
+                      ]
+                  ),
                 ),
               ),
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: screenSize.width
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 21),
-                child: Row(
-                  children: List.generate(5, (index) {
-                    return Expanded(child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: OtpBox(
-                        onChanged: (value) {
-                          if(index>0){
-                            FocusScope.of(context).previousFocus();
-                          }
-                          if(value.length==1){
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxWidth: screenSize.width
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 21),
+                  child: Row(
+                      children: [
+                        Expanded(
+                          child: OtpBox(
+                            onChanged: (value) {
+                              if(value.length==1){
 
-                            FocusScope.of(context).nextFocus();
-                          }
-                        },
-                      ),
-                    ));
-                  },),
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        ),
+                        Gap(8),
+                        Expanded(
+                          child: OtpBox(
+                            onChanged: (value) {
+                              if(value.isEmpty){
+                                FocusScope.of(context).previousFocus();
+                              }
+                              if(value.length==1){
+
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        ),
+                        Gap(8),
+                        Expanded(
+                          child: OtpBox(
+                            onChanged: (value) {
+                              if(value.isEmpty){
+                                FocusScope.of(context).previousFocus();
+                              }
+                              if(value.length==1){
+
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        ),
+                        Gap(8),
+                        Expanded(
+                          child: OtpBox(
+                            onChanged: (value) {
+                              if(value.isEmpty){
+                                FocusScope.of(context).previousFocus();
+                              }
+                              if(value.length==1){
+
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        ),
+                        Gap(8),
+                        Expanded(
+                          child: OtpBox(
+                            onChanged: (value) {
+                              if(value.isEmpty){
+                                FocusScope.of(context).previousFocus();
+                              }
+                              if(value.length==1){
+
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                          ),
+                        )
+
+                      ]
+                  ),
                 ),
               ),
-            ),
-            Gap(20.0),
-            FilledButton(onPressed: () => print('clicked'), child: Text('Verify & Continue',style: Theme.of(context).textTheme.bodyLarge,)),
-            Gap(14.0),
-            Text('Didn\'t receive SMS & Email? Resend in 56 Sec',style: Theme.of(context).textTheme.bodyLarge,textAlign: TextAlign.center,)
-          ],
-        ),
+              Gap(20.0),
+              FilledButton(
+                  onPressed: () => Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => MainScreen(),)),
+                  child: Text('Verify & Continue',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.white
+                    ),
+                  )
+              ),
+              Gap(14.0),
+              Text('Didn\'t receive SMS & Email?',
+                style: Theme.of(context).textTheme.bodyLarge,textAlign: TextAlign.center,
+              ),
+              GestureDetector(
+                child: Text('Resend in ${viewModel.counter} Sec',style: Theme.of(context).textTheme.bodyLarge,textAlign: TextAlign.center,),
+                onTap: () => value.counter==0?value.startTimer():null,
+              )
+            ],
+          ),
+        );
+      },
+
       ),
     );
   }

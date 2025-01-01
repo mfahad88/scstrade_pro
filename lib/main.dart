@@ -13,6 +13,7 @@ import 'package:scstrade_pro/repositories/todo_repository.dart';
 import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
+import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/todo_viewmodel.dart';
 import 'package:scstrade_pro/views/screens/login_screen.dart';
 
@@ -36,11 +37,12 @@ void main() async {
   final _apiClient=ApiClient();
   final _loginRepository=LoginRepository(_apiClient);
   final _loginViewModel=LoginViewModel(loginRepository: _loginRepository);
+  final _mainViewModel=MainViewModel();
   runApp(
       MultiProvider(
           providers: [
           ChangeNotifierProvider(create: (context) => _loginViewModel,),
-
+            ChangeNotifierProvider(create: (context) => _mainViewModel,),
           ],
           child: const MyApp()
       )

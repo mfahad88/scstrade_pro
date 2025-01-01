@@ -135,4 +135,9 @@ class Utils{
    );
    return textTheme;
  }
+
+ static String dateFormatter({required DateTime dateTime, required String format}){
+    var formatter=DateFormat(format);
+    return formatter.format(dateTime);
+ }
 }

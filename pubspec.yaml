@@ -49,6 +49,7 @@ dependencies:
   firebase_auth: ^5.3.2
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.3
+  widget_mask: ^1.0.0+0
 dev_dependencies:
   flutter_test:
     sdk: flutter
