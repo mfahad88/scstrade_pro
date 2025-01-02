@@ -14,11 +14,12 @@ class mTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-
       maxLength: maxLength,
       controller: controller,
+      style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: Theme.of(context).textTheme.bodyLarge,
           label: Text(label),
           floatingLabelBehavior: FloatingLabelBehavior.always
       ),

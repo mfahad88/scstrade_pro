@@ -4,35 +4,46 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:scstrade_pro/views/widgets/m_rounded_container.dart';
+import 'package:scstrade_pro/views/widgets/m_segmented_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../theme/theme.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final BuildContext ctx;
+  const HomeScreen({super.key,required this.ctx});
 
   @override
   Widget build(BuildContext context) {
-    Size size=MediaQuery.of(context).size;
-    return Consumer<MainViewModel>(
-        builder: (context,value,child) {
-          return Column(
-            children: [
-              mRoundedContainer(
-                color: Utils.isDark(context)?const Color(0xFF011500):MaterialTheme.lightScheme().surfaceTint.withOpacity(0.05),
-                child: _indicesCard(
-                    context: context,
-                    value: value,
-                    size: size
+    return MaterialApp(
+      home: Scaffold(
+        body: Consumer<MainViewModel>(
+            builder: (_,value,child) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 15.r),
+                child: Column(
+                  children: [
+                    mRoundedContainer(
+                      color: Utils.isDark(context)?const Color(0xFF011500):MaterialTheme.lightScheme().surfaceTint.withOpacity(0.05),
+                      padding: EdgeInsets.symmetric(horizontal: 10.r,vertical: 4.r),
+                      child: _indicesCard(
+                          context: ctx,
+                          value: value,
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          );
-        }
+              );
+            }
+        ),
+      ),
     );
   }
 
-  Widget _indicesCard({required BuildContext context,required Size size,required MainViewModel value}){
+  Widget _indicesCard({required BuildContext context,required MainViewModel value}){
+    print(Theme.of(context).textTheme.labelSmall!.fontSize);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
@@ -43,9 +54,9 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Container(
-              constraints: const BoxConstraints(
-                  minWidth: 50,
-                  maxWidth: 70
+              constraints:  BoxConstraints(
+                  minWidth: 50.r,
+                  maxWidth: 70.r
               ),
               child: Theme(
                 data: Theme.of(context).copyWith(
@@ -84,12 +95,12 @@ class HomeScreen extends StatelessWidget {
           thickness: 1,
           height: 1,
         ),
-        Gap(Utils.percentToPx(percent: 1, size: size,isWidth: false)),
+        Gap(10.r),
         Row(
           children: [
             Container(
-              width: 23,
-              height: 23,
+              width: 23.r,
+              height: 23.r,
 
               child: RotatedBox(
                   quarterTurns: 1,
@@ -105,44 +116,18 @@ class HomeScreen extends StatelessWidget {
                   )
               ),
             ),
-            Gap(Utils.percentToPx(percent: 2 , size: size)),
+            Gap(7.r),
             Text('KMIALLSHR',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.w700
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  fontWeight: FontWeight.w700,
+                letterSpacing: -0.44,
               ),
             ),
             Spacer(),
             Container(
-              width: Utils.percentToPx(percent: 42, size: size),
+              width: 121.r,
               child: mRoundedContainer(
-                  color: Color(0xFFF4F0EE),
-                  side: BorderSide(
-                    color:  Color(0xFF79776F),
-                    width: 0.78
-                  ),
-                  child: Row(
-                    children: [
-                      Text('Volume:'),
-                      Text('424.810m'),
-                    ],
-                  )
-              ),
-            )
-          ],
-        ),
-        Gap(Utils.percentToPx(percent: 1, size: size,isWidth: false)),
-        Row(
-          children: [
-            Text('113,924.41',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.w700
-              ),
-            ),
-            Icon(Icons.arrow_drop_up),
-            Spacer(),
-            Container(
-              width: Utils.percentToPx(percent: 42, size: size),
-              child: mRoundedContainer(
+                  padding: EdgeInsets.symmetric(horizontal: 5.r,vertical: 4.r),
                   color: Color(0xFFF4F0EE),
                   side: BorderSide(
                       color:  Color(0xFF79776F),
@@ -150,34 +135,114 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Text('+4,411.27'),
-                      Gap(2.0),
-                      Text('(+4.03%)'),
+                      Text('Volume: ',
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.23
+                        ),
+                      ),
+                      Text('424.810m',
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.23
+                        ),
+                      ),
                     ],
                   )
               ),
             )
           ],
         ),
-        Gap(Utils.percentToPx(percent: 2, size: size,isWidth: false)),
+        Gap(2.r),
+        Row(
+          children: [
+            Text('113,924.41',
+              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  fontWeight: FontWeight.w700,
+                letterSpacing: -0.64
+              ),
+            ),
+            Image.asset('images/drop_up.png',width: 20.r,),
+            Gap(10.r),
+            Container(
+              width:  121.r,
+              child: mRoundedContainer(
+                  padding: EdgeInsets.symmetric(horizontal: 5.r,vertical: 4.r),
+                  color: Color(0xFFF4F0EE),
+                  side: BorderSide(
+                      color:  Color(0xFF79776F),
+                      width: 0.78
+                  ),
+                  child: Row(
+                    children: [
+                      Text('+4,411.27',
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.23
+
+                        ),
+                      ),
+                      Gap(2.0.r),
+                      Text('(+4.03%)',
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: -0.23
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+            )
+          ],
+        ),
+        Gap(10.r),
         Divider(
           color: Color(0xFFE5E2E1),
           thickness: 1,
           height: 1,
         ),
+        Gap(2.r),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset('images/drop_up.png',width: 8.r,),
+            Gap(2.r),
+            Text('High:',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    letterSpacing: -0.20
+                )
+            ),
+            Text(' 110,891.35',
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  letterSpacing: -0.20
+              ),),
+            Gap(2.r),
+            Text('1378.22(1.24%)',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    letterSpacing: -0.20
+                )),
+            Spacer(),
+            Image.asset('images/drop_down.png',width: 8.r,),
+            Gap(2.r),
+            Text('Low:',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    letterSpacing: -0.20
+                )),
+            Text(' 110,891.35',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    letterSpacing: -0.20
+                )),
+            Gap(2.r),
+            Text('1378.22(1.24%)',
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    letterSpacing: -0.20
+                )),
+          ],
+        ),
         Row(
           children: [
-            Icon(Icons.arrow_drop_up),
-            Text('High:'),
-            Text(' 110,891.35'),
-            Gap(2),
-            Text('1378.22(1.24%)'),
-            Spacer(),
-            Icon(Icons.arrow_drop_down),
-            Text('Low:'),
-            Text(' 110,891.35'),
-            Gap(2),
-            Text('1378.22(1.24%)'),
+
           ],
         )
       ],

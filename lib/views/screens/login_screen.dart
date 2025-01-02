@@ -14,7 +14,7 @@ import 'package:scstrade_pro/views/widgets/mCard.dart';
 import 'package:scstrade_pro/views/widgets/m_checkbox.dart';
 import 'package:scstrade_pro/views/widgets/m_dropdown.dart';
 import 'package:scstrade_pro/views/widgets/showErrorDialog.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/response/api_response.dart';
 import '../widgets/m_textfield.dart';
 
@@ -36,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize=MediaQuery.of(context).size;
-    print('Screen: $screenSize');
     return Consumer<LoginViewModel>(
         builder: (_,value,child) {
           if(value.responseKseIndices?.status==Status.loading){
@@ -52,13 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: Utils.percentToPx(percent: 20, size: screenSize,isWidth: false),
+                      height: 138.r,
                       child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => SizedBox(
-                            width: Utils.percentToPx(percent: 80, size: screenSize),
+                            width: 355.r,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 2.0),
+                              padding: EdgeInsets.symmetric(vertical: 8.0.r,horizontal: 2.0.r),
                               child: mCard(kseIndices: value.responseKseIndices!.data![index],spots: value.spots,),
                             ),
                           ),

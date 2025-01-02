@@ -14,7 +14,7 @@ import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
-import 'package:scstrade_pro/viewmodels/todo_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scstrade_pro/views/screens/login_screen.dart';
 
 
@@ -56,45 +56,52 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
-
+    Size size=MediaQuery.of(context).size;
     // Use with Google Fonts package to use downloadable fonts
-    TextTheme textTheme = Utils.createTextTheme(context, "Inter", "Inter");
 
-    MaterialTheme theme = MaterialTheme(textTheme);
 
-    return MaterialApp(
-      theme: Utils.isDark(context)?theme.dark():theme.light(),
+    return ScreenUtilInit(
+      designSize: size,
+      builder: (_, child) {
+        TextTheme textTheme = Utils.createTextTheme(context, "Inter", "Inter");
 
-      themeMode: ThemeMode.system,
-      home: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100.0),
-          child: AppBar(
-            flexibleSpace: Image(
-                image: AssetImage('images/toolbar.png'),
-              fit: BoxFit.fill,
-            ),
-            centerTitle: true,
-            title: Text('Register An Account',
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
-              ),
-            ),
-            bottom: PreferredSize(preferredSize: Size.fromHeight(0), child: Padding(
-              padding: const EdgeInsets.only(bottom: 26),
-              child: Text('Create wealth and create a better future',
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: Colors.white
+        MaterialTheme theme = MaterialTheme(textTheme);
+        return MaterialApp(
+          theme: Utils.isDark(context)?theme.dark():theme.light(),
+
+          themeMode: ThemeMode.system,
+          home: Scaffold(
+            resizeToAvoidBottomInset: true,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(100.0.r),
+              child: AppBar(
+                flexibleSpace: Image(
+                  image: AssetImage('images/toolbar.png'),
+                  fit: BoxFit.fill,
+                ),
+                centerTitle: true,
+                title: Text('Register An Account',
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white
+                  ),
+                ),
+                bottom: PreferredSize(preferredSize: Size.fromHeight(0), child: Padding(
+                  padding: EdgeInsets.only(bottom: 26.0.r),
+                  child: Text('Create wealth and create a better future',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.white
+                    ),
+                  ),
+                )
                 ),
               ),
-            )
             ),
+            body: const LoginScreen(),
           ),
-        ),
-        body: const LoginScreen(),
-      ),
+        );
+      },
+
     );
   }
   

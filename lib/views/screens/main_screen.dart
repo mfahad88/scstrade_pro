@@ -16,11 +16,12 @@ class MainScreen extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Consumer<MainViewModel>(
-            builder: (context,value,child) {
+            builder: (_,value,child) {
+
               return SafeArea(
                 child: Stack(
                   children: [
-                    value.selectedMenu=='Home'?Center(child: HomeScreen()):Center(child: Text('This screen is under development')),
+                    value.selectedMenu=='Home'?Center(child: HomeScreen(ctx: context,)):Center(child: Text('This screen is under development')),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: mBottombar(

@@ -6,7 +6,7 @@ import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
 import 'package:scstrade_pro/views/screens/main_screen.dart';
 import 'package:scstrade_pro/views/widgets/otp_box.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
 
@@ -19,16 +19,16 @@ class OtpScreen extends StatelessWidget {
     viewModel.startTimer();
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: Utils.percentToPx(percent: 13, size: screenSize,isWidth: false),
+        toolbarHeight: 100.r,
         automaticallyImplyLeading: false,
-        leadingWidth: 300,
+        leadingWidth: 300.r,
         leading: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Padding(
-                padding:EdgeInsets.symmetric(vertical: Utils.percentToPx(percent: 0.8, size: screenSize,isWidth: false),horizontal: Utils.percentToPx(percent: 2, size: screenSize)) ,
+                padding:EdgeInsets.symmetric(vertical: 10.r,horizontal: 10.r) ,
                 child: Row(
                   children: [
                     Icon(Icons.arrow_back_ios_new,color: Colors.white,),
@@ -41,7 +41,7 @@ class OtpScreen extends StatelessWidget {
             ),
             Row(
               children: [
-                Gap(Utils.percentToPx(percent: 5, size: screenSize)),
+                Gap(20.r),
                 Text('Register An Account',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     color: Colors.white
                 ),),
@@ -57,7 +57,7 @@ class OtpScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Gap(Utils.percentToPx(percent: 7, size: screenSize,isWidth: false)),
+              Gap(62.r),
               Align(
                 alignment: Alignment.center,
                 child: Text('OTP Code',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -85,7 +85,7 @@ class OtpScreen extends StatelessWidget {
                     maxWidth: screenSize.width
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 21),
+                  padding:  EdgeInsets.only(top: 21.r),
                   child: Row(
                       children: [
                         Expanded(

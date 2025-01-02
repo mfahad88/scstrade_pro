@@ -5,6 +5,7 @@ import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/indices/Kse_indices.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/views/widgets/line_chart_sample.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class mCard extends StatelessWidget {
   final KseIndices kseIndices;
@@ -21,11 +22,11 @@ class mCard extends StatelessWidget {
         borderSide: BorderSide(
           color: MaterialTheme.darkScheme().primary.withOpacity(0.15),
         ),
-        borderRadius: BorderRadius.circular(10.0)
+        borderRadius: BorderRadius.circular(10.0.r)
       ),
       color: Utils.isDark(context)?MaterialTheme.lightScheme().onPrimaryContainer:Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0.r),
         child: LayoutBuilder(
           builder: (context,constraints) {
             return Row(
@@ -56,16 +57,16 @@ class mCard extends StatelessWidget {
                             width: 1,
                             color: Utils.isDark(context)?kseIndices.netchange!.contains('-')? Color(0xFFD01B10):Colors.white:kseIndices.netchange!.contains('-')?Color(0xFFD01B10):Color(0xFF3DA526)
                         ),
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: BorderRadius.circular(50.r),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(vertical: 5.0.r,horizontal: 8.0.r),
                         child: Row(
                           children: [
                             kseIndices.netchange!.contains('-')?Icon(Icons.arrow_downward,color: Utils.isDark(context)?MaterialTheme.darkScheme().error:Color(0xFFD01B10),):Icon(Icons.arrow_upward,color: Utils.isDark(context)?MaterialTheme.darkScheme().secondary:MaterialTheme.lightScheme().primary,),
                             Text('${Utils.roundTwoDecimal(changePercent)}%',
                               style: Theme.of(context).textTheme.labelSmall,),
-                            Gap(5.0),
+                            Gap(5.0.r),
                             Text(kseIndices.netchange!.contains('-')?'${kseIndices.netchange}':'+ ${kseIndices.netchange}',
                             style: Theme.of(context).textTheme.labelSmall,)
                           ],
@@ -84,8 +85,8 @@ class mCard extends StatelessWidget {
                     ),
                     Container(
                       constraints: BoxConstraints(
-                        maxWidth: constraints.maxWidth*0.4,
-                        maxHeight: constraints.maxHeight*0.5,
+                        maxWidth: 145.r,
+                        maxHeight: 74.r,
                       ),
                       child: LineChartSample(spots: spots),
                     )

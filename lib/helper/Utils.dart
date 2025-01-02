@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -123,15 +124,33 @@ class Utils{
    TextTheme displayTextTheme =
    GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
    TextTheme textTheme = displayTextTheme.copyWith(
-     bodyLarge: bodyTextTheme.bodyLarge,
-     bodyMedium: bodyTextTheme.bodyMedium,
-     bodySmall: bodyTextTheme.bodySmall,
-     headlineLarge: bodyTextTheme.headlineLarge,
-     headlineMedium: bodyTextTheme.headlineMedium,
-     headlineSmall: bodyTextTheme.headlineSmall,
-     labelLarge: bodyTextTheme.labelLarge,
-     labelMedium: bodyTextTheme.labelMedium,
-     labelSmall: bodyTextTheme.labelSmall,
+     bodyLarge: bodyTextTheme.bodyLarge!.copyWith(
+       fontSize: 16.r
+     ),
+     bodyMedium: bodyTextTheme.bodyMedium!.copyWith(
+         fontSize: 14.r
+     ),
+     bodySmall: bodyTextTheme.bodySmall!.copyWith(
+         fontSize: 12.r
+     ),
+     headlineLarge: bodyTextTheme.headlineLarge!.copyWith(
+         fontSize: 32.r
+     ),
+     headlineMedium: bodyTextTheme.headlineMedium!.copyWith(
+         fontSize: 34.r
+     ),
+     headlineSmall: bodyTextTheme.headlineSmall!.copyWith(
+         fontSize: 24.r
+     ),
+     labelLarge: bodyTextTheme.labelLarge!.copyWith(
+         fontSize: 14.r
+     ),
+     labelMedium: bodyTextTheme.labelMedium!.copyWith(
+         fontSize: 12.r
+     ),
+     labelSmall: bodyTextTheme.labelSmall!.copyWith(
+         fontSize: 9.r
+     ),
    );
    return textTheme;
  }
