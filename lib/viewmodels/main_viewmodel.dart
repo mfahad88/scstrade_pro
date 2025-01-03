@@ -15,25 +15,17 @@ class MainViewModel extends ChangeNotifier{
     'More':'images/group_more.png',
   };
   String _selectedMenu='Home';
-  final List<ButtonSegment<String>> segments= const[
-    ButtonSegment(value: 'Line',label: Text('Line'),enabled: true),
-    ButtonSegment(value: 'Candle',label: Text('Candle'),enabled: true),
-  ];
-  Set<String> _selectedChart={'Line'};
-
-  Set<String> get selectedChart => _selectedChart;
-
-
   Timer? _timer;
   String? currentTime;
+  bool isLineSelected=false;
+  bool isCandleSelected=true;
+  List<String> mins=['1min','5min','15min','30min','1h'];
+  String selectedMins='';
   set selectedMenu(String value) {
     _selectedMenu = value;
     notifyListeners();
   }
-  set selectedChart(Set<String> value) {
-    _selectedChart = value;
-    notifyListeners();
-  }
+
 
   String get selectedMenu => _selectedMenu;
   void startTimer(){
@@ -55,5 +47,16 @@ class MainViewModel extends ChangeNotifier{
 
   MainViewModel(){
     startTimer();
+  }
+
+  void toggleChart(String v){
+    isLineSelected=!isLineSelected;
+    isCandleSelected=!isCandleSelected;
+    notifyListeners();
+  }
+
+  void toggleMins(String v){
+    selectedMins=v;
+    notifyListeners();
   }
 }

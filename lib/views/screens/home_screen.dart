@@ -1,11 +1,17 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
+import 'package:scstrade_pro/models/data/stock_card_data.dart';
+import 'package:scstrade_pro/models/response/api_response.dart';
+import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
+import 'package:scstrade_pro/views/widgets/m_button.dart';
 import 'package:scstrade_pro/views/widgets/m_rounded_container.dart';
 import 'package:scstrade_pro/views/widgets/m_segmented_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:scstrade_pro/views/widgets/m_stock_card.dart';
 
 import '../../theme/theme.dart';
 
@@ -15,35 +21,48 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Consumer<MainViewModel>(
-            builder: (_,value,child) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 15.r),
-                child: Column(
+    return Consumer<MainViewModel>(
+        builder: (_,value,child) {
+          return Container(
+            color: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 15.r),
+            child: Consumer<AlldataViewmodel>(
+              builder: (BuildContext _, AlldataViewmodel allData, Widget? child) {
+                return ListView(
                   children: [
                     mRoundedContainer(
                       color: Utils.isDark(context)?const Color(0xFF011500):MaterialTheme.lightScheme().surfaceTint.withOpacity(0.05),
                       padding: EdgeInsets.symmetric(horizontal: 10.r,vertical: 4.r),
                       child: _indicesCard(
-                          context: ctx,
-                          value: value,
+                        context: ctx,
+                        value: value,
                       ),
-                    )
+                    ),
+                    Gap(10.r),
+                    Text(
+                      'Leaders:',
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(0xFF1C1C1C),
+                        fontWeight: FontWeight.w700,
+                        height: 1.33,
+                        letterSpacing: -0.54,
+                      ),
+                    ),
+                    Gap(5.r),
+                    _leaderList(allData)
+
                   ],
-                ),
-              );
-            }
-        ),
-      ),
+                );
+              },
+            ),
+          );
+        }
     );
   }
 
   Widget _indicesCard({required BuildContext context,required MainViewModel value}){
     print(Theme.of(context).textTheme.labelSmall!.fontSize);
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           children: [
@@ -240,12 +259,77 @@ class HomeScreen extends StatelessWidget {
                 )),
           ],
         ),
-        Row(
-          children: [
+        SingleChildScrollView(
+          padding: EdgeInsets.zero,
+          scrollDirection: Axis.horizontal,
+          child: Row(
 
-          ],
-        )
+            children: [
+              mButton(
+                ctx: context,
+                selected: value.isLineSelected,
+                title: 'Line', onPressed: (v) {
+                if(!value.isLineSelected) {
+                  value.toggleChart(v);
+                }
+              },
+              ),
+              // Gap(3.r),
+              mButton(
+                ctx: context,
+                selected: value.isCandleSelected,
+                title: 'Candle', onPressed: (v) {
+                if(!value.isCandleSelected){
+                  value.toggleChart(v);
+                }
+              },
+              ),
+              // Gap(3.r),
+             Row(
+               children: value.mins.asMap().entries.map((e) {
+
+                 return Row(
+                   children: [
+                     mButton(ctx: context,selected: value.mins[e.key]==value.selectedMins, title: e.value, onPressed: (v) => value.toggleMins(v) ,),
+                     // Gap(3.r)
+                   ],
+                 );
+               },).toList(),
+             )
+
+            ],
+          ),
+        ),
+
       ],
     );
+  }
+
+  Widget _leaderList(AlldataViewmodel allData) {
+    switch (allData.apiResponse.status){
+
+      case null:
+        // TODO: Handle this case.
+      case Status.loading:
+        return Center(child: CircularProgressIndicator(),);
+      case Status.completed:
+
+        return ListView.separated(
+          shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) => mStockCard(stockCardData: allData.fetchLeaders().map((e) =>
+                StockCardData(e.companyLogo, e.ind, e.sym, e.nm, e.v.toString(), e.cl.toString(), e.ch.toString(),
+                    e.chp.toString(), e.hp.toString(), e.lp.toString(), e.ap.toString(), e.av.toString(), e.bp.toString(), e.bv.toString(), [
+                      FlSpot(0, 1.5),
+                      FlSpot(1, 2.5),
+                      FlSpot(2, 4.5),
+                      FlSpot(3, 3.5),
+                      FlSpot(4, 3.5),
+                    ]),).toList()[index]),
+            separatorBuilder: (context, index) => Gap(5.r),
+            itemCount:  10);
+      case Status.error:
+        return Text(allData.apiResponse.message??'');
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import '../../helper/Utils.dart';
@@ -13,8 +14,8 @@ class mBottombar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      margin: EdgeInsets.only(bottom: 30),
+      height: 100.r,
+      // margin: EdgeInsets.only(bottom: 10.r),
       decoration: BoxDecoration(
           color: Colors.transparent,
           image: DecorationImage(image: AssetImage('images/group_17.png'),fit: BoxFit.fill),

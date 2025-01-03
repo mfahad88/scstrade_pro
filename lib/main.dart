@@ -8,10 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/models/todos/Todos.dart';
+import 'package:scstrade_pro/repositories/alldata_repository.dart';
 import 'package:scstrade_pro/repositories/login_repository.dart';
 import 'package:scstrade_pro/repositories/todo_repository.dart';
 import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
+import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,11 +40,14 @@ void main() async {
   final _loginRepository=LoginRepository(_apiClient);
   final _loginViewModel=LoginViewModel(loginRepository: _loginRepository);
   final _mainViewModel=MainViewModel();
+  final _allDataRepository=AllDataRepository(_apiClient);
+  final _allDataViewModel=AlldataViewmodel(_allDataRepository);
   runApp(
       MultiProvider(
           providers: [
-          ChangeNotifierProvider(create: (context) => _loginViewModel,),
+            ChangeNotifierProvider(create: (context) => _loginViewModel,),
             ChangeNotifierProvider(create: (context) => _mainViewModel,),
+            ChangeNotifierProvider(create: (context) => _allDataViewModel,),
           ],
           child: const MyApp()
       )
@@ -104,7 +109,7 @@ class MyApp extends StatelessWidget {
 
     );
   }
-  
+
 
 }
 
