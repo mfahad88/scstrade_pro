@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -47,7 +48,7 @@ class mButton extends StatelessWidget {
         child:  Text(title,
           style: Theme.of(ctx).textTheme.labelSmall!.copyWith(
             letterSpacing: 0.06,
-            color: MaterialTheme.lightScheme().onSurfaceVariant
+            color: Utils.isDark(context)?Colors.white:MaterialTheme.lightScheme().onSurfaceVariant
           ),
         )
     );

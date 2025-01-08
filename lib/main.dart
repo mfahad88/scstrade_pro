@@ -9,11 +9,13 @@ import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/models/todos/Todos.dart';
 import 'package:scstrade_pro/repositories/alldata_repository.dart';
+import 'package:scstrade_pro/repositories/indices_repository.dart';
 import 'package:scstrade_pro/repositories/login_repository.dart';
 import 'package:scstrade_pro/repositories/todo_repository.dart';
 import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
+import 'package:scstrade_pro/viewmodels/indices_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,12 +44,15 @@ void main() async {
   final _mainViewModel=MainViewModel();
   final _allDataRepository=AllDataRepository(_apiClient);
   final _allDataViewModel=AlldataViewmodel(_allDataRepository);
+  final _indicesRepository=IndicesRepository(_apiClient);
+  final _indicesViewModel=IndicesViewModel(_indicesRepository);
   runApp(
       MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context) => _loginViewModel,),
             ChangeNotifierProvider(create: (context) => _mainViewModel,),
             ChangeNotifierProvider(create: (context) => _allDataViewModel,),
+            ChangeNotifierProvider(create: (context) => _indicesViewModel,)
           ],
           child: const MyApp()
       )

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:scstrade_pro/models/allData/Alldata_indices.dart';
+import 'package:scstrade_pro/models/indices/Indices.dart';
+import 'package:scstrade_pro/models/indices/IndicesSummary.dart';
 import 'package:scstrade_pro/models/indices/Kse_indices.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 
@@ -82,6 +84,50 @@ class ApiClient{
       apiResponse=ApiResponse<String>(
           status: Status.completed,
           data: body.first['Status'],
+          message: null
+      );
+      return apiResponse;
+    }catch(e){
+      return ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
+    }
+  }
+
+  Future<ApiResponse<List<IndicesSummary>>> fetchIndices() async {
+    try{
+      ApiResponse<List<IndicesSummary>> apiResponse=ApiResponse<List<IndicesSummary>>(status: null);
+      final response=await http.get(Uri.parse('$baseUrl/Data?que=KSE%20Indices'));
+      print(response.request);
+      List body = jsonDecode(response.body);
+
+      apiResponse=ApiResponse<List<IndicesSummary>>(
+          status: Status.completed,
+          data: body.map((e) => IndicesSummary.fromJson(e),).toList(),
+          message: null
+      );
+      return apiResponse;
+    }catch(e){
+      return ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
+    }
+  }
+
+  Future<ApiResponse<List<Indices>>> fetchByIndex(String query) async {
+    try{
+      ApiResponse<List<Indices>> apiResponse=ApiResponse<List<Indices>>(status: null);
+      final response=await http.get(Uri.parse('$baseUrl/Data?que=$query'));
+      print(response.request);
+      List body = jsonDecode(response.body);
+
+      apiResponse=ApiResponse<List<Indices>>(
+          status: Status.completed,
+          data: body.map((e) => Indices.fromJson(e),).toList(),
           message: null
       );
       return apiResponse;

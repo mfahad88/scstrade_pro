@@ -6,8 +6,9 @@ import '../../helper/Utils.dart';
 
 class LineChartSample extends StatelessWidget {
   final List<FlSpot> spots;
-
-  const LineChartSample({super.key, required this.spots});
+  final FlGridData? gridData;
+  final FlTitlesData? titlesData;
+  const LineChartSample({super.key, required this.spots, this.gridData, this.titlesData});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,8 @@ class LineChartSample extends StatelessWidget {
         maxX: 5,
         minY: 0,
         maxY: 5,
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(show: false),
+        gridData: gridData??FlGridData(show: false),
+        titlesData: titlesData??FlTitlesData(show: false),
         borderData: FlBorderData(show: false, border: Border.all(color: Colors.black, width: 1)),
         lineBarsData: [
           LineChartBarData(
@@ -31,6 +32,7 @@ class LineChartSample extends StatelessWidget {
             belowBarData: BarAreaData(show: true,/* color: Colors.blue.withOpacity(0.3)*/
             gradient: LinearGradient(
               transform: GradientRotation(math.pi/4),
+
                 colors: Utils.isDark(context)?[MaterialTheme.darkScheme().primary.withOpacity(1.0),MaterialTheme.darkScheme().primary.withOpacity(0.1)]:[MaterialTheme.lightScheme().primary.withOpacity(1.0),MaterialTheme.lightScheme().primary.withOpacity(0.1)])
             ),
           ),

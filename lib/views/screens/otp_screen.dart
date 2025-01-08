@@ -161,7 +161,7 @@ class OtpScreen extends StatelessWidget {
               ),
               Gap(20.0),
               FilledButton(
-                  onPressed: () => Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => MainScreen(),)),
+                  onPressed: () => Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => MainScreen(context:context),)),
                   child: Text('Verify & Continue',
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: Colors.white

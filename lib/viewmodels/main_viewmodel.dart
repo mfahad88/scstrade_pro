@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import '../helper/Utils.dart';
 
 class MainViewModel extends ChangeNotifier{
-
+  List<String> sideMenus=['Indices','All Stocks','Detailed Quote','Fundamental', 'Technical','SCS Portfolio','Announcements'];
+  List<String> imageMenus=['images/Group 49.png','images/Group 51.png','images/Group 52.png','images/Group 53.png','images/Group 54.png','images/Group 55.png','images/Group 56.png'];
 
   final Map<String,String> menus={
     'Watchlist':'images/group_watchlist.png',
@@ -21,6 +22,15 @@ class MainViewModel extends ChangeNotifier{
   bool isCandleSelected=true;
   List<String> mins=['1min','5min','15min','30min','1h'];
   String selectedMins='';
+  String _selectedIndex='';
+
+  String get selectedIndex => _selectedIndex;
+
+  set selectedIndex(String value) {
+    _selectedIndex = value;
+    notifyListeners();
+  }
+
   set selectedMenu(String value) {
     _selectedMenu = value;
     notifyListeners();

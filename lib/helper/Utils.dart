@@ -128,10 +128,10 @@ class Utils{
        fontSize: 16.r
      ),
      bodyMedium: bodyTextTheme.bodyMedium!.copyWith(
-         fontSize: 14.r
+         fontSize: 22.r
      ),
      bodySmall: bodyTextTheme.bodySmall!.copyWith(
-         fontSize: 12.r
+         fontSize: 10.r
      ),
      headlineLarge: bodyTextTheme.headlineLarge!.copyWith(
          fontSize: 32.r

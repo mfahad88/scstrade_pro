@@ -11,8 +11,8 @@ class AlldataViewmodel extends ChangeNotifier {
   ApiResponse<List<AlldataIndices>> apiResponse=ApiResponse(status: Status.loading);
   Timer? timer;
   AlldataViewmodel(this.allDataRepository){
-    // _startTimer();
-    _fetchAllData();
+    _startTimer();
+    // _fetchAllData();
   }
 
   Future<void> _fetchAllData() async {
@@ -27,6 +27,13 @@ class AlldataViewmodel extends ChangeNotifier {
 
   List<AlldataIndices> fetchLeaders(){
     return apiResponse.data!..sort((a, b) => b.v!.compareTo(a.v!),)..take(10);
+  }
+  List<AlldataIndices> fetchGainers(){
+    return apiResponse.data!..sort((a, b) => b.cl!.compareTo(a.cl!),)..take(10);
+  }
+
+  List<AlldataIndices> fetchLosers(){
+    return apiResponse.data!..sort((a, b) => a.cl!.compareTo(b.cl!),)..take(10);
   }
 
   void _startTimer(){
