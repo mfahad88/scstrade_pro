@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Status: ${value.responseRegister.status}');
     if(value.responseRegister.status==Status.completed){
       print(value.responseRegister.data);
-      Navigator.push(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => OtpScreen(),));
+      Navigator.pushReplacement(context, PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => OtpScreen(),));
       // Navigator.of(context).pop();
 
     }else if(value.responseRegister.status==Status.error) {

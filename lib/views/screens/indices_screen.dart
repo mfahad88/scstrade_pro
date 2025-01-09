@@ -8,6 +8,7 @@ import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/indices_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
+import 'package:scstrade_pro/views/screens/stock_index_screen.dart';
 import 'package:scstrade_pro/views/widgets/m_indice_card.dart';
 import 'package:scstrade_pro/views/widgets/m_market_status.dart';
 import 'package:scstrade_pro/views/widgets/m_rounded_container.dart';
@@ -17,24 +18,20 @@ class IndicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Utils.isDark(context)?Colors.black:Colors.white,
-
-      body: Consumer<IndicesViewModel>(
-          builder: (_,value,child) {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.r),
-              child: ListView(
-                children: [
-                  Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.r),
-                      child: mMarketStatus()
-                  ),
-                  _indicesList(context,value)
-                ],
-              ),
-            );
-          }
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Utils.isDark(context)?Colors.black:Colors.white,
+        body: SafeArea(
+          child: Consumer<IndicesViewModel>(
+              builder: (_,value,child) {
+                return Container(
+          
+                  margin: EdgeInsets.symmetric(horizontal: 10.r),
+                  child: _indicesList(context,value),
+                );
+              }
+          ),
+        ),
       ),
     );
   }
@@ -53,8 +50,9 @@ class IndicesScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  context.read<MainViewModel>().selectedMenu='StockIndexScreen';
-                  context.read<MainViewModel>().selectedIndex= (value.apiResponse.data![index] as IndicesSummary).indexcode??'';
+                  // context.read<MainViewModel>().selectedMenu='StockIndexScreen';
+                  // context.read<MainViewModel>().selectedIndex= (value.apiResponse.data![index] as IndicesSummary).indexcode??'';
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockIndexScreen(index: (value.apiResponse.data![index] as IndicesSummary).indexcode.toString()),));
                 },
                 child: Container(
                   clipBehavior: Clip.none,

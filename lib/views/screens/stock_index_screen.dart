@@ -21,20 +21,24 @@ class StockIndexScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AlldataViewmodel>(
-      builder: (_,value,child) {
-        return Container(
-          color: Utils.isDark(context)?Colors.black:Colors.white,
-          padding: EdgeInsets.symmetric(horizontal: 15.r),
-          child: ListView(
-            children: [
-              mMarketStatus(),
-              Gap(5.0.r),
-              _stockList(value)
-            ],
-          ),
-        );
-      }
+    return MaterialApp(
+      home: Scaffold(
+        body: Consumer<AlldataViewmodel>(
+          builder: (_,value,child) {
+            return Container(
+              color: Utils.isDark(context)?Colors.black:Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 15.r),
+              child: ListView(
+                children: [
+                  mMarketStatus(),
+                  Gap(5.0.r),
+                  _stockList(value)
+                ],
+              ),
+            );
+          }
+        ),
+      ),
     );
   }
 
@@ -52,7 +56,7 @@ class StockIndexScreen extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, i) {
             print(index);
-             var indices= value.apiResponse.data?.where((element) => element.ind?.contains(index)??false,).toList()[i];
+             var indices= value.apiResponse.data?.where((element) => index.toLowerCase().contains('all')?element.ind?.contains('\"\"')??false:element.ind?.contains(index)??false).toList()[i];
              return mStockCard(stockCardData: StockCardData(indices?.companyLogo??'', indices?.ind.toString(), indices?.sym, indices?.nm, indices?.v.toString(), indices?.cl.toString(), indices?.ch.toString(), indices?.chp.toString(), indices?.hp.toString(), indices?.lp.toString(),
                  indices?.ap.toString(), indices?.av.toString(), indices?.bp.toString(), indices?.bv.toString(), [
                    FlSpot(0, 1.5),

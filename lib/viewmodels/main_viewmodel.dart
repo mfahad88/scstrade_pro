@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:interactive_chart/interactive_chart.dart';
 
 import '../helper/Utils.dart';
+import '../models/data/mock_data.dart';
 
 class MainViewModel extends ChangeNotifier{
   List<String> sideMenus=['Indices','All Stocks','Detailed Quote','Fundamental', 'Technical','SCS Portfolio','Announcements'];
   List<String> imageMenus=['images/Group 49.png','images/Group 51.png','images/Group 52.png','images/Group 53.png','images/Group 54.png','images/Group 55.png','images/Group 56.png'];
-
+  final List<CandleData> candleData = MockDataTesla.candles;
   final Map<String,String> menus={
     'Watchlist':'images/group_watchlist.png',
     'Market':'images/group_market.png',

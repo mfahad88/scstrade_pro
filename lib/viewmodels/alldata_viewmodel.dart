@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:interactive_chart/interactive_chart.dart';
 import 'package:scstrade_pro/models/allData/Alldata_indices.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/repositories/alldata_repository.dart';
 
+import '../models/data/mock_data.dart';
+
 class AlldataViewmodel extends ChangeNotifier {
 
   final AllDataRepository allDataRepository;
+
   ApiResponse<List<AlldataIndices>> apiResponse=ApiResponse(status: Status.loading);
   Timer? timer;
   AlldataViewmodel(this.allDataRepository){

@@ -27,11 +27,11 @@ class HomeScreen extends StatelessWidget {
     return Consumer<MainViewModel>(
         builder: (_,value,child) {
           return Container(
-            color: Utils.isDark(context)?Colors.black:Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 15.r),
+
+            padding: EdgeInsets.only(left: 15.r,right: 15.r),
             child: Consumer<AlldataViewmodel>(
               builder: (BuildContext _, AlldataViewmodel allData, Widget? child) {
-                return ListView(
+                return Column(
                   children: [
                     mRoundedContainer(
                       color: Utils.isDark(context)?const Color(0xFF011500):MaterialTheme.lightScheme().surfaceTint.withOpacity(0.05),
@@ -90,12 +90,8 @@ class HomeScreen extends StatelessWidget {
     print(Theme.of(context).textTheme.labelSmall!.fontSize);
     return Column(
       children: [
-        mMarketStatus(),
-        Divider(
-          color: Color(0xFFE5E2E1),
-          thickness: 1,
-          height: 1,
-        ),
+
+
         Gap(10.r),
         Row(
           children: [
@@ -304,29 +300,11 @@ class HomeScreen extends StatelessWidget {
 
               ]
           ):InteractiveChart(
-              candles: [
-                CandleData(
-                  timestamp: DateTime.now().millisecondsSinceEpoch,
-                  open: 100,
-                  high: 110,
-                  low: 90,
-                  close: 105, volume: 100,
-                ),
-                CandleData(
-                  timestamp: DateTime.now().millisecondsSinceEpoch,
-                  open: 100,
-                  high: 110,
-                  low: 90,
-                  close: 105, volume: 100,
-                ),
-                CandleData(
-                  timestamp: DateTime.now().millisecondsSinceEpoch,
-                  open: 100,
-                  high: 110,
-                  low: 90,
-                  close: 105, volume: 100,
-                ),
-              ]
+              candles: value.candleData,
+            initialVisibleCandleCount: 50,
+            onCandleResize: (value) {
+              print(value);
+            },
           ),
         )
       ],

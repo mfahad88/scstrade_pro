@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:scstrade_pro/models/allData/Alldata_indices.dart';
 import 'package:scstrade_pro/models/indices/Indices.dart';
@@ -56,15 +57,19 @@ class ApiClient{
   Future<ApiResponse<List<AlldataIndices>>> fetchAllData() async{
     try{
 
-      final response=await http.get(Uri.parse('$baseUrl/Data?que=AllData'));
-      List body = jsonDecode(response.body);
-      ApiResponse<List<AlldataIndices>> apiResponse=ApiResponse<List<AlldataIndices>>(
-          status: Status.completed,
-          data: body.map((e) => AlldataIndices.fromJson(e),).toList(),
-          message: null
-      );
-      print(apiResponse);
-      return apiResponse;
+
+      return compute((message) async {
+        final response=await http.get(Uri.parse('$baseUrl/Data?que=AllData'));
+
+        List body = jsonDecode(response.body);
+        ApiResponse<List<AlldataIndices>> apiResponse=ApiResponse<List<AlldataIndices>>(
+            status: Status.completed,
+            data: body.map((e) => AlldataIndices.fromJson(e),).toList(),
+            message: null
+        );
+        print(apiResponse);
+        return apiResponse;
+      }, '');
     }catch(e){
       return ApiResponse(
           status: Status.error,
