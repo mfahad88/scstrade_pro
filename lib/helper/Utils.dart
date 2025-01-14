@@ -90,7 +90,7 @@ class Utils{
 
   static Future<String?> fetchCredentials(String key) async {
     SharedPreferencesAsync preferences=SharedPreferencesAsync();
-     return preferences.getString(key);
+    return preferences.getString(key);
   }
 
   static void showErrorDialog(BuildContext context,String errorMessage){
@@ -117,46 +117,55 @@ class Utils{
     }
   }
 
- static TextTheme createTextTheme(
-     BuildContext context, String bodyFontString, String displayFontString) {
-   TextTheme baseTextTheme = Theme.of(context).textTheme;
-   TextTheme bodyTextTheme = GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
-   TextTheme displayTextTheme =
-   GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
-   TextTheme textTheme = displayTextTheme.copyWith(
-     bodyLarge: bodyTextTheme.bodyLarge!.copyWith(
-       fontSize: 16.r
-     ),
-     bodyMedium: bodyTextTheme.bodyMedium!.copyWith(
-         fontSize: 22.r
-     ),
-     bodySmall: bodyTextTheme.bodySmall!.copyWith(
-         fontSize: 10.r
-     ),
-     headlineLarge: bodyTextTheme.headlineLarge!.copyWith(
-         fontSize: 32.r
-     ),
-     headlineMedium: bodyTextTheme.headlineMedium!.copyWith(
-         fontSize: 34.r
-     ),
-     headlineSmall: bodyTextTheme.headlineSmall!.copyWith(
-         fontSize: 24.r
-     ),
-     labelLarge: bodyTextTheme.labelLarge!.copyWith(
-         fontSize: 14.r
-     ),
-     labelMedium: bodyTextTheme.labelMedium!.copyWith(
-         fontSize: 12.r
-     ),
-     labelSmall: bodyTextTheme.labelSmall!.copyWith(
-         fontSize: 9.r
-     ),
-   );
-   return textTheme;
- }
+  static TextTheme createTextTheme(
+      BuildContext context, String bodyFontString, String displayFontString) {
+    TextTheme baseTextTheme = Theme.of(context).textTheme;
+    TextTheme bodyTextTheme = GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
+    TextTheme displayTextTheme =
+    GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
+    TextTheme textTheme = displayTextTheme.copyWith(
+      bodyLarge: bodyTextTheme.bodyLarge!.copyWith(
+        fontSize: 16.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      bodyMedium: bodyTextTheme.bodyMedium!.copyWith(
+        fontSize: 22.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      bodySmall: bodyTextTheme.bodySmall!.copyWith(
+        fontSize: 10.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      headlineLarge: bodyTextTheme.headlineLarge!.copyWith(
+        fontSize: 32.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      headlineMedium: bodyTextTheme.headlineMedium!.copyWith(
+        fontSize: 34.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      headlineSmall: bodyTextTheme.headlineSmall!.copyWith(
+        fontSize: 24.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      labelLarge: bodyTextTheme.labelLarge!.copyWith(
+        fontSize: 14.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      labelMedium: bodyTextTheme.labelMedium!.copyWith(
+        fontSize: 12.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+      labelSmall: bodyTextTheme.labelSmall!.copyWith(
+        fontSize: 9.r,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+    return textTheme;
+  }
 
- static String dateFormatter({required DateTime dateTime, required String format}){
+  static String dateFormatter({required DateTime dateTime, required String format}){
     var formatter=DateFormat(format);
     return formatter.format(dateTime);
- }
+  }
 }

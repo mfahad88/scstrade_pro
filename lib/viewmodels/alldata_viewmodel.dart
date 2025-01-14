@@ -40,6 +40,18 @@ class AlldataViewmodel extends ChangeNotifier {
     return apiResponse.data!..sort((a, b) => a.cl!.compareTo(b.cl!),)..take(10);
   }
 
+  List<AlldataIndices>? fetchByIndex(String index){
+    return apiResponse.data?.where((element) {
+      print("$index\t${index.toLowerCase().contains('all')}");
+          // (element) => index.toLowerCase().contains('all')?element.ind?.contains('\"\"')??false:element.ind?.contains(index)??false
+              if(!index.toLowerCase().contains('all')){
+                return element.ind?.contains(index)??false;
+              }else{
+                return true;
+              }
+    },).toList();
+  }
+
   void _startTimer(){
     timer=Timer.periodic(Duration(seconds: 5), (timer) {
       _fetchAllData();

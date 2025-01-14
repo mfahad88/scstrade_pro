@@ -23,10 +23,11 @@ class MainScreen extends StatelessWidget {
     MainViewModel viewModel=context.read();
     return MaterialApp(
       home: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           toolbarHeight: 70.r,
-          backgroundColor: Utils.isDark(context)?Colors.black:Colors.white,
           flexibleSpace: Container(
             decoration:  BoxDecoration(
               borderRadius:BorderRadius.only(
@@ -235,43 +236,44 @@ class MainScreen extends StatelessWidget {
         body: Consumer<MainViewModel>(
             builder: (_,value,child) {
 
-              return SafeArea(
-                child: Stack(
+              return Stack(
 
-                  children: [
-                    Container(
-                      color: Utils.isDark(context)?Colors.black:Colors.white,
-                      child: ListView(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.r),
-                            child: mMarketStatus(),
-                          ),
-                          Divider(
-                            color: Color(0xFFE5E2E1),
-                            thickness: 1,
-                            height: 1,
-                          ),
-                          Gap(10.r),
-                          value.selectedMenu=='Home'?Center(child: HomeScreen(ctx: context,)):Center(child: Text('This screen is under development')),
-                        ],
-                      ),
+                children: [
+                  Container(
+                    color: Utils.isDark(context)?Colors.black:Colors.white,
+                    child: ListView(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.r),
+                          child: mMarketStatus(),
+                        ),
+                        Divider(
+                          color: Color(0xFFE5E2E1),
+                          thickness: 1,
+                          height: 1,
+                        ),
+                        Gap(10.r),
+                        value.selectedMenu=='Home'?Center(child: HomeScreen(ctx: context,)):Center(child: Text('This screen is under development')),
+                      ],
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Builder(
-                          builder: (ctx) {
-                            return mBottombar(
-                              size: size,
-                              menus: value.menus,
-                              selectedMenu: value.selectedMenu,
-                              onTap: (p0) => p0.toLowerCase()!='more'?value.selectedMenu=p0:Scaffold.of(ctx).openEndDrawer(),
-                            );
-                          }
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Builder(
+                        builder: (ctx) {
+                          return mBottombar(
+                            size: size,
+                            menus: value.menus,
+                            selectedMenu: value.selectedMenu,
+                            onTap: (p0) {
+                              print(p0);
+                              p0.toLowerCase()!='more'?value.selectedMenu=p0:Scaffold.of(ctx).openEndDrawer();
+                            },
+                          );
+                        }
+                    ),
+                  )
+                ],
               );
             }
         ),

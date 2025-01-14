@@ -8,6 +8,7 @@ import 'package:scstrade_pro/models/indices/Indices.dart';
 import 'package:scstrade_pro/models/indices/IndicesSummary.dart';
 import 'package:scstrade_pro/models/indices/Kse_indices.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
+import 'package:scstrade_pro/models/snapshot/Overview.dart';
 
 import '../models/todos/Todo.dart';
 
@@ -133,6 +134,28 @@ class ApiClient{
       apiResponse=ApiResponse<List<Indices>>(
           status: Status.completed,
           data: body.map((e) => Indices.fromJson(e),).toList(),
+          message: null
+      );
+      return apiResponse;
+    }catch(e){
+      return ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
+    }
+  }
+
+  Future<ApiResponse<Overview>> fetchSnapshotOverview(String symbol) async {
+    try{
+      ApiResponse<Overview> apiResponse=ApiResponse<Overview>(status: null);
+      final response=await http.get(Uri.parse('$baseUrl/SnapOverview?symbolin=$symbol'));
+      print(response.request);
+      var body = jsonDecode(response.body);
+
+      apiResponse=ApiResponse<Overview>(
+          status: Status.completed,
+          data: Overview.fromJson(body),
           message: null
       );
       return apiResponse;

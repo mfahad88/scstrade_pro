@@ -8,7 +8,8 @@ class LineChartSample extends StatelessWidget {
   final List<FlSpot> spots;
   final FlGridData? gridData;
   final FlTitlesData? titlesData;
-  const LineChartSample({super.key, required this.spots, this.gridData, this.titlesData});
+  final Color? color;
+  const LineChartSample({super.key, required this.spots, this.gridData, this.titlesData, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +28,13 @@ class LineChartSample extends StatelessWidget {
             curveSmoothness: 0.5,
             show: true,
             isCurved: true,
-            color: Utils.isDark(context)?MaterialTheme.darkScheme().primary:MaterialTheme.lightScheme().primary,
+            color: color??(Utils.isDark(context)?MaterialTheme.darkScheme().primary:MaterialTheme.lightScheme().primary),
             barWidth: 1,
             belowBarData: BarAreaData(show: true,/* color: Colors.blue.withOpacity(0.3)*/
             gradient: LinearGradient(
               transform: GradientRotation(math.pi/4),
 
-                colors: Utils.isDark(context)?[MaterialTheme.darkScheme().primary.withOpacity(1.0),MaterialTheme.darkScheme().primary.withOpacity(0.1)]:[MaterialTheme.lightScheme().primary.withOpacity(1.0),MaterialTheme.lightScheme().primary.withOpacity(0.1)])
+                colors: color!=null?[color!.withOpacity(1.0),color!.withOpacity(0.1)]:(Utils.isDark(context)?[MaterialTheme.darkScheme().primary.withOpacity(1.0),MaterialTheme.darkScheme().primary.withOpacity(0.1)]:[MaterialTheme.lightScheme().primary.withOpacity(1.0),MaterialTheme.lightScheme().primary.withOpacity(0.1)]))
             ),
           ),
         ],

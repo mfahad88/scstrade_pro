@@ -35,4 +35,9 @@ class StockCardData{
       this.spots);
 
   StockCardData.empty();
+
+  @override
+  String toString() {
+    return 'StockCardData{image: $image, index: $index, symbol: $symbol, name: $name, volume: $volume, closingPrice: $closingPrice, changeValue: $changeValue, changePercent: $changePercent, high: $high, low: $low, askPrice: $askPrice, askVolume: $askVolume, bidPrice: $bidPrice, bidVolume: $bidVolume, spots: $spots}';
+  }
 }
