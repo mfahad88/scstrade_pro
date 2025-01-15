@@ -10,9 +10,10 @@ class CompanyViewModel extends ChangeNotifier{
   CompanyViewModel(this.companyRepository);
   final CompanyRepository companyRepository;
   ApiResponse<Overview?> apiResponseOverview=ApiResponse(status: Status.loading);
-  List<String> header=['Overview','Profile','Fundamental','Annual Statement'];
+  List<String> header=['Overview','Profile','Financials'];
   int _currentIndex=0;
-  int get currentIndex => _currentIndex;
+
+
   bool isLoading=true;
   Map<String,String> mktCap={
     'Last Trade Vol:':'3',
@@ -39,17 +40,30 @@ class CompanyViewModel extends ChangeNotifier{
     'Six Month Return':'42.32',
     'Paid Up Capital':'42.00'
   };
+  Map<String,String> companyOverview={
+    'name':'Fauji Foods Limited',
+    'sn':'Food & Personal Care Products',
+    'company_logo':'images/company_icon.png',
+    'stockPrice':'218.80',
+    'stockPricePercent':'0.62 (3.28%)',
+    'volume':'2,548,950',
+    'marketCap':'941.04 bn',
+    'avgVolume':'8,616,226',
+    'index':'KSE100'
+  };
+  var days=['Day\'s Range','1 Month Range','6 Month Range','52 Week\'s Range'];
+
+
   bool isLineSelected=false;
   bool isCandleSelected=true;
-  List<String> mins=['1min','5min','15min','30min','1h'];
-  String selectedMins='';
-  final List<CandleData> candleData = MockDataTesla.candles;
+
+  int get currentIndex => _currentIndex;
+
+
   set currentIndex(int value) {
     _currentIndex = value;
     notifyListeners();
   }
-
-
 
   Future<void> fetchSnapshotOverview(String symbol) async {
     try{
@@ -64,14 +78,5 @@ class CompanyViewModel extends ChangeNotifier{
     }
   }
 
-  void toggleChart(String v){
-    isLineSelected=!isLineSelected;
-    isCandleSelected=!isCandleSelected;
-    notifyListeners();
-  }
 
-  void toggleMins(String v){
-    selectedMins=v;
-    notifyListeners();
-  }
 }

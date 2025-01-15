@@ -18,39 +18,66 @@ class OtpScreen extends StatelessWidget {
     Utils.fetchCredentials('mobileNo').then((value) => mobileNo=value,);
     viewModel.startTimer();
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100.r,
-        automaticallyImplyLeading: false,
-        leadingWidth: 300.r,
-        leading: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Padding(
-                padding:EdgeInsets.symmetric(vertical: 10.r,horizontal: 10.r) ,
-                child: Row(
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            toolbarHeight: 70.r,
+            flexibleSpace: Container(
+              decoration:  BoxDecoration(
+                  borderRadius:BorderRadius.only(
+                      bottomLeft: Radius.circular(26.r),
+                      bottomRight: Radius.circular(26.r)
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage('images/toolbar.png',),
+                    fit: BoxFit.cover,
+                  )
+              ),
+              child: Container(
+                margin: EdgeInsets.only(top: 30.r,left: 20.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.arrow_back_ios_new,color: Colors.white,),
-                    Text('Back',style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.white
-                    ),)
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Row(
+                        children: [
+                          Icon(Icons.arrow_back_ios,color: Colors.white,size: 16.r,),
+                          Text(
+                            'Back',
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              height: 1.50,
+                              letterSpacing: -0.32,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Gap(5.r),
+                    Padding(
+                      padding: EdgeInsets.only(left: 7.r),
+                      child: Text(
+                        'Register An Account',
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          height: 1.0,
+                          letterSpacing: -0.84,
+                        ),
+                      ),
+                    ),
+                    Gap(10.r),
                   ],
                 ),
               ),
             ),
-            Row(
-              children: [
-                Gap(20.r),
-                Text('Register An Account',style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: Colors.white
-                ),),
-              ],
-            )
-          ],
+            actions: <Widget>[
+              Container(),
+            ]
+
         ),
-        flexibleSpace: Image.asset('images/toolbar.png',fit: BoxFit.fill,),
-      ),
       body: Consumer<LoginViewModel>(builder: (BuildContext context, LoginViewModel value, Widget? child) {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: Utils.percentToPx(percent: 10, size: screenSize)),

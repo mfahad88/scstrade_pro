@@ -33,6 +33,12 @@ class _CompanySnapshotScreenState extends State<CompanySnapshotScreen> with Sing
     return MaterialApp(
       home: Scaffold(
         extendBodyBehindAppBar: true,
+        floatingActionButton: FloatingActionButton(onPressed: () => print('pressed'),
+          backgroundColor: Utils.isDark(context)?Colors.white:MaterialTheme.lightScheme().onPrimaryFixedVariant,
+          foregroundColor: Utils.isDark(context)?MaterialTheme.lightScheme().primary:Colors.white,
+          shape: const CircleBorder(),
+          child: Icon(Icons.add),
+        ),
 
         appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -134,9 +140,9 @@ class _CompanySnapshotScreenState extends State<CompanySnapshotScreen> with Sing
                       height: 1,
                     ),
                     Gap(10.r),
-                   mTabbar(controller: _controller, tabs: value.header,onTap: (v) => value.currentIndex=v,),
+                    mTabbar(controller: _controller, tabs: value.header,onTap: (v) => value.currentIndex=v,),
                     Container(
-                        child: value.currentIndex==0?OverviewScreen(context:context,stockCardData:widget.stockCardData):Text('No screen found'),
+                      child: value.currentIndex==0?OverviewScreen(context:context,stockCardData:widget.stockCardData):Text('No screen found'),
                       padding: EdgeInsets.symmetric(vertical: 15.r,horizontal: 10.r),
                     )
                     /*IndexedStack(

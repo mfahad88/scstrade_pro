@@ -86,30 +86,53 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           home: Scaffold(
             resizeToAvoidBottomInset: true,
-            appBar: PreferredSize(
-              preferredSize: Size.fromHeight(100.0.r),
-              child: AppBar(
-                flexibleSpace: Image(
-                  image: AssetImage('images/toolbar.png'),
-                  fit: BoxFit.fill,
-                ),
-                centerTitle: true,
-                title: Text('Register An Account',
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white
+            appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 70.r,
+                flexibleSpace: Container(
+                  decoration:  BoxDecoration(
+                      borderRadius:BorderRadius.only(
+                          bottomLeft: Radius.circular(26.r),
+                          bottomRight: Radius.circular(26.r)
+                      ),
+                      image: DecorationImage(
+                        image: AssetImage('images/toolbar.png',),
+                        fit: BoxFit.cover,
+                      )
                   ),
-                ),
-                bottom: PreferredSize(preferredSize: Size.fromHeight(0), child: Padding(
-                  padding: EdgeInsets.only(bottom: 26.0.r),
-                  child: Text('Create wealth and create a better future',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.white
+                  child: Container(
+                    margin: EdgeInsets.only(top: 40.r),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Register An Account',
+                          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            height: 1.0,
+                            letterSpacing: -0.84,
+                          ),
+                        ),
+                        Text(
+                          'Create wealth and create a better future ',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            height: 1.5,
+                            letterSpacing: -0.54,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                )
                 ),
-              ),
+                actions: <Widget>[
+                  Container(),
+                ]
+
             ),
             body: const LoginScreen(),
           ),
