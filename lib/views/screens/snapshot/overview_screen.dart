@@ -12,16 +12,30 @@ import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/company_viewmodel.dart';
 import 'package:scstrade_pro/views/widgets/DashedLinePainter.dart';
 import 'package:scstrade_pro/views/widgets/line_chart_sample.dart';
+import 'package:scstrade_pro/views/widgets/m_barchart.dart';
 import 'package:scstrade_pro/views/widgets/m_day_range.dart';
 import 'package:scstrade_pro/views/widgets/m_rounded_container.dart';
+import 'package:scstrade_pro/views/widgets/m_tab_bar.dart';
 
 import '../../widgets/m_button.dart';
 
-class OverviewScreen extends StatelessWidget {
+class OverviewScreen extends StatefulWidget  {
   final BuildContext context;
   final StockCardData stockCardData;
+
   const OverviewScreen({super.key, required this.context,required this.stockCardData});
 
+  @override
+  State<OverviewScreen> createState() => _OverviewScreen();
+}
+class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderStateMixin {
+
+  late TabController _controller;
+  @override
+  void initState() {
+    _controller=TabController(length: 2, vsync: this);
+    super.initState();
+  }
   @override
   Widget build(BuildContext _) {
     /*AlldataViewmodel viewmodel=context.watch();
@@ -31,13 +45,18 @@ class OverviewScreen extends StatelessWidget {
       builder: (_,value, child) {
         return ListView(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           children: [
-             _overviewCard(value),
+            _overviewCard(value),
             Gap(10.r),
             _dayRangeCard(value),
             Gap(10.r),
-            _performanceCard(value)
+
+            _performanceCard(value),
+            Gap(10.r),
+            _financialSummary(value),
+            Gap(15.r),
+            _earningImportantRatios(value),
           ],
         );
       },
@@ -46,16 +65,17 @@ class OverviewScreen extends StatelessWidget {
   }
 
   Widget _overviewCard(CompanyViewModel value) {
+
     return Container(
       width: double.infinity,
       height: 217.r,
       decoration: ShapeDecoration(
-        image: DecorationImage(
-            fit: BoxFit.fill,
-            image: AssetImage('images/image_overview_card.png')
-        ),
+          image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage('images/image_overview_card.png')
+          ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r)
+              borderRadius: BorderRadius.circular(12.r)
           )
       ),
       child: Column(
@@ -69,7 +89,7 @@ class OverviewScreen extends StatelessWidget {
                 CircleAvatar(
                   foregroundImage: AssetImage(value.companyOverview['company_logo']??''),
                   maxRadius: 20.r,
-                  ),
+                ),
                 Gap(10.r),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +156,7 @@ class OverviewScreen extends StatelessWidget {
                               letterSpacing: -0.17,
                             ),
                           ),
-                          )
+                        )
 
                       ],
                     ),
@@ -289,105 +309,237 @@ class OverviewScreen extends StatelessWidget {
   }
 
   _dayRangeCard(CompanyViewModel value) {
-    return Container(
-      decoration: ShapeDecoration(
+    return mRoundedContainer(
         color: Color(0xFFFCF8F8),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
+        side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
+        borderRadius: BorderRadius.circular(12),
+        child: ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
 
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(top: 10.r,left: 10.r),
-                  child: Text(
-                    value.days[index],
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
-                      fontWeight: FontWeight.w500,
-                      height: 1.69,
-                      letterSpacing: -0.64,
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(top: 10.r,left: 10.r),
+                    child: Text(
+                      value.days[index],
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
+                        fontWeight: FontWeight.w500,
+                        height: 1.69,
+                        letterSpacing: -0.64,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  child: Row(
-                    children: [
-                      Gap(10.r),
-                      Text(
-                        'Rs. 218.76',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.72,
+                  Container(
+                    child: Row(
+                      children: [
+                        Gap(10.r),
+                        Text(
+                          'Rs. 218.76',
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.72,
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      Text(
-                        'Rs. 233.29',
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.72,
+                        Spacer(),
+                        Text(
+                          'Rs. 233.29',
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Color(Utils.isDark(context)?0xFFFFFFFF:0xFF1C1C1C),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.72,
+                          ),
                         ),
-                      ),
-                      Gap(10.r)
-                    ],
+                        Gap(10.r)
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                    child: mDayRange(minValue: 193.76, maxValue: 233.29, currentValue: 230.01))
-              ],
-            );
-          },
-          separatorBuilder: (context, index) => Padding(
-            padding: EdgeInsets.all(1.0),
-            child: CustomPaint(
-              painter: DashedLinePainter(),
+                  Container(
+                      child: mDayRange(minValue: 193.76, maxValue: 233.29, currentValue: 230.01))
+                ],
+              );
+            },
+            separatorBuilder: (context, index) => Padding(
+              padding: EdgeInsets.all(1.0),
+              child: CustomPaint(
+                painter: DashedLinePainter(),
+              ),
             ),
-          ),
-          itemCount: 4),
+            itemCount: 4)
     );
+
   }
 
   _performanceCard(CompanyViewModel value) {
-    return Container(
-      width: 400,
-      height: 275,
-      decoration: ShapeDecoration(
-        color: Color(0xFFFCF8F8),
-        shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Gap(10.r),
-          Text(
-            'Performance',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Utils.isDark(context)?Colors.white:Color(0xFF1C1C1C),
-              fontWeight: FontWeight.w700,
-              height: 1.35,
-              letterSpacing: -0.40,
-            ),
+    return mRoundedContainer( child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Performance',
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Utils.isDark(context)?Colors.white:Color(0xFF1C1C1C),
+            fontWeight: FontWeight.w700,
+            height: 1.35,
+            letterSpacing: -0.40,
           ),
+        ),
+        Gap(8.r),
+        Container(
+            width: 400.r,
+            height: 220.r,
+            child: mBarChart(
+                performance: value.performance,
+                maxY: 100.0,
+                reservedLeftSize:40,
+              reservedBottomSize: 22,
+              gridData: FlGridData(show: true,drawVerticalLine: false,horizontalInterval: 10.0,),
 
-        ],
-      ),
-    );
+            )
+        )
+      ],
+    ),
+      color: Color(0xFFFCF8F8),
+      width: 400.r,
+      height: 275.r,
+      side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
+      borderRadius: BorderRadius.circular(12),
+      padding: EdgeInsets.symmetric(vertical: 10.r,horizontal: 15.r),);
+
+
 
   }
+
+  _financialSummary(CompanyViewModel value) {
+    return mRoundedContainer(
+        width: 400.r,
+        color:  Color(0xFFFCF8F8),
+        side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
+        padding: EdgeInsets.symmetric(horizontal: 15.r,vertical: 10.r),
+        borderRadius: BorderRadius.circular(12),
+        child: ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  Text(value.financialSummary.keys.toList()[index],
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Color(0xFF1C1C1C),
+                      fontWeight: FontWeight.w500,
+                      height: 1.88,
+                      letterSpacing: -0.32,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(value.financialSummary.values.toList()[index],
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Color(0xFF136E00),
+                      fontWeight: FontWeight.w700,
+                      height: 1.88,
+                      letterSpacing: -0.32,
+                    ),),
+                ],
+              );
+            },
+            separatorBuilder: (context, index) => Divider(
+              thickness: 1.11.r,
+              color: Color(0xFFE5E2E1),
+            ),
+            itemCount: value.financialSummary.length)
+    );
+  }
+
+  _earningImportantRatios(CompanyViewModel value) {
+
+    return mRoundedContainer(
+      color: Color(0xFFFCF8F8),
+      padding: EdgeInsets.only(left: 5.r,right: 5.r,top: 5.r),
+      borderRadius: BorderRadius.circular(12.r),
+      child: Column(
+        children: [
+         mTabbar(
+           controller: _controller,
+           tabs: ['Earnings','Important Ratios'],
+           onTap: (v) => value.selectedRatio=v,
+         ),
+          ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Row(
+                  textBaseline: TextBaseline.alphabetic,
+                  verticalDirection: VerticalDirection.down,
+                  children: [
+                    Text(value.selectedRatio==0?value.earnings.keys.toList()[index]:value.impRatios.keys.toList()[index],
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(0xFF1C1C1C),
+                        fontWeight: FontWeight.w500,
+                        height: 1.88,
+                        letterSpacing: -0.32,
+                      ),
+                    ),
+                    Gap(3.r),
+                    Text(value.selectedRatio==0?value.earnings.values.toList()[index].keys.first:value.impRatios.values.toList()[index].keys.first,
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: Color(0xFFb2afaf),
+                        fontWeight: FontWeight.w500,
+                        height: 1.0,
+                        letterSpacing: -0.32,
+                      ),
+                    ),
+                    Spacer(),
+                    Text(value.selectedRatio==0?value.earnings.values.toList()[index].values.first:value.impRatios.values.toList()[index].values.first,
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(0xFF136E00),
+                        fontWeight: FontWeight.w700,
+                        height: 1.88,
+                        letterSpacing: -0.32,
+                      ),),
+                  ],
+                );
+              },
+              separatorBuilder: (context, index) => Divider(
+                thickness: 1.11.r,
+                color: Color(0xFFE5E2E1),
+              ),
+              itemCount: value.selectedRatio==0?value.earnings.length:value.impRatios.length
+          ),
+          Gap(20.r),
+          Container(
+            width: 320.r,
+            height: 160.r,
+            child: mBarChart(
+                performance: value.eps,
+                maxY: 75,
+                reservedLeftSize: 15.0,
+                reservedBottomSize: 40.0,
+                gridData: FlGridData(show: false),
+            ),
+          ),
+          Gap(20.r),
+          Container(
+            width: 320.r,
+            height: 160.r,
+            child: mBarChart(
+              performance: value.quaterlyEps,
+              maxY: 20,
+              reservedLeftSize: 15.0,
+              reservedBottomSize: 40.0,
+              gridData: FlGridData(show: false),
+            ),
+          ),
+        ],
+      ),
+
+    );
+  }
+
+
 
 }
