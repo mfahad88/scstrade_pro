@@ -8,10 +8,13 @@ class mBarChart extends StatelessWidget {
   final double reservedLeftSize;
   final double reservedBottomSize;
   final FlGridData gridData;
-  const mBarChart({super.key, required this.performance, required this.maxY, required this.reservedLeftSize, required this.reservedBottomSize, required this.gridData});
+  final BuildContext context;
+  final AxisTitles? rightTitles;
+  final AxisTitles? leftTitles;
+  const mBarChart({super.key, required this.performance, required this.maxY, required this.reservedLeftSize, required this.reservedBottomSize, required this.gridData, required this.context, this.rightTitles, this.leftTitles});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext _) {
     return BarChart(
       BarChartData(
         maxY: maxY,
@@ -20,10 +23,10 @@ class mBarChart extends StatelessWidget {
           topTitles: AxisTitles(
               sideTitles: SideTitles(showTitles: false)
           ),
-          rightTitles: AxisTitles(
+          rightTitles: rightTitles??AxisTitles(
               sideTitles: SideTitles(showTitles: false)
           ),
-          leftTitles: AxisTitles(
+          leftTitles: leftTitles??AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: reservedLeftSize,
@@ -39,10 +42,6 @@ class mBarChart extends StatelessWidget {
                       letterSpacing: -0.30,
                     )
                 );
-                /*if (value % 5 == 0) {
-                  return Text('${value.toInt()}', style: const TextStyle(fontSize: 12));
-                }*/
-                return const SizedBox.shrink();
               },
             ),
           ),

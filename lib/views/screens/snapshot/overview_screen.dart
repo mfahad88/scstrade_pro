@@ -46,6 +46,7 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
         return ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.only(bottom: kFloatingActionButtonMargin+50.r),
           children: [
             _overviewCard(value),
             Gap(10.r),
@@ -57,6 +58,8 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
             _financialSummary(value),
             Gap(15.r),
             _earningImportantRatios(value),
+            Gap(15.r),
+            _expansionRatios(value),
           ],
         );
       },
@@ -394,6 +397,7 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
             width: 400.r,
             height: 220.r,
             child: mBarChart(
+              context: context,
                 performance: value.performance,
                 maxY: 100.0,
                 reservedLeftSize:40,
@@ -515,6 +519,7 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
             width: 320.r,
             height: 160.r,
             child: mBarChart(
+              context: context,
                 performance: value.eps,
                 maxY: 75,
                 reservedLeftSize: 15.0,
@@ -527,6 +532,7 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
             width: 320.r,
             height: 160.r,
             child: mBarChart(
+              context: context,
               performance: value.quaterlyEps,
               maxY: 20,
               reservedLeftSize: 15.0,
@@ -536,6 +542,186 @@ class _OverviewScreen extends State<OverviewScreen> with SingleTickerProviderSta
           ),
         ],
       ),
+
+    );
+  }
+
+  _expansionRatios(CompanyViewModel value) {
+    return ExpansionTile(
+      shape: Border(),
+      childrenPadding: EdgeInsets.symmetric(horizontal: 15.r),
+      iconColor: Colors.black,
+      trailing: value.isEquityRatioExpanded?Icon(Icons.arrow_drop_down):Icon(Icons.arrow_right),
+
+      collapsedShape: RoundedRectangleBorder(
+        side: BorderSide(width: 1, color: Color(0xFFE5E2E1)),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      initiallyExpanded: value.isEquityRatioExpanded,
+        onExpansionChanged: (v) {
+          value.isEquityRatioExpanded=v;
+        },
+        title: Text(value.equityRatios.keys.first,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: Color(0xFF1C1C1C),
+            fontWeight: FontWeight.w600,
+            height: 1.67,
+            letterSpacing: -0.36,
+          ),
+        ),
+      children: [
+        ListView.separated(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Row(
+                textBaseline: TextBaseline.alphabetic,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  Text(value.equityRatios.values.first[index].key??"",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Color(0xFF1C1C1C),
+                      fontWeight: FontWeight.w500,
+                      height: 1.88,
+                      letterSpacing: -0.32,
+                    ),
+                  ),
+                  Gap(3.r),
+                  Text(value.equityRatios.values.first[index].desc??"",
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      color: Color(0xFFb2afaf),
+                      fontWeight: FontWeight.w500,
+                      height: 1.0,
+                      letterSpacing: -0.32,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(value.equityRatios.values.first[index].value??"",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: Color(0xFF136E00),
+                      fontWeight: FontWeight.w700,
+                      height: 1.88,
+                      letterSpacing: -0.32,
+                    ),),
+                ],
+              );
+            },
+            separatorBuilder: (context, index) => Divider(
+              thickness: 1.11.r,
+              color: Color(0xFFE5E2E1),
+            ),
+            itemCount: value.equityRatios.values.first.length
+        ),
+        Gap(5.r),
+        Container(
+        width: 400.r,
+        height: 200.r,
+          child: Stack(
+            children: [
+              mBarChart(
+                  performance: value.priceToBook,
+                  maxY: 600,
+                  reservedLeftSize: 20,
+                  reservedBottomSize: 30,
+                  gridData: FlGridData(
+                    show: false
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: false)
+                  ),
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) {
+                        return Text('${value.toInt()}',
+                            style: TextStyle(
+                              color: Color(0xFF5F5E5E),
+                              fontSize: 10.r,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 2.70,
+                              letterSpacing: -0.30,
+                            )
+                        );
+                      },
+                    )
+                  ),
+                  context: context),
+              LineChart(
+                  LineChartData(
+                      maxY: 600,
+                      minY: 0,
+                      minX: 0,
+                      maxX: 4.2,
+                      gridData: FlGridData(
+                        show: false,
+
+                      ),
+                      borderData: FlBorderData(
+                          show: false
+                      ),
+                      titlesData: FlTitlesData(
+                          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                          bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false,reservedSize: 20)),
+                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                          leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                            reservedSize: 20,
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              print(value/1000);
+                              return Text('${value/1000}',style: TextStyle(
+                                  fontSize: 5
+                              ),);
+                            },
+                          )
+                          )
+                      ),
+
+                      lineBarsData: [
+                        LineChartBarData(
+
+                            isCurved: true,
+                            color: Colors.black,
+                            spots: [
+                              FlSpot(0, 600),
+                              FlSpot(1, 100),
+                              FlSpot(2, 200),
+                              FlSpot(3, 300),
+                              FlSpot(4, 400),
+                            ]
+                        )
+                      ]
+                  )
+              )
+            ],
+          ),
+        ),
+        Gap(5.r),
+        Container(
+          width: 400.r,
+          height: 230.r,
+          child: LineChart(
+            LineChartData(
+              maxY: 25,
+              maxX: 5,
+              borderData: FlBorderData(show: false),
+              titlesData: FlTitlesData(
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false)
+                ),
+                rightTitles:  AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                )
+              ),
+              gridData: FlGridData(
+                show: false
+              ),
+              lineBarsData:value.priceToBookPercent
+            )
+          ),
+        )
+      ],
 
     );
   }

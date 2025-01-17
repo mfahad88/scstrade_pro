@@ -33,7 +33,64 @@ class _CompanySnapshotScreenState extends State<CompanySnapshotScreen> with Sing
     return MaterialApp(
       home: Scaffold(
         extendBodyBehindAppBar: true,
-        floatingActionButton: FloatingActionButton(onPressed: () => print('pressed'),
+        floatingActionButton: FloatingActionButton(onPressed: () => showModalBottomSheet(
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r)
+          ),
+          context: context, 
+          builder: (context) {
+          return Container(
+            padding: EdgeInsets.symmetric(vertical: 10.r,horizontal: 20.r),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Save Company to...',
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(0xFF1C1C1C),
+                        fontWeight: FontWeight.w500,
+                        height: 2,
+                        letterSpacing: -0.54,
+                      ),
+                    ),
+                    Spacer(),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: MaterialTheme.lightScheme().primary,
+                          width: 1.r
+                        )
+                      ),
+                        onPressed: () {
+
+                    }, child: Row(
+                      children: [
+                        Icon(Icons.add,color: MaterialTheme.lightScheme().primary,),
+                        Gap(3.r),
+                        Text(
+                          'New Watch List',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            color: MaterialTheme.lightScheme().primary,
+                            fontWeight: FontWeight.w500,
+                            height: 1.43,
+                            letterSpacing: 0.08,
+                          ),
+                        )
+                      ],
+                    ))
+                  ],
+                ),
+                Divider(
+                  thickness: 1.11.r,
+                  color: Color(0xFFC9C6C5),
+                )
+              ],
+            ),
+          );
+        },),
           backgroundColor: Utils.isDark(context)?Colors.white:MaterialTheme.lightScheme().onPrimaryFixedVariant,
           foregroundColor: Utils.isDark(context)?MaterialTheme.lightScheme().primary:Colors.white,
           shape: const CircleBorder(),

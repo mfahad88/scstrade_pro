@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:interactive_chart/interactive_chart.dart';
 import 'package:scstrade_pro/models/KeyDescValue.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
@@ -125,6 +126,60 @@ class CompanyViewModel extends ChangeNotifier{
         ]
     ),
   };
+  var priceToBookPercent=[
+    LineChartBarData(
+      color: Color(0xFF90ed7d),
+      spots: [
+        FlSpot(0, 14.08),
+        FlSpot(1, 11.89),
+        FlSpot(2, 19.82),
+        FlSpot(3, 18.82),
+        FlSpot(4, 17.82),
+      ]
+    ),
+    LineChartBarData(
+        color: Color(0xFF7cb5ec),
+        spots: [
+          FlSpot(0, 11.26),
+          FlSpot(1, 9.57),
+          FlSpot(2, 15.28),
+          FlSpot(3, 20.74),
+          FlSpot(4, 16.71),
+        ]
+    ),
+    LineChartBarData(
+        color: Color(0xFF434348),
+        spots: [
+          FlSpot(0, 10.08),
+          FlSpot(1,12.89),
+          FlSpot(2, 14.82),
+          FlSpot(3, 13.82),
+          FlSpot(4, 12.82),
+        ]
+    )
+  ];
+  var priceToBook={
+    '2021':BarChartGroupData(
+      x: 0,
+      barRods: [BarChartRodData(toY: 178.95,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+    ),
+    '2022':BarChartGroupData(
+      x: 1,
+      barRods: [BarChartRodData(toY: 203.54,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+    ),
+    '2023':BarChartGroupData(
+        x: 2,
+        barRods: [BarChartRodData(toY: 251.78,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+    ),
+    '2024':BarChartGroupData(
+        x: 3,
+        barRods: [BarChartRodData(toY: 290.75,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+    ),
+    '2025':BarChartGroupData(
+        x: 4,
+        barRods: [BarChartRodData(toY: 300.26,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+    ),
+  };
   Map<String,Map<String,String>> earnings={
     'Latest EPS':{'Upto 2025 1Q ':'Rs. 9.541'},
     'Latest EPS1':{'Upto 2025 2Q ':'Rs. 9.542'},
@@ -140,7 +195,7 @@ class CompanyViewModel extends ChangeNotifier{
   'Gross Margin3':{'Upto 2025 1Q ':'Rs. 9.541'},
   'Gross Margin4':{'Upto 2025 1Q ':'Rs. 9.541'},
   };
-
+  bool _isEquityRatioExpanded=false;
   Map<String,List<KeyDescValue>> equityRatios={
     'Equity Ratios':[
       KeyDescValue('Book Value', 'Upto 2025 1Q', 'Rs.300.26'),
@@ -158,6 +213,13 @@ class CompanyViewModel extends ChangeNotifier{
 
   int get currentIndex => _currentIndex;
 
+
+  bool get isEquityRatioExpanded => _isEquityRatioExpanded;
+
+  set isEquityRatioExpanded(bool value) {
+    _isEquityRatioExpanded = value;
+    notifyListeners();
+  }
 
   set currentIndex(int value) {
     _currentIndex = value;
