@@ -43,12 +43,13 @@ void main() async {
   final _apiClient=ApiClient();
   final _loginRepository=LoginRepository(_apiClient);
   final _loginViewModel=LoginViewModel(loginRepository: _loginRepository);
-  final _mainViewModel=MainViewModel();
+
   final _allDataRepository=AllDataRepository(_apiClient);
   final _allDataViewModel=AlldataViewmodel(_allDataRepository);
   final _indicesRepository=IndicesRepository(_apiClient);
   final _indicesViewModel=IndicesViewModel(_indicesRepository);
   final _companyViewModel=CompanyViewModel(CompanyRepository(_apiClient));
+  final _mainViewModel=MainViewModel(_indicesRepository);
   runApp(
       MultiProvider(
           providers: [

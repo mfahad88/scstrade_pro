@@ -2,11 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:interactive_chart/interactive_chart.dart';
+import 'package:scstrade_pro/models/indices/Indices.dart';
+import 'package:scstrade_pro/models/indices/IndicesSummary.dart';
 
 import '../helper/Utils.dart';
 import '../models/data/mock_data.dart';
+import '../models/response/api_response.dart';
+import '../repositories/indices_repository.dart';
 
 class MainViewModel extends ChangeNotifier{
+  final IndicesRepository indicesRepository;
+
+  ApiResponse<List<IndicesSummary>?>apiResponseSummary=ApiResponse<List<IndicesSummary>>(status: Status.loading);
+  ApiResponse<List<Indices>?> apiResponseIndex=ApiResponse<List<Indices>>(status: Status.loading);
   List<String> sideMenus=['Indices','All Stocks','Detailed Quote','Fundamental', 'Technical','SCS Portfolio','Announcements'];
   List<String> imageMenus=['images/Group 49.png','images/Group 51.png','images/Group 52.png','images/Group 53.png','images/Group 54.png','images/Group 55.png','images/Group 56.png'];
   final List<CandleData> candleData = MockDataTesla.candles;
@@ -25,6 +33,13 @@ class MainViewModel extends ChangeNotifier{
   List<String> mins=['1min','5min','15min','30min','1h'];
   String selectedMins='';
   String _selectedIndex='';
+  String _selectedDropDown='';
+  String get selectedDropDown => _selectedDropDown;
+
+  set selectedDropDown(String value) {
+    _selectedDropDown = value;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => notifyListeners(),);
+  }
 
   String get selectedIndex => _selectedIndex;
 
@@ -57,9 +72,7 @@ class MainViewModel extends ChangeNotifier{
     super.dispose();
   }
 
-  MainViewModel(){
-    startTimer();
-  }
+  MainViewModel(this.indicesRepository);
 
   void toggleChart(String v){
     isLineSelected=!isLineSelected;
@@ -71,4 +84,29 @@ class MainViewModel extends ChangeNotifier{
     selectedMins=v;
     notifyListeners();
   }
+
+
+  Future<void> fetchIndices() async {
+    try{
+      apiResponseSummary=await indicesRepository.fetchIndices();
+      _selectedDropDown=_selectedDropDown.isEmpty?apiResponseSummary.data?.where((element) => element.indexcode?.toLowerCase().contains('kse 100')??false,).first.indexcode??'':_selectedDropDown;
+      //     .first.indexcode??'';
+    }catch (e){
+      print('Error: $e');
+    }finally{
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchByIndex(String query) async {
+    try{
+
+      apiResponseIndex=await indicesRepository.fetchByIndex(query);
+    }catch (e){
+      print('Error: $e');
+    }finally{
+      notifyListeners();
+    }
+  }
+
 }

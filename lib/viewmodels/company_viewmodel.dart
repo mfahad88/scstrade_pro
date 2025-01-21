@@ -5,19 +5,24 @@ import 'package:interactive_chart/interactive_chart.dart';
 import 'package:scstrade_pro/models/KeyDescValue.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/models/snapshot/Overview.dart';
+import 'package:scstrade_pro/models/snapshot/chart/BookValue.dart';
 import 'package:scstrade_pro/repositories/company_repository.dart';
 
 import '../models/data/mock_data.dart';
+import '../models/snapshot/chart/Chart.dart';
+import '../models/snapshot/detail/Detail.dart';
+import '../models/snapshot/detail/Insurance.dart';
 
 class CompanyViewModel extends ChangeNotifier{
   CompanyViewModel(this.companyRepository);
   final CompanyRepository companyRepository;
   ApiResponse<Overview?> apiResponseOverview=ApiResponse(status: Status.loading);
+  ApiResponse<dynamic> apiResponseChart=ApiResponse(status: Status.loading);
+  ApiResponse<List<Detail>?> apiResponseDetail=ApiResponse(status: Status.loading);
   List<String> header=['Overview','Profile','Financials'];
   int _currentIndex=0;
   int _selectedRatio=0;
 
-  bool isLoading=true;
   Map<String,String> mktCap={
     'Last Trade Vol:':'3',
     'Total Volume:':'48,833,867',
@@ -82,15 +87,15 @@ class CompanyViewModel extends ChangeNotifier{
     '2023':BarChartGroupData(x: 6,barRods: [BarChartRodData(toY: 52.23,color: Color(0xFF136E00),width: 18,borderRadius: BorderRadius.circular(0.0))]),
     '2024':BarChartGroupData(x: 7,barRods: [BarChartRodData(toY: 48.59,color: Color(0xFF136E00),width: 18,borderRadius: BorderRadius.circular(0.0))]),
   };
-  
+
   var quaterlyEps={
     '2021':BarChartGroupData(x:0,
-      barRods: [
-        BarChartRodData(toY: 5.45,color: Color(0xFF7cb5ec),width: 10,borderRadius: BorderRadius.circular(0.0)),
-        BarChartRodData(toY: 1.45,color: Color(0xFF434348),width: 10,borderRadius: BorderRadius.circular(0.0)),
-        BarChartRodData(toY: 0.45,color: Color(0xFF90ed7d),width: 10,borderRadius: BorderRadius.circular(0.0)),
-        BarChartRodData(toY: 0.45,color: Color(0xFFf7a35c),width: 10,borderRadius: BorderRadius.circular(0.0))
-      ]
+        barRods: [
+          BarChartRodData(toY: 5.45,color: Color(0xFF7cb5ec),width: 10,borderRadius: BorderRadius.circular(0.0)),
+          BarChartRodData(toY: 1.45,color: Color(0xFF434348),width: 10,borderRadius: BorderRadius.circular(0.0)),
+          BarChartRodData(toY: 0.45,color: Color(0xFF90ed7d),width: 10,borderRadius: BorderRadius.circular(0.0)),
+          BarChartRodData(toY: 0.45,color: Color(0xFFf7a35c),width: 10,borderRadius: BorderRadius.circular(0.0))
+        ]
     ),
     '2022':BarChartGroupData(x:0,
         barRods: [
@@ -128,14 +133,14 @@ class CompanyViewModel extends ChangeNotifier{
   };
   var priceToBookPercent=[
     LineChartBarData(
-      color: Color(0xFF90ed7d),
-      spots: [
-        FlSpot(0, 14.08),
-        FlSpot(1, 11.89),
-        FlSpot(2, 19.82),
-        FlSpot(3, 18.82),
-        FlSpot(4, 17.82),
-      ]
+        color: Color(0xFF90ed7d),
+        spots: [
+          FlSpot(0, 14.08),
+          FlSpot(1, 11.89),
+          FlSpot(2, 19.82),
+          FlSpot(3, 18.82),
+          FlSpot(4, 17.82),
+        ]
     ),
     LineChartBarData(
         color: Color(0xFF7cb5ec),
@@ -160,12 +165,12 @@ class CompanyViewModel extends ChangeNotifier{
   ];
   var priceToBook={
     '2021':BarChartGroupData(
-      x: 0,
-      barRods: [BarChartRodData(toY: 178.95,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+        x: 0,
+        barRods: [BarChartRodData(toY: 178.95,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
     ),
     '2022':BarChartGroupData(
-      x: 1,
-      barRods: [BarChartRodData(toY: 203.54,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
+        x: 1,
+        barRods: [BarChartRodData(toY: 203.54,color: Color(0xFF7CB5EC),width: 20,borderRadius: BorderRadius.circular(0.0)),]
     ),
     '2023':BarChartGroupData(
         x: 2,
@@ -191,9 +196,9 @@ class CompanyViewModel extends ChangeNotifier{
   };
   Map<String,Map<String,String>> impRatios={
     'Gross Margin1':{'Upto 2025 1Q ':'Rs. 9.541'},
-  'Gross Margin2':{'Upto 2025 1Q ':'Rs. 9.541'},
-  'Gross Margin3':{'Upto 2025 1Q ':'Rs. 9.541'},
-  'Gross Margin4':{'Upto 2025 1Q ':'Rs. 9.541'},
+    'Gross Margin2':{'Upto 2025 1Q ':'Rs. 9.541'},
+    'Gross Margin3':{'Upto 2025 1Q ':'Rs. 9.541'},
+    'Gross Margin4':{'Upto 2025 1Q ':'Rs. 9.541'},
   };
   bool _isEquityRatioExpanded=false;
   Map<String,List<KeyDescValue>> equityRatios={
@@ -234,17 +239,83 @@ class CompanyViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> fetchSnapshotOverview(String symbol) async {
+  Future<void> fetchSnapshot(String symbol) async {
     try{
-      bool isLoading=true;
-      notifyListeners();
-      apiResponseOverview=await companyRepository.fetchSnapshotOverview(symbol);
+      final result=await Future.wait([
+        companyRepository.fetchSnapshotOverview(symbol),
+        companyRepository.fetchSnapshotChart(symbol),
+        companyRepository.fetchSnapshotDetail(symbol)
+      ]);
+      apiResponseOverview=result[0] as ApiResponse<Overview>;
+
+      apiResponseChart=result[1];
+      print('Chart ${apiResponseChart.data['BookValue']}');
+      apiResponseDetail=result[2] as ApiResponse<List<Detail>>;
+
+      _populateFinancialSummary();
+      _populateEarnings();
+      _populateImpRatios();
+      _populateEquity();
+      _populateBookValue();
+      // apiResponseOverview=await companyRepository.fetchSnapshotOverview(symbol);
     }catch (e){
       print('Error: $e');
     }finally{
-      bool isLoading=false;
       notifyListeners();
     }
+  }
+
+  void _populateFinancialSummary() {
+    financialSummary['Paid Up Capital']= apiResponseOverview.data?.paidUpCapital.toString()??"";
+    financialSummary['Authorized Capital']= apiResponseOverview.data?.authorizedCapital.toString()??"";
+    financialSummary['Total No. Shares']= apiResponseOverview.data?.totalNoShares.toString()??"";
+    financialSummary['Free Float']= apiResponseOverview.data?.freeFloat.toString()??"";
+    financialSummary['Beta']= apiResponseOverview.data?.beta.toString()??"";
+    financialSummary['Facevalue']= apiResponseOverview.data?.faceValue.toString()??"";
+    financialSummary['Free Float %']= apiResponseOverview.data?.freeFloatPer.toString()??"";
+    financialSummary['Year End']= apiResponseOverview.data?.yearEnd.toString()??"";
+    financialSummary['Market Cap']= apiResponseOverview.data?.marketCap.toString()??"";
+  }
+
+  void _populateEarnings() {
+    earnings.clear();
+    apiResponseDetail.data?.first.snapShot?.earnings?.forEach((element) {
+
+      earnings.addAll({element.name??'':{element.desc??'':element.value??''}});
+    },);
+  }
+
+  void _populateImpRatios() {
+
+  }
+
+  void _populateEquity() {
+    equityRatios.clear();
+    equityRatios.addAll({'Equity Ratios':apiResponseDetail.data?.first.snapShot?.equity?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Dividend':apiResponseDetail.data?.first.snapShot?.dividend?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Sales':apiResponseDetail.data?.first.snapShot?.sales?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Enterprise Value':apiResponseDetail.data?.first.snapShot?.enterpriseValue?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Cash':apiResponseDetail.data?.first.snapShot?.cash?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Profitability':apiResponseDetail.data?.first.snapShot?.profitablility?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Liquidity':apiResponseDetail.data?.first.snapShot?.liquidity?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Solvency':apiResponseDetail.data?.first.snapShot?.solvency?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Advances and Deposits':apiResponseDetail.data?.first.snapShot?.advancesAndDeposits?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Insurance':apiResponseDetail.data?.first.snapShot?.insurance?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+    equityRatios.addAll({'Net Asset Value':apiResponseDetail.data?.first.snapShot?.advancesAndDeposits?.map((e) => KeyDescValue(e.name, e.desc, e.value),).toList()??List.empty()});
+
+  }
+
+  void _populateBookValue() {
+    priceToBook.clear();
+    BookValue bookValue= BookValue.fromJson(apiResponseChart.data['BookValue']);
+    print('Map: ${ bookValue.toJson()}');
+    bookValue.year?.asMap().forEach((key, value) {
+      print('Y: ${bookValue.bookValuePKR?[key]}');
+      priceToBook.addAll({value:BarChartGroupData(x: key,barRods: [BarChartRodData(toY: bookValue.bookValuePKR?[key].toDouble()??0.0,width: 20,color: Colors.blue,borderRadius: BorderRadius.circular(0.0))])});
+
+    },);
+
+
   }
 
 

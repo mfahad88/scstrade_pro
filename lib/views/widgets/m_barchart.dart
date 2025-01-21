@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class mBarChart extends StatelessWidget {
-  final Map<String,BarChartGroupData> performance;
+  final Map<String,BarChartGroupData> barGroups;
   final double maxY;
   final double reservedLeftSize;
   final double reservedBottomSize;
@@ -11,7 +11,7 @@ class mBarChart extends StatelessWidget {
   final BuildContext context;
   final AxisTitles? rightTitles;
   final AxisTitles? leftTitles;
-  const mBarChart({super.key, required this.performance, required this.maxY, required this.reservedLeftSize, required this.reservedBottomSize, required this.gridData, required this.context, this.rightTitles, this.leftTitles});
+  const mBarChart({super.key, required this.barGroups, required this.maxY, required this.reservedLeftSize, required this.reservedBottomSize, required this.gridData, required this.context, this.rightTitles, this.leftTitles});
 
   @override
   Widget build(BuildContext _) {
@@ -50,9 +50,9 @@ class mBarChart extends StatelessWidget {
               showTitles: true,
               reservedSize: reservedBottomSize,
               getTitlesWidget: (double value, TitleMeta meta) {
-                print('year:'+performance.keys.toList()[value.toInt()]);
+                // print('year:'+barGroups.keys.toList()[value.toInt()]);
                 Widget text= const Text('');
-                text=Text(performance.keys.toList()[value.toInt()],
+                text=Text(barGroups.keys.toList()[value.toInt()],
                   style: TextStyle(
                   color: Color(0xFF1C1C1C),
                   fontSize: 12.r,
@@ -75,7 +75,7 @@ class mBarChart extends StatelessWidget {
         gridData: gridData,
         borderData: FlBorderData(show: false),
 
-        barGroups:performance.values.toList()
+        barGroups:barGroups.values.toList()
       ),
     );
 

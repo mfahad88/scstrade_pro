@@ -166,4 +166,8 @@ class Overview {
     return map;
   }
 
+  @override
+  String toString() {
+    return 'Overview{_symbol: $_symbol, _marketCap: $_marketCap, _avgVolume12M: $_avgVolume12M, _oneMonthHigh: $_oneMonthHigh, _oneMonthLow: $_oneMonthLow, _sixMonthHigh: $_sixMonthHigh, _sixMonthLow: $_sixMonthLow, _twelveMonthHigh: $_twelveMonthHigh, _twelveMonthLow: $_twelveMonthLow, _oneMonthReturn: $_oneMonthReturn, _twoMonthReturn: $_twoMonthReturn, _sixMonthReturn: $_sixMonthReturn, _twelveMonthReturn: $_twelveMonthReturn, _paidUpCapital: $_paidUpCapital, _authorizedCapital: $_authorizedCapital, _totalNoShares: $_totalNoShares, _freeFloat: $_freeFloat, _freeFloatPer: $_freeFloatPer, _beta: $_beta, _faceValue: $_faceValue, _yearEnd: $_yearEnd, _description: $_description}';
+  }
 }

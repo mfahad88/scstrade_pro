@@ -21,11 +21,12 @@ import '../../theme/theme.dart';
 class HomeScreen extends StatelessWidget {
   final BuildContext ctx;
   const HomeScreen({super.key,required this.ctx});
-
   @override
   Widget build(BuildContext context) {
+
     return Consumer<MainViewModel>(
         builder: (_,value,child) {
+
           return Container(
 
             padding: EdgeInsets.only(left: 15.r,right: 15.r),
@@ -102,6 +103,7 @@ class HomeScreen extends StatelessWidget {
               child: RotatedBox(
                   quarterTurns: 1,
                   child: Icon(Icons.arrow_forward_ios_sharp,
+                    color: Utils.isDark(context)?Colors.black:Colors.white,
                     size: 14.0,)
               ),
               decoration: ShapeDecoration(
@@ -114,7 +116,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Gap(7.r),
-            Text('KMIALLSHR',
+            Text(value.selectedDropDown,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.w700,
                 letterSpacing: -0.44,
@@ -153,13 +155,19 @@ class HomeScreen extends StatelessWidget {
         Gap(2.r),
         Row(
           children: [
-            Text('113,924.41',
-              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.64
+            Expanded(
+              child: Row(
+                children: [
+                  Text('113,924.41',
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.64
+                    ),
+                  ),
+                  Image.asset('images/drop_up.png',width: 20.r,),
+                ],
               ),
             ),
-            Image.asset('images/drop_up.png',width: 20.r,),
             Gap(10.r),
             Container(
               width:  121.r,
@@ -300,7 +308,7 @@ class HomeScreen extends StatelessWidget {
 
               ]
           ):InteractiveChart(
-              candles: value.candleData,
+            candles: value.candleData,
             initialVisibleCandleCount: 50,
             onCandleResize: (value) {
               print(value);
