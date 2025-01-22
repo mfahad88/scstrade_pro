@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:interactive_chart/interactive_chart.dart';
@@ -7,6 +8,7 @@ import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/data/stock_card_data.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
+import 'package:scstrade_pro/viewmodels/home_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:scstrade_pro/views/widgets/line_chart_sample.dart';
 import 'package:scstrade_pro/views/widgets/m_button.dart';
@@ -15,80 +17,122 @@ import 'package:scstrade_pro/views/widgets/m_rounded_container.dart';
 import 'package:scstrade_pro/views/widgets/m_segmented_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scstrade_pro/views/widgets/m_stock_card.dart';
+import 'package:scstrade_pro/views/widgets/showErrorDialog.dart';
 
 import '../../theme/theme.dart';
 
 class HomeScreen extends StatelessWidget {
   final BuildContext ctx;
-  const HomeScreen({super.key,required this.ctx});
+
+  const HomeScreen({super.key, required this.ctx});
+
   @override
-  Widget build(BuildContext context) {
+  StatelessElement createElement() {
 
-    return Consumer<MainViewModel>(
-        builder: (_,value,child) {
+    return StatelessElement(this);
+  }
 
-          return Container(
+  @override
+  Widget build(BuildContext _) {
+    return Container(
 
-            padding: EdgeInsets.only(left: 15.r,right: 15.r),
-            child: Consumer<AlldataViewmodel>(
-              builder: (BuildContext _, AlldataViewmodel allData, Widget? child) {
-                return Column(
-                  children: [
-                    mRoundedContainer(
-                      color: Utils.isDark(context)?const Color(0xFF011500):MaterialTheme.lightScheme().surfaceTint.withOpacity(0.05),
-                      padding: EdgeInsets.symmetric(horizontal: 10.r,vertical: 4.r),
-                      child: _indicesCard(
-                        context: ctx,
-                        value: value,
-                      ),
+      padding: EdgeInsets.only(left: 15.r, right: 15.r),
+      child: Consumer<HomeViewModel>(
+        builder: (BuildContext _, HomeViewModel value, Widget? child) {
+          switch (value.indicesViewModel.apiResponseSummary.status) {
+            case null:
+              return Center(child: CircularProgressIndicator());
+            case Status.loading:
+              return Center(child: CircularProgressIndicator());
+            case Status.completed:
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  mRoundedContainer(
+                    color: Utils.isDark(ctx)
+                        ? const Color(0xFF011500)
+                        : MaterialTheme
+                        .lightScheme()
+                        .surfaceTint
+                        .withOpacity(0.05),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.r, vertical: 4.r),
+                    child: _indicesCard(
+                      context: ctx,
+                      value: value,
                     ),
-                    Gap(10.r),
-                    Text(
-                      'Leaders:',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Utils.isDark(context)?Colors.white:Color(0xFF1C1C1C),
-                        fontWeight: FontWeight.w700,
-                        height: 1.33,
-                        letterSpacing: -0.54,
-                      ),
+                  ),
+                  Gap(10.r),
+                  Text(
+                    'Leaders:',
+                    style: Theme
+                        .of(ctx)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(
+                      color: Utils.isDark(ctx) ? Colors.white : Color(
+                          0xFF1C1C1C),
+                      fontWeight: FontWeight.w700,
+                      height: 1.33,
+                      letterSpacing: -0.54,
                     ),
-                    Gap(5.r),
-                    _leaderList(allData),
-                    Gap(10.r),
-                    Text(
-                      'Gainers:',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Utils.isDark(context)?Colors.white:Color(0xFF1C1C1C),
-                        fontWeight: FontWeight.w700,
-                        height: 1.33,
-                        letterSpacing: -0.54,
-                      ),
+                  ),
+                  Gap(5.r),
+                  _leaderList(value.alldataViewmodel),
+                  Gap(10.r),
+                  Text(
+                    'Gainers:',
+                    style: Theme
+                        .of(ctx)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(
+                      color: Utils.isDark(ctx) ? Colors.white : Color(
+                          0xFF1C1C1C),
+                      fontWeight: FontWeight.w700,
+                      height: 1.33,
+                      letterSpacing: -0.54,
                     ),
-                    Gap(5.r),
-                    _gainerList(allData),
-                    Gap(10.r),
-                    Text(
-                      'Losers:',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Utils.isDark(context)?Colors.white:Color(0xFF1C1C1C),
-                        fontWeight: FontWeight.w700,
-                        height: 1.33,
-                        letterSpacing: -0.54,
-                      ),
+                  ),
+                  Gap(5.r),
+                  _gainerList(value.alldataViewmodel),
+                  Gap(10.r),
+                  Text(
+                    'Losers:',
+                    style: Theme
+                        .of(ctx)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(
+                      color: Utils.isDark(ctx) ? Colors.white : Color(
+                          0xFF1C1C1C),
+                      fontWeight: FontWeight.w700,
+                      height: 1.33,
+                      letterSpacing: -0.54,
                     ),
-                    Gap(5.r),
-                    _loserList(allData),
-                  ],
-                );
-              },
-            ),
-          );
-        }
+                  ),
+                  Gap(5.r),
+                  _loserList(value.alldataViewmodel),
+                ],
+              );
+            case Status.error:
+              return showErrorDialog(context: ctx,
+                content: Text(
+                    value.indicesViewModel.apiResponseSummary.message ?? ''),
+                onPressed: () => Navigator.pop(ctx),);
+          }
+        },
+      ),
     );
   }
 
-  Widget _indicesCard({required BuildContext context,required MainViewModel value}){
-    print(Theme.of(context).textTheme.labelSmall!.fontSize);
+  Widget _indicesCard(
+      {required BuildContext context, required HomeViewModel value}) {
+    print(Theme
+        .of(context)
+        .textTheme
+        .labelSmall!
+        .fontSize);
     return Column(
       children: [
 
@@ -96,28 +140,66 @@ class HomeScreen extends StatelessWidget {
         Gap(10.r),
         Row(
           children: [
-            Container(
-              width: 23.r,
-              height: 23.r,
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  isDismissible: false,
+                  context: context,
+                  builder: (context) {
+                  return ListView.separated(
 
-              child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(Icons.arrow_forward_ios_sharp,
-                    color: Utils.isDark(context)?Colors.black:Colors.white,
-                    size: 14.0,)
-              ),
-              decoration: ShapeDecoration(
-                  color: Utils.isDark(context)?Colors.white:MaterialTheme.specialHeadline.value,
-                  shape: CircleBorder(
-                      side: BorderSide(
-                          color: Utils.isDark(context)?Colors.white:MaterialTheme.specialHeadline.value
-                      )
-                  )
+                      itemBuilder: (context, index) =>
+                          ListTile(
+                            onTap: () {
+                              Navigator.pop(ctx);
+                              value.selectedOption(value.indicesViewModel
+                                  .apiResponseSummary.data?[index]);
+
+                            },
+                            title: Text(value.indicesViewModel
+                                .apiResponseSummary.data?[index].indexcode ??
+                                ''),
+                          ),
+                      separatorBuilder: (context, index) =>
+                          Divider(
+                            color: Color(0xFFC9C6C4),
+                            thickness: 1.r,
+                          ),
+                      itemCount: value.indicesViewModel.apiResponseSummary.data
+                          ?.length ?? 0);
+                },);
+              },
+              child: Container(
+                width: 23.r,
+                height: 23.r,
+
+                child: RotatedBox(
+                    quarterTurns: 1,
+                    child: Icon(Icons.arrow_forward_ios_sharp,
+                      color: Utils.isDark(context) ? Colors.black : Colors
+                          .white,
+                      size: 14.0,)
+                ),
+                decoration: ShapeDecoration(
+                    color: Utils.isDark(context) ? Colors.white : MaterialTheme
+                        .specialHeadline.value,
+                    shape: CircleBorder(
+                        side: BorderSide(
+                            color: Utils.isDark(context)
+                                ? Colors.white
+                                : MaterialTheme.specialHeadline.value
+                        )
+                    )
+                ),
               ),
             ),
             Gap(7.r),
-            Text(value.selectedDropDown,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+            Text(value.map['selectedIndex']??'',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headlineSmall!
+                  .copyWith(
                 fontWeight: FontWeight.w700,
                 letterSpacing: -0.44,
               ),
@@ -126,22 +208,36 @@ class HomeScreen extends StatelessWidget {
             Container(
               width: 121.r,
               child: mRoundedContainer(
-                  padding: EdgeInsets.symmetric(horizontal: 5.r,vertical: 4.r),
-                  color: Utils.isDark(context)?MaterialTheme.lightScheme().secondary.withValues(alpha: 0.15):Color(0xFFF4F0EE),
+                  padding: EdgeInsets.symmetric(horizontal: 5.r, vertical: 4.r),
+                  color: Utils.isDark(context) ? MaterialTheme
+                      .lightScheme()
+                      .secondary
+                      .withValues(alpha: 0.15) : Color(0xFFF4F0EE),
                   side: BorderSide(
-                      color:  Utils.isDark(context)?MaterialTheme.lightScheme().outline:Color(0xFF79776F),
+                      color: Utils.isDark(context) ? MaterialTheme
+                          .lightScheme()
+                          .outline : Color(0xFF79776F),
                       width: 0.78
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Volume: ',
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
                             fontWeight: FontWeight.w500,
                             letterSpacing: -0.23
                         ),
                       ),
-                      Text('424.810m',
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      Text(value.map['volume']??'',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
                             fontWeight: FontWeight.w500,
                             letterSpacing: -0.23
                         ),
@@ -158,43 +254,45 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Text('113,924.41',
-                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  Text(value.map['currentValue']??'',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineLarge!
+                        .copyWith(
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.64
                     ),
                   ),
-                  Image.asset('images/drop_up.png',width: 20.r,),
+                  Image.asset(value.map['change']?.contains('-')??false?'images/drop_down.png':'images/drop_up.png', width: 20.r,),
                 ],
               ),
             ),
             Gap(10.r),
             Container(
-              width:  121.r,
+              width: 121.r,
               child: mRoundedContainer(
-                  padding: EdgeInsets.symmetric(horizontal: 5.r,vertical: 4.r),
-                  color: Utils.isDark(context)?MaterialTheme.lightScheme().secondary.withValues(alpha: 0.10):Color(0xFFF4F0EE),
+                  padding: EdgeInsets.symmetric(horizontal: 5.r, vertical: 4.r),
+                  color: Utils.isDark(context) ? MaterialTheme
+                      .lightScheme()
+                      .secondary
+                      .withValues(alpha: 0.10) : Color(0xFFF4F0EE),
                   side: BorderSide(
-                      color:  Utils.isDark(context)?MaterialTheme.lightScheme().primary:Color(0xFF79776F),
+                      color: Utils.isDark(context) ? MaterialTheme
+                          .lightScheme()
+                          .primary : Color(0xFF79776F),
                       width: 0.78
                   ),
-                  child: Row(
-                    children: [
-                      Text('+4,411.27',
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: -0.23
+                  child: Text(value.map['change']??'',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: -0.23
 
-                        ),
-                      ),
-                      Gap(2.0.r),
-                      Text('(+4.03%)',
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: -0.23
-                        ),
-                      ),
-                    ],
+                    ),
                   )
               ),
             )
@@ -211,38 +309,50 @@ class HomeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset('images/drop_up.png',width: 8.r,),
+            Image.asset('images/drop_up.png', width: 8.r,),
             Gap(2.r),
             Text('High:',
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(
+                    color: MaterialTheme.lightScheme().primary,
                     letterSpacing: -0.20
                 )
             ),
-            Text(' 110,891.35',
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+            Text(value.map['high']??'',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(
+                  color: MaterialTheme.lightScheme().primary,
                   letterSpacing: -0.20
               ),),
-            Gap(2.r),
-            Text('1378.22(1.24%)',
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    letterSpacing: -0.20
-                )),
             Spacer(),
-            Image.asset('images/drop_down.png',width: 8.r,),
+            Image.asset('images/drop_down.png', width: 8.r,),
             Gap(2.r),
             Text('Low:',
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(
+                    color: MaterialTheme.lightScheme().error,
                     letterSpacing: -0.20
                 )),
-            Text(' 110,891.35',
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+            Text(value.map['low']??'',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(
+                    color: MaterialTheme.lightScheme().error,
                     letterSpacing: -0.20
-                )),
-            Gap(2.r),
-            Text('1378.22(1.24%)',
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    letterSpacing: -0.20
-                )),
+                )
+            ),
+
           ],
         ),
         SingleChildScrollView(
@@ -255,7 +365,7 @@ class HomeScreen extends StatelessWidget {
                 ctx: context,
                 selected: value.isLineSelected,
                 title: 'Line', onPressed: (v) {
-                if(!value.isLineSelected) {
+                if (!value.isLineSelected) {
                   value.toggleChart(v);
                 }
               },
@@ -265,18 +375,23 @@ class HomeScreen extends StatelessWidget {
                 ctx: context,
                 selected: value.isCandleSelected,
                 title: 'Candle', onPressed: (v) {
-                if(!value.isCandleSelected){
+                if (!value.isCandleSelected) {
                   value.toggleChart(v);
                 }
               },
               ),
               // Gap(3.r),
               Row(
-                children: value.mins.asMap().entries.map((e) {
-
+                children: value.mins
+                    .asMap()
+                    .entries
+                    .map((e) {
                   return Row(
                     children: [
-                      mButton(ctx: context,selected: value.mins[e.key]==value.selectedMins, title: e.value, onPressed: (v) => value.toggleMins(v) ,),
+                      mButton(ctx: context,
+                        selected: value.mins[e.key] == value.selectedMins,
+                        title: e.value,
+                        onPressed: (v) => value.toggleMins(v),),
                       // Gap(3.r)
                     ],
                   );
@@ -289,7 +404,7 @@ class HomeScreen extends StatelessWidget {
         Container(
           width: 400.r,
           height: 200.r,
-          child: value.isLineSelected?LineChartSample(
+          child: value.isLineSelected ? LineChartSample(
               gridData: FlGridData(
                   show: true
               ),
@@ -307,7 +422,7 @@ class HomeScreen extends StatelessWidget {
                 FlSpot(7, 2.5),
 
               ]
-          ):InteractiveChart(
+          ) : InteractiveChart(
             candles: value.candleData,
             initialVisibleCandleCount: 50,
             onCandleResize: (value) {
@@ -320,90 +435,131 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _leaderList(AlldataViewmodel allData) {
-    switch (allData.apiResponse.status){
-
+    switch (allData.apiResponse.status) {
       case null:
       // TODO: Handle this case.
       case Status.loading:
         return Center(child: CircularProgressIndicator(),);
       case Status.completed:
-
         return ListView.separated(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => mStockCard(stockCardData: allData.fetchLeaders().map((e) =>
-                StockCardData(e.companyLogo, e.ind, e.sym, e.nm, e.v.toString(), e.cl.toString(), e.ch.toString(),
-                    e.chp.toString(), e.hp.toString(), e.lp.toString(), e.ap.toString(), e.av.toString(), e.bp.toString(), e.bv.toString(), [
-                      FlSpot(0, 1.5),
-                      FlSpot(1, 2.5),
-                      FlSpot(2, 4.5),
-                      FlSpot(3, 3.5),
-                      FlSpot(4, 3.5),
-                    ]),).toList()[index]),
+            itemBuilder: (context, index) =>
+                mStockCard(stockCardData: allData.fetchLeaders().map((e) =>
+                    StockCardData(
+                        e.companyLogo,
+                        e.ind,
+                        e.sym,
+                        e.nm,
+                        e.v.toString(),
+                        e.cl.toString(),
+                        e.ch.toString(),
+                        e.chp.toString(),
+                        e.hp.toString(),
+                        e.lp.toString(),
+                        e.ap.toString(),
+                        e.av.toString(),
+                        e.bp.toString(),
+                        e.bv.toString(),
+                        [
+                          FlSpot(0, 1.5),
+                          FlSpot(1, 2.5),
+                          FlSpot(2, 4.5),
+                          FlSpot(3, 3.5),
+                          FlSpot(4, 3.5),
+                        ]),).toList()[index]),
             separatorBuilder: (context, index) => Gap(5.r),
-            itemCount:  10);
+            itemCount: 10);
       case Status.error:
-        return Text(allData.apiResponse.message??'');
+        return Text(allData.apiResponse.message ?? '');
     }
   }
 
   Widget _gainerList(AlldataViewmodel allData) {
-    switch (allData.apiResponse.status){
-
+    switch (allData.apiResponse.status) {
       case null:
       // TODO: Handle this case.
       case Status.loading:
         return Center(child: CircularProgressIndicator(),);
       case Status.completed:
-
         return ListView.separated(
           // padding: EdgeInsets.only(bottom: kFloatingActionButtonMargin+90.r),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => mStockCard(stockCardData: allData.fetchGainers().map((e) =>
-                StockCardData(e.companyLogo, e.ind, e.sym, e.nm, e.v.toString(), e.cl.toString(), e.ch.toString(),
-                    e.chp.toString(), e.hp.toString(), e.lp.toString(), e.ap.toString(), e.av.toString(), e.bp.toString(), e.bv.toString(), [
-                      FlSpot(0, 1.5),
-                      FlSpot(1, 2.5),
-                      FlSpot(2, 4.5),
-                      FlSpot(3, 3.5),
-                      FlSpot(4, 3.5),
-                    ]),).toList()[index]),
+            itemBuilder: (context, index) =>
+                mStockCard(stockCardData: allData.fetchGainers().map((e) =>
+                    StockCardData(
+                        e.companyLogo,
+                        e.ind,
+                        e.sym,
+                        e.nm,
+                        e.v.toString(),
+                        e.cl.toString(),
+                        e.ch.toString(),
+                        e.chp.toString(),
+                        e.hp.toString(),
+                        e.lp.toString(),
+                        e.ap.toString(),
+                        e.av.toString(),
+                        e.bp.toString(),
+                        e.bv.toString(),
+                        [
+                          FlSpot(0, 1.5),
+                          FlSpot(1, 2.5),
+                          FlSpot(2, 4.5),
+                          FlSpot(3, 3.5),
+                          FlSpot(4, 3.5),
+                        ]),).toList()[index]),
             separatorBuilder: (context, index) => Gap(5.r),
-            itemCount:  10);
+            itemCount: 10);
       case Status.error:
-        return Text(allData.apiResponse.message??'');
+        return Text(allData.apiResponse.message ?? '');
     }
   }
 
   Widget _loserList(AlldataViewmodel allData) {
-    switch (allData.apiResponse.status){
-
+    switch (allData.apiResponse.status) {
       case null:
       // TODO: Handle this case.
       case Status.loading:
         return Center(child: CircularProgressIndicator(),);
       case Status.completed:
-
         return ListView.separated(
-            padding: EdgeInsets.only(bottom: kFloatingActionButtonMargin+90.r),
+            padding: EdgeInsets.only(
+                bottom: kFloatingActionButtonMargin + 90.r),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => mStockCard(stockCardData: allData.fetchLosers().map((e) =>
-                StockCardData(e.companyLogo, e.ind, e.sym, e.nm, e.v.toString(), e.cl.toString(), e.ch.toString(),
-                    e.chp.toString(), e.hp.toString(), e.lp.toString(), e.ap.toString(), e.av.toString(), e.bp.toString(), e.bv.toString(), [
-                      FlSpot(0, 1.5),
-                      FlSpot(1, 2.5),
-                      FlSpot(2, 4.5),
-                      FlSpot(3, 3.5),
-                      FlSpot(4, 3.5),
-                    ]),).toList()[index]),
+            itemBuilder: (context, index) =>
+                mStockCard(stockCardData: allData.fetchLosers().map((e) =>
+                    StockCardData(
+                        e.companyLogo,
+                        e.ind,
+                        e.sym,
+                        e.nm,
+                        e.v.toString(),
+                        e.cl.toString(),
+                        e.ch.toString(),
+                        e.chp.toString(),
+                        e.hp.toString(),
+                        e.lp.toString(),
+                        e.ap.toString(),
+                        e.av.toString(),
+                        e.bp.toString(),
+                        e.bv.toString(),
+                        [
+                          FlSpot(0, 1.5),
+                          FlSpot(1, 2.5),
+                          FlSpot(2, 4.5),
+                          FlSpot(3, 3.5),
+                          FlSpot(4, 3.5),
+                        ]),).toList()[index]),
             separatorBuilder: (context, index) => Gap(5.r),
-            itemCount:  10);
+            itemCount: 10);
       case Status.error:
-        return Text(allData.apiResponse.message??'');
+        return Text(allData.apiResponse.message ?? '');
     }
   }
+
 }
 
 

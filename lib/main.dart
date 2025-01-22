@@ -11,6 +11,7 @@ import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/company_viewmodel.dart';
+import 'package:scstrade_pro/viewmodels/home_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/indices_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/login_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
@@ -31,6 +32,7 @@ void main() async {
         projectId: 'scstradepro',
       )
   );*/
+  Provider.debugCheckInvalidValueType=null;
   final _apiClient=ApiClient();
 
   final _loginViewModel=LoginViewModel(_apiClient);
@@ -48,7 +50,18 @@ void main() async {
             ChangeNotifierProvider(create: (context) => _mainViewModel,),
             ChangeNotifierProvider(create: (context) => _allDataViewModel,),
             ChangeNotifierProvider(create: (context) => _indicesViewModel,),
-            ChangeNotifierProvider(create: (context) => _companyViewModel,)
+            ChangeNotifierProvider(create: (context) => _companyViewModel,),
+            ChangeNotifierProvider(create: (context) => HomeViewModel(alldataViewmodel: _allDataViewModel, indicesViewModel: _indicesViewModel),)
+          /*  ChangeNotifierProxyProvider2<AlldataViewmodel,IndicesViewModel,HomeViewModel?>(
+                create: (context) => HomeViewModel(
+                    alldataViewmodel: _allDataViewModel,
+                    indicesViewModel: _indicesViewModel),
+                update:(context, value, value2, previous) {
+                  print(DateTime.now());
+                  return previous?..fetchIndices();
+                }
+            )*/
+
           ],
           child: const MyApp()
       )

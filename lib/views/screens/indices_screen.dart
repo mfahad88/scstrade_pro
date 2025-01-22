@@ -157,7 +157,7 @@ class IndicesScreen extends StatelessWidget {
 
   _indicesList(BuildContext context,IndicesViewModel value) {
 
-    switch(value.apiResponse.status) {
+    switch(value.apiResponseSummary.status) {
       case null:
 
       case Status.loading:
@@ -171,42 +171,48 @@ class IndicesScreen extends StatelessWidget {
                 onTap: () {
                   // context.read<MainViewModel>().selectedMenu='StockIndexScreen';
                   // context.read<MainViewModel>().selectedIndex= (value.apiResponse.data![index] as IndicesSummary).indexcode??'';
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StockIndexScreen(index: (value.apiResponse.data![index] as IndicesSummary).indexcode.toString()),));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => StockIndexScreen(
+                            indicesSummary: value.apiResponseSummary.data![index]
+                        ),
+                      )
+                  );
                 },
                 child: Container(
-                  clipBehavior: Clip.none,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 10.0.r,
-                      vertical: 12.0.r
-                  ),
-                  decoration: ShapeDecoration(
-
-                    color: Utils.isDark(context)?Color(0xFF1C1B1B):Color(0xFFFCF8F8),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1, color: Utils.isDark(context)? Color(0xFF313030):Color(0xFFF4F0EF)),
-                      borderRadius: BorderRadius.circular(12),
+                    clipBehavior: Clip.none,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 10.0.r,
+                        vertical: 12.0.r
                     ),
-                    shadows: [
-                      BoxShadow(
-                        color: Color(0x26000000),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
-                  child: mIndicesCard(
-                      context: context,
-                      indicesSummary: value.apiResponse.data![index])
-                      // .animate().slideY(duration: Duration(milliseconds: 800),curve: Curves.decelerate),
+                    decoration: ShapeDecoration(
+
+                      color: Utils.isDark(context)?Color(0xFF1C1B1B):Color(0xFFFCF8F8),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: Utils.isDark(context)? Color(0xFF313030):Color(0xFFF4F0EF)),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x26000000),
+                          blurRadius: 8,
+                          offset: Offset(0, 4),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: mIndicesCard(
+                        context: context,
+                        indicesSummary: value.apiResponseSummary.data![index])
+                  // .animate().slideY(duration: Duration(milliseconds: 800),curve: Curves.decelerate),
                 ),
               );
 
             },
             separatorBuilder: (context, index) => Gap(10.r),
-            itemCount: value.apiResponse.data?.length??0);
+            itemCount: value.apiResponseSummary.data?.length??0);
       case Status.error:
-        return Center(child: Text(value.apiResponse.message??""));
+        return Center(child: Text(value.apiResponseSummary.message??""));
     }
 
   }

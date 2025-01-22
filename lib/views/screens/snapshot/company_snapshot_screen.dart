@@ -6,6 +6,7 @@ import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/data/stock_card_data.dart';
 import 'package:scstrade_pro/viewmodels/company_viewmodel.dart';
 import 'package:scstrade_pro/views/screens/snapshot/overview_screen.dart';
+import 'package:scstrade_pro/views/screens/snapshot/profile_screen.dart';
 import 'package:scstrade_pro/views/widgets/m_market_status.dart';
 import 'package:scstrade_pro/views/widgets/m_tab_bar.dart';
 
@@ -199,7 +200,7 @@ class _CompanySnapshotScreenState extends State<CompanySnapshotScreen> with Sing
                     Gap(10.r),
                     mTabbar(controller: _controller, tabs: value.header,onTap: (v) => value.currentIndex=v,),
                     Container(
-                      child: value.currentIndex==0?OverviewScreen(context:context,stockCardData:widget.stockCardData):Text('No screen found'),
+                      child: value.currentIndex==0?OverviewScreen(context:context,stockCardData:widget.stockCardData):value.currentIndex==1?ProfileScreen(context:context,stockCardData:widget.stockCardData):Text('No screen found'),
                       padding: EdgeInsets.symmetric(vertical: 15.r,horizontal: 10.r),
                     )
                     /*IndexedStack(

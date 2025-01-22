@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/data/stock_card_data.dart';
 import 'package:scstrade_pro/models/indices/Indices.dart';
+import 'package:scstrade_pro/models/indices/IndicesSummary.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
 import 'package:scstrade_pro/viewmodels/indices_viewmodel.dart';
@@ -16,8 +17,8 @@ import '../../models/allData/Alldata_indices.dart';
 import '../../theme/theme.dart';
 
 class StockIndexScreen extends StatelessWidget {
-  final String index;
-  const StockIndexScreen({super.key, required this.index});
+  final IndicesSummary indicesSummary;
+  const StockIndexScreen({super.key, required this.indicesSummary});
 
 
   @override
@@ -68,7 +69,7 @@ class StockIndexScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          index.replaceAll('Index', ''),
+                          indicesSummary.indexcode?.replaceAll('Index', '')??'',
                           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                             color: Colors.white,
                             fontSize: 28.r,
@@ -171,7 +172,7 @@ class StockIndexScreen extends StatelessWidget {
           shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, i) {
-             var indices=value.fetchByIndex(index)?[i];
+             var indices=value.fetchByIndex(indicesSummary.indexcode?.replaceAll('Index', '')??'')?[i];
              return mStockCard(stockCardData: StockCardData(indices?.companyLogo??'', indices?.ind.toString(), indices?.sym, indices?.nm, indices?.v.toString(), indices?.cl.toString(), indices?.ch.toString(), indices?.chp.toString(), indices?.hp.toString(), indices?.lp.toString(),
                  indices?.ap.toString(), indices?.av.toString(), indices?.bp.toString(), indices?.bv.toString(), [
                    FlSpot(0, 1.5),
@@ -183,7 +184,7 @@ class StockIndexScreen extends StatelessWidget {
              );
             },
             separatorBuilder: (context, index) => Gap(10.r),
-            itemCount: value.apiResponse.data?.where((element) => element.ind?.contains(index)??false,).toList().length??0
+            itemCount: value.fetchByIndex(indicesSummary.indexcode?.replaceAll('Index', '')??'')?.length??0
         );
       case Status.error:
         return Center(
