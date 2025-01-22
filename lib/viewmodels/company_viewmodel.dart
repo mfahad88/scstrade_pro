@@ -6,7 +6,7 @@ import 'package:scstrade_pro/models/KeyDescValue.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
 import 'package:scstrade_pro/models/snapshot/Overview.dart';
 import 'package:scstrade_pro/models/snapshot/chart/BookValue.dart';
-import 'package:scstrade_pro/repositories/company_repository.dart';
+import 'package:scstrade_pro/services/api_client.dart';
 
 import '../models/data/mock_data.dart';
 import '../models/snapshot/chart/Chart.dart';
@@ -14,8 +14,8 @@ import '../models/snapshot/detail/Detail.dart';
 import '../models/snapshot/detail/Insurance.dart';
 
 class CompanyViewModel extends ChangeNotifier{
-  CompanyViewModel(this.companyRepository);
-  final CompanyRepository companyRepository;
+  ApiClient apiClient;
+  CompanyViewModel(this.apiClient);
   ApiResponse<Overview?> apiResponseOverview=ApiResponse(status: Status.loading);
   ApiResponse<dynamic> apiResponseChart=ApiResponse(status: Status.loading);
   ApiResponse<List<Detail>?> apiResponseDetail=ApiResponse(status: Status.loading);
@@ -242,9 +242,9 @@ class CompanyViewModel extends ChangeNotifier{
   Future<void> fetchSnapshot(String symbol) async {
     try{
       final result=await Future.wait([
-        companyRepository.fetchSnapshotOverview(symbol),
-        companyRepository.fetchSnapshotChart(symbol),
-        companyRepository.fetchSnapshotDetail(symbol)
+        apiClient.fetchSnapshotOverview(symbol),
+        apiClient.fetchSnapshotChart(symbol),
+        apiClient.fetchSnapshotDetail(symbol)
       ]);
       apiResponseOverview=result[0] as ApiResponse<Overview>;
 
@@ -259,6 +259,11 @@ class CompanyViewModel extends ChangeNotifier{
       _populateBookValue();
       // apiResponseOverview=await companyRepository.fetchSnapshotOverview(symbol);
     }catch (e){
+      apiResponseOverview=ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
       print('Error: $e');
     }finally{
       notifyListeners();

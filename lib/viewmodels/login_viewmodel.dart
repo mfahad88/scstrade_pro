@@ -4,14 +4,14 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:scstrade_pro/models/indices/Kse_indices.dart';
-import 'package:scstrade_pro/repositories/login_repository.dart';
+import 'package:scstrade_pro/services/api_client.dart';
 
 import '../helper/Utils.dart';
 import '../models/response/api_response.dart';
 import '../views/screens/otp_screen.dart';
 
 class LoginViewModel extends ChangeNotifier{
-  final LoginRepository loginRepository;
+  final ApiClient apiClient;
   final List<String> countryCode=['+92','+971'];
   String _selectedCountryCode='+92';
   bool _isRemember=false;
@@ -29,14 +29,19 @@ class LoginViewModel extends ChangeNotifier{
     FlSpot(3, 0.1+(Random().nextDouble()*(5.0-0.1))),
     FlSpot(4, 0.1+(Random().nextDouble()*(5.0-0.1)))
   ];
-  LoginViewModel({required this.loginRepository});
+  LoginViewModel(this.apiClient);
 
   Future<void> fetchKseIndices() async {
     try{
       responseKseIndices=ApiResponse<List<KseIndices>>(status: Status.loading);
 
-      responseKseIndices=await loginRepository.fetchKseIndices();
+      responseKseIndices=await apiClient.fetchKseIndices();
     }catch (e){
+      responseKseIndices=ApiResponse(
+          status: Status.error,
+          data: null,
+          message: 'Something went wrong.\nPlease try again later...'
+      );
       print('Error: $e');
     }
     notifyListeners();
@@ -63,7 +68,7 @@ class LoginViewModel extends ChangeNotifier{
       if(isRemember){
         Utils.saveCredentials(name: fullNameController.text, email: emailController.text, mobileNo: mobileController.text);
       }
-     responseRegister= await loginRepository.submitRegister(name: fullNameController.text, email: emailController.text, mobileNo: '$selectedCountryCode${mobileController.text.replaceFirst(RegExp('^0'), '')}');
+     responseRegister= await apiClient.submitRegister(name: fullNameController.text, email: emailController.text, mobileNo: '$selectedCountryCode${mobileController.text.replaceFirst(RegExp('^0'), '')}');
       // responseRegister=ApiResponse<String>(status: Status.loading);
       // Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) => OtpScreen(),));
       // Navigator.of(context).pop();

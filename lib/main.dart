@@ -7,12 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:scstrade_pro/helper/Utils.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
-import 'package:scstrade_pro/models/todos/Todos.dart';
-import 'package:scstrade_pro/repositories/alldata_repository.dart';
-import 'package:scstrade_pro/repositories/company_repository.dart';
-import 'package:scstrade_pro/repositories/indices_repository.dart';
-import 'package:scstrade_pro/repositories/login_repository.dart';
-import 'package:scstrade_pro/repositories/todo_repository.dart';
 import 'package:scstrade_pro/services/api_client.dart';
 import 'package:scstrade_pro/theme/theme.dart';
 import 'package:scstrade_pro/viewmodels/alldata_viewmodel.dart';
@@ -23,9 +17,6 @@ import 'package:scstrade_pro/viewmodels/main_viewmodel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scstrade_pro/views/screens/login_screen.dart';
 
-
-import 'theme/app_theme.dart';
-import 'models/todos/Todo.dart';
 
 
 
@@ -41,15 +32,15 @@ void main() async {
       )
   );*/
   final _apiClient=ApiClient();
-  final _loginRepository=LoginRepository(_apiClient);
-  final _loginViewModel=LoginViewModel(loginRepository: _loginRepository);
 
-  final _allDataRepository=AllDataRepository(_apiClient);
-  final _allDataViewModel=AlldataViewmodel(_allDataRepository);
-  final _indicesRepository=IndicesRepository(_apiClient);
-  final _indicesViewModel=IndicesViewModel(_indicesRepository);
-  final _companyViewModel=CompanyViewModel(CompanyRepository(_apiClient));
-  final _mainViewModel=MainViewModel(_indicesRepository);
+  final _loginViewModel=LoginViewModel(_apiClient);
+
+
+  final _allDataViewModel=AlldataViewmodel(_apiClient);
+
+  final _indicesViewModel=IndicesViewModel(_apiClient);
+  final _companyViewModel=CompanyViewModel(_apiClient);
+  final _mainViewModel=MainViewModel(_apiClient);
   runApp(
       MultiProvider(
           providers: [

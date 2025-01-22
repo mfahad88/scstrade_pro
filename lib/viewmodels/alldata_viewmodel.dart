@@ -4,24 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:interactive_chart/interactive_chart.dart';
 import 'package:scstrade_pro/models/allData/Alldata_indices.dart';
 import 'package:scstrade_pro/models/response/api_response.dart';
-import 'package:scstrade_pro/repositories/alldata_repository.dart';
+import 'package:scstrade_pro/services/api_client.dart';
 
 import '../models/data/mock_data.dart';
 
 class AlldataViewmodel extends ChangeNotifier {
 
-  final AllDataRepository allDataRepository;
+  final ApiClient apiClient;
 
   ApiResponse<List<AlldataIndices>> apiResponse=ApiResponse(status: Status.loading);
   Timer? timer;
-  AlldataViewmodel(this.allDataRepository){
+  AlldataViewmodel(this.apiClient){
     _startTimer();
     // _fetchAllData();
   }
 
   Future<void> _fetchAllData() async {
     try{
-      apiResponse=await allDataRepository.fetchAllData();
+      apiResponse=await apiClient.fetchAllData();
     }catch(e){
       print('Error: $e');
     }finally{
@@ -42,8 +42,6 @@ class AlldataViewmodel extends ChangeNotifier {
 
   List<AlldataIndices>? fetchByIndex(String index){
     return apiResponse.data?.where((element) {
-      print("$index\t${index.toLowerCase().contains('all')}");
-          // (element) => index.toLowerCase().contains('all')?element.ind?.contains('\"\"')??false:element.ind?.contains(index)??false
               if(!index.toLowerCase().contains('all')){
                 return element.ind?.contains(index)??false;
               }else{

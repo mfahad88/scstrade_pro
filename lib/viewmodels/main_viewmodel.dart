@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:interactive_chart/interactive_chart.dart';
 import 'package:scstrade_pro/models/indices/Indices.dart';
 import 'package:scstrade_pro/models/indices/IndicesSummary.dart';
+import 'package:scstrade_pro/services/api_client.dart';
 
 import '../helper/Utils.dart';
 import '../models/data/mock_data.dart';
 import '../models/response/api_response.dart';
-import '../repositories/indices_repository.dart';
 
 class MainViewModel extends ChangeNotifier{
-  final IndicesRepository indicesRepository;
-
+  final ApiClient apiClient;
   ApiResponse<List<IndicesSummary>?>apiResponseSummary=ApiResponse<List<IndicesSummary>>(status: Status.loading);
   ApiResponse<List<Indices>?> apiResponseIndex=ApiResponse<List<Indices>>(status: Status.loading);
   List<String> sideMenus=['Indices','All Stocks','Detailed Quote','Fundamental', 'Technical','SCS Portfolio','Announcements'];
@@ -72,7 +71,7 @@ class MainViewModel extends ChangeNotifier{
     super.dispose();
   }
 
-  MainViewModel(this.indicesRepository);
+  MainViewModel(this.apiClient);
 
   void toggleChart(String v){
     isLineSelected=!isLineSelected;
@@ -86,27 +85,5 @@ class MainViewModel extends ChangeNotifier{
   }
 
 
-  Future<void> fetchIndices() async {
-    try{
-      apiResponseSummary=await indicesRepository.fetchIndices();
-      _selectedDropDown=_selectedDropDown.isEmpty?apiResponseSummary.data?.where((element) => element.indexcode?.toLowerCase().contains('kse 100')??false,).first.indexcode??'':_selectedDropDown;
-      //     .first.indexcode??'';
-    }catch (e){
-      print('Error: $e');
-    }finally{
-      notifyListeners();
-    }
-  }
-
-  Future<void> fetchByIndex(String query) async {
-    try{
-
-      apiResponseIndex=await indicesRepository.fetchByIndex(query);
-    }catch (e){
-      print('Error: $e');
-    }finally{
-      notifyListeners();
-    }
-  }
 
 }
